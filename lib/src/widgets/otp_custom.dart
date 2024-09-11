@@ -27,7 +27,8 @@ class OtpFields extends StatelessWidget {
       height: 48,
       textStyle: const TextStyle(
         fontSize: 22,
-        color: Color.fromRGBO(30, 60, 87, 1),
+        color: Colors.black,
+        // color: Color.fromRGBO(30, 60, 87, 1),
       ),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -36,7 +37,8 @@ class OtpFields extends StatelessWidget {
     );
     return Center(
       child: Pinput(
-        showCursor: false,
+        
+        showCursor: true,
         length: 4,
         controller: pinController,
         focusNode: focusNode,
@@ -79,6 +81,7 @@ class OtpFields extends StatelessWidget {
         errorPinTheme: defaultPinTheme.copyBorderWith(
           border: Border.all(color: Colors.redAccent),
         ),
+        
       ),
     );
   }

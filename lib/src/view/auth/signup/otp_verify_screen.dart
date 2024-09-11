@@ -17,11 +17,7 @@ class OtpVerifyScreen extends StatefulWidget {
 
 class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   bool isLoginWithOtp = true; // To toggle between OTP and Password login
-
-  @override
-  Widget build(BuildContext context) {
-    String otpVerificationId = '';
-    final pinController = TextEditingController();
+ final pinController = TextEditingController();
     final focusNode = FocusNode();
     final _formKey = GlobalKey<FormState>();
     bool verifyLoading = false;
@@ -37,6 +33,16 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
         verifyLoading = false;
       });
     }
+
+    @override
+    void dispose() {
+      pinController.dispose();
+      focusNode.dispose();
+      super.dispose();
+    }
+  @override
+  Widget build(BuildContext context) {
+   
 
     return CommanWidget(
       widget: Center(
@@ -58,7 +64,6 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
               const SizedBox(
                 height: 50,
               ),
-
               OtpFields(
                 pinController: pinController,
                 focusNode: focusNode,
@@ -71,7 +76,6 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
               const SizedBox(
                 height: 10,
               ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: RichText(

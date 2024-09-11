@@ -7,4 +7,7 @@ class AppAssets {
   static const String maida = 'assets/images/maida.png';
   static const String banner = 'assets/images/banner.png';
   static const String maidagroup = 'assets/images/maidagroup.png';
+  static const String heartIcon = 'assets/images/heartIcon.png';
+  static const String atmCard = 'assets/images/atmCard.png';
+  static const String cod = 'assets/images/cod.png';
 }

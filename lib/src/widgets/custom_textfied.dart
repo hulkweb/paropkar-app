@@ -166,10 +166,10 @@ class TextFormWidget extends StatelessWidget {
 
 String? validatePhone(String? value) {
   if (value!.isEmpty) {
-    return 'phone_cannot_be_empty';
+    return 'Phone number is required';
   }
   if (value.length != 10) {
-    return 'phone_number_should_10_digit';
+    return 'Phone number should be 10 digit';
   }
   return null;
 }

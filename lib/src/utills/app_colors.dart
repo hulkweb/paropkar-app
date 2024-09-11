@@ -10,4 +10,6 @@ class AppColors {
   static const Color black = Colors.black;
   static const Color textColor = Color(0xFF333333);      // Main text color
   static const Color errorColor = Colors.redAccent;
+  static const Color grey = Color(0xFFD9D9D9);  
+  static const Color greenLight = Color(0xFF1ABB50); 
 }

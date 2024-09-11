@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/home/home_screen.dart';
+import 'package:paropkar/src/view/product/category_product_listing_screen.dart';
 
 class BottomBarListScreen extends StatefulWidget {
   @override
@@ -12,7 +14,7 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
   // List of screens for each tab
   final List<Widget> _pages = [
     HomeScreen(),
-    CategoryScreen(),
+    const CategoryProductScreen(),
     CartScreen(),
     ProfileScreen(),
   ];
@@ -31,7 +33,7 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
@@ -57,23 +59,6 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
   }
 }
 
-class CategoryScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text("Category Screen"),
-    );
-  }
-}
-
-class CartScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text("Cart Screen"),
-    );
-  }
-}
 
 class ProfileScreen extends StatelessWidget {
   @override

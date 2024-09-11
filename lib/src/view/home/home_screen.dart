@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[
             SliverAppBar(
+              automaticallyImplyLeading: false,
               backgroundColor: Colors.green,
               expandedHeight: 150.0,
               floating: false,
@@ -174,9 +175,13 @@ class HomeScreen extends StatelessWidget {
                 //     ],
                 //   ),
                 // ),
-                SizedBox(height: 20), 
-                ImageCarousel(imageUrls: List.generate(4, (index) => AppAssets.banner),),
-                SizedBox(width: 20,),
+                SizedBox(height: 20),
+                ImageCarousel(
+                  imageUrls: List.generate(4, (index) => AppAssets.banner),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
                 // Categories Section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -3,7 +3,8 @@ import 'package:paropkar/src/controller/splash_controller.dart';
 import 'package:paropkar/src/controller/theme_controller.dart';
 import 'package:paropkar/src/models/splash_model.dart';
 import 'package:paropkar/src/utills/theme.dart';
-import 'package:paropkar/src/view/splash_view.dart';
+import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
+import 'package:paropkar/src/view/splach_screen.dart';
 import 'package:provider/provider.dart';
 
 double screenHeight = 0;
@@ -35,11 +36,12 @@ class MyApp extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return MaterialApp(
+          
           debugShowCheckedModeBanner: false,
           theme: RAppTheme.lightTheme, // Apply the custom light theme
           darkTheme: RAppTheme.lightTheme, // Apply the custom dark theme
           themeMode: ThemeMode.system, // Use the current theme mode from provider
-          home: SplashView(controller: splashController),
+          home: BottomBarListScreen()// SplashView(controller: splashController),
         );
       },
     );
