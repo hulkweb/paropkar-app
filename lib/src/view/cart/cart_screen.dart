@@ -68,7 +68,7 @@ class CartScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.only(left: 12,top: 12,right: 12),
         child: Column(
           children: [
             Expanded(
@@ -318,7 +318,7 @@ class CheckoutSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Sub Total', style: Theme.of(context).textTheme.bodyLarge),
-              Text('₹ $subTotal', style: TextStyle(fontSize: 16)),
+              Text('₹ $subTotal', style:  Theme.of(context).textTheme.bodyLarge),
             ],
           ),
           Row(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/home/home_screen.dart';
 import 'package:paropkar/src/view/product/category_product_listing_screen.dart';
+import 'package:paropkar/src/view/profile/profile_screen.dart';
 
 class BottomBarListScreen extends StatefulWidget {
   @override
@@ -60,11 +61,4 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
 }
 
 
-class ProfileScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text("Profile Screen"),
-    );
-  }
-}
+

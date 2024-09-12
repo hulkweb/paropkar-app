@@ -47,36 +47,35 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       child: Text(
                         'Login With OTP',
-                        style: TextStyle(
-                          color: isLoginWithOtp ? Colors.white : Colors.green,
-                          fontWeight: FontWeight.bold,
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 13,color: isLoginWithOtp ? Colors.white : Colors.green, ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
                         ),
                       ),
                     ),
-                  ),
-                  const Expanded(
-                      child: SizedBox(width: 10)), // space between buttons
+                  SizedBox(width: 10), // space between buttons
 
                   // Login With Password button
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isLoginWithOtp = false;
-                      });
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      decoration: BoxDecoration(
-                        color: !isLoginWithOtp ? Colors.green : Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.green),
-                      ),
-                      child: Text(
-                        'Login With Password',
-                        style: TextStyle(
-                          color: !isLoginWithOtp ? Colors.white : Colors.green,
-                          fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isLoginWithOtp = false;
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                        decoration: BoxDecoration(
+                          color: !isLoginWithOtp ? Colors.green : Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.green),
+                        ),
+                        child: Text(
+                          'Login With Password',
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 13,color: !isLoginWithOtp ? Colors.white : Colors.green, ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
                         ),
                       ),
                     ),

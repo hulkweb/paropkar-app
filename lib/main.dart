@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paropkar/src/controller/checkout_controller.dart';
 import 'package:paropkar/src/controller/splash_controller.dart';
 import 'package:paropkar/src/controller/theme_controller.dart';
 import 'package:paropkar/src/models/splash_model.dart';
@@ -33,17 +34,17 @@ class MyApp extends StatelessWidget {
     );
 
     final splashController = SplashController(splashModel);
-    return Consumer<ThemeProvider>(
-      builder: (context, themeProvider, child) {
-        return MaterialApp(
-          
-          debugShowCheckedModeBanner: false,
-          theme: RAppTheme.lightTheme, // Apply the custom light theme
-          darkTheme: RAppTheme.lightTheme, // Apply the custom dark theme
-          themeMode: ThemeMode.system, // Use the current theme mode from provider
-          home: BottomBarListScreen()// SplashView(controller: splashController),
-        );
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => CheckoutController()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: RAppTheme.lightTheme, // Apply the custom light theme
+        darkTheme: RAppTheme.lightTheme, // Apply the custom dark theme
+        themeMode: ThemeMode.system, // Use the current theme mode from provider
+        home: SplashView(controller: splashController),
+      ),
     );
   }
 }
