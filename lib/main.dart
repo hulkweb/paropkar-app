@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:paropkar/src/controller/checkout_controller.dart';
+import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
+import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
+import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/controller/splash_controller.dart';
 import 'package:paropkar/src/controller/theme_controller.dart';
 import 'package:paropkar/src/models/splash_model.dart';
@@ -32,11 +34,12 @@ class MyApp extends StatelessWidget {
       logoPath: 'assets/images/app_logo.png',
       subtitile: 'paropkar wholesale mart',
     );
-
     final splashController = SplashController(splashModel);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CheckoutController()),
+        ChangeNotifierProvider(create: (_) => LoginController()),
+        ChangeNotifierProvider(create: (_) => SignUpController())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

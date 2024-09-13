@@ -13,6 +13,7 @@ import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/product/category_product_listing_screen.dart';
 import 'package:paropkar/src/widgets/carousel_widget.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:paropkar/src/widgets/product_card.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   const ProductDetailScreen({super.key});
@@ -252,30 +253,26 @@ class ProductDetailScreen extends StatelessWidget {
                         crossAxisSpacing: 7,
                         mainAxisSpacing: 10,
                         childAspectRatio: 0.7,
-                        children: List.generate(
-                          10,
-                          (index) => ProductCard(
-                            imageUrl: AppAssets
-                                .maida, // Replace with actual image URL
-                            productName: "Toor Daal",
-                            price: "₹150.00",
-                            offerText: "Buy 3 Items, Save Extra 5%",
-                            isFavorite: index % 2 == 0,
-                            onFavoritePressed: () {
-                              // Handle favorite icon press
-                            },
-                            onAddToCartPressed: () async {
-                              AppNavigation.navigation(
-                                context, CartScreen()
-                              );
-                              // Handle add to cart press
-                            },
-                            onProductPressed: () {
-                              AppNavigation.navigation(
-                                  context, ProductDetailScreen());
-                            },
-                          ),
-                        )),
+                        children:  List.generate(
+              10,
+              (index) => ProductCard(
+                imageUrl: AppAssets.maida, // Replace with actual image URL
+                productName: "Toor Daal",
+                price: "₹150.00",
+                offerText: "Buy 3 Items, Save Extra 5%",
+                isFavorite: index % 2 == 0,
+                onFavoritePressed: () {
+                  // Handle favorite icon press
+                },
+                onAddToCartPressed: () async {
+                  // Handle add to cart press
+                  AppNavigation.navigation(context, CartScreen());
+                },
+                onProductPressed: () {
+                  AppNavigation.navigation(context, ProductDetailScreen());
+                },
+              ),
+            )),
                   ],
                 ),
               ),

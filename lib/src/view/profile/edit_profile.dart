@@ -8,13 +8,9 @@ import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
 
-// Colors for the theme
-const primaryColor =
-    Color(0xFF00A55B); // Example primary color (adjust as per design)
-const greyColor = Color(0xFF757575); // Example grey color for text
-const whiteColor = Color(0xFFFFFFFF); // Example white background
 
-// Main Cart Screen
+
+
 class EditProfileScreen extends StatelessWidget {
   const EditProfileScreen({super.key});
 
@@ -101,7 +97,7 @@ class EditProfileScreen extends StatelessWidget {
                 ),
               ],
             ),
-           const SizedBox(
+            const SizedBox(
               height: 40,
             ),
             const Column(

@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
+import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
+import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/app_textstyles.dart';
 import 'package:paropkar/src/view/auth/signup/otp_verify_screen.dart';
 import 'package:paropkar/src/widgets/comman_widget.dart';
@@ -18,23 +22,9 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  bool isLoginWithOtp = true; // To toggle between OTP and Password login
   String countryCode = '91';
-  TextEditingController phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool loading = false;
-  void loadinTrue() {
-    setState(() {
-      loading = true;
-    });
-  }
-
-  void loadinFalse() {
-    setState(() {
-      loading = false;
-    });
-  }
-
+  final signupController = SignUpController();
   @override
   Widget build(BuildContext context) {
     return CommanWidget(
@@ -59,8 +49,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 const SizedBox(
                   height: 30,
                 ),
-                TextFormWidget(
-                  // controller: ,
+                CustomTextFormWidget(
+                  controller: signupController.mobileFieldController,
                   maxLength: 10,
                   keyboardType: TextInputType.number,
                   prefixWidget: Padding(
@@ -68,9 +58,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     child: SizedBox(
                         height: 50, width: 60, child: getContryCodeWidget()),
                   ),
+
                   // prefixWidget: const SizedBox(),
-                  hintText: '9876543210',
-                  validator: validatePhone,
+                  hintText: 'Mobile Number',
+                  validator: (value) {
+                    return signupController.mobileValidation(value);
+                  },
                 ),
                 const SizedBox(
                   height: 80,
@@ -79,11 +72,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 CustomButton(
                   text: 'Continue',
                   ontap: () {
-                    if (!_formKey.currentState!.validate()) return;
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OtpVerifyScreen()));
+                    if (_formKey.currentState!.validate()) {
+                      signupController.sendOtp(context);
+                    }
                   },
                 ),
                 Padding(
@@ -91,28 +82,21 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: RichText(
                     text: TextSpan(
                       // First part of the text
-                      text: 'By clicking I accept the',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelMedium!
-                          .copyWith(color: AppColors.primaryColor),
+                      text: 'By clicking I accept the ',
+                      style: Theme.of(context).textTheme.labelMedium!,
                       children: <TextSpan>[
                         // Second part of the text
+                       
                         TextSpan(
-                          text: ' Term & Condition',
-                          style: Theme.of(context).textTheme.labelMedium!,
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // Open the URL
+                              signupController.ontapTermCondition();
+                            },
+                          text: 'Term & Condition and Privacy Policy',
+                         style: Theme.of(context).textTheme.labelLarge!.copyWith(decoration: TextDecoration.underline,fontFamily: AppFonts.medium),
                         ),
-                        TextSpan(
-                          text: ' & ',
-                          style: Theme.of(context)
-                              .textTheme
-                              .labelMedium!
-                              .copyWith(color: AppColors.primaryColor),
-                        ),
-                        TextSpan(
-                          text: 'Privacy Policy',
-                          style: Theme.of(context).textTheme.labelMedium!,
-                        ),
+                        
                       ],
                     ),
                   ),

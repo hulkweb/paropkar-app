@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/order/order_list_screen.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
@@ -18,35 +20,11 @@ class OrderStatusScreen extends StatefulWidget {
 }
 
 class _OrderStatusScreenState extends State<OrderStatusScreen> {
-  int _currentStatus = 0; // 0: Accepted, 1: Picked Up, 2: Delivered
-  bool _isAnimating = false;
-  String _getStatusText(int status) {
-    switch (status) {
-      case 0:
-        return 'Accepted';
-      case 1:
-        return 'Picked Up';
-      case 2:
-        return 'Delivered';
-      default:
-        return '';
-    }
-  }
-
-  void _changeStatus() {
-    setState(() {
-      _currentStatus++;
-      _isAnimating = true;
-      Future.delayed(const Duration(milliseconds: 500), () {
-        setState(() {
-          _isAnimating = false;
-        });
-      });
-    });
-  }
+  final checkoutController = CheckoutController();
 
   @override
   Widget build(BuildContext context) {
+    checkoutController.chnageStatus('delivered');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
@@ -144,9 +122,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              mediumHeight,
               Text(
                 'Your order #34567 is successfully placed',
                 textAlign: TextAlign.center,
@@ -157,26 +133,20 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
             ],
           ),
 
-          const SizedBox(
-            height: 20,
+          mediumHeight,
+          OrderStatusSection(
+            status: checkoutController.orderSatus,
           ),
-          const OrderStatusSection(),
-          const SizedBox(
-            height: 20,
-          ),
+          largeHeight,
           const Divider(),
-          const SizedBox(
-            height: 20,
-          ),
+          mediumHeight,
           // List Tiles Section
           SizedBox(
             height: screenWidth * .3,
             width: screenWidth,
             child: ListTile(
               onTap: () {
-                AppNavigation.navigation(
-                  context,OrderListScreen()
-                );
+                checkoutController.ontapListTile(context);
               },
               leading: Container(
                 height: 45,
@@ -206,7 +176,9 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     CustomIconImage(
-                      onPress: () {},
+                      onPress: () {
+                        checkoutController.ontapCall();
+                      },
                       icon: const Icon(
                         Icons.call,
                         size: 18,
@@ -218,7 +190,9 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
                       width: 10,
                     ),
                     CustomIconImage(
-                      onPress: () {},
+                      onPress: () {
+                        checkoutController.ontapMessage();
+                      },
                       backgroundColor: AppColors.greenLight.withOpacity(.3),
                       icon: const Icon(
                         Icons.message,
@@ -237,22 +211,12 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
   }
 }
 
-class OrderStatusSection extends StatefulWidget {
-  const OrderStatusSection({super.key});
-
-  @override
-  State<OrderStatusSection> createState() => _OrderStatusSectionState();
-}
-
-class _OrderStatusSectionState extends State<OrderStatusSection> {
-  int _currentStatus = 0; // 0: Accepted, 1: Picked Up, 2: Delivered
-
-  void _changeStatus() {
-    setState(() {
-      _currentStatus++;
-    });
-  }
-
+// ignore: must_be_immutable
+class OrderStatusSection extends StatelessWidget {
+  const OrderStatusSection({super.key, required this.status});
+  final String status;
+  // int _currentStatus = 0;
+  // 0: Accepted, 1: Picked Up, 2: Delivered
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -262,22 +226,26 @@ class _OrderStatusSectionState extends State<OrderStatusSection> {
             left: screenWidth * .05,
             right: screenWidth * .05,
           ),
-          child: const Row(
+          child: Row(
             children: [
               OrderStatusIcon(
-                isSuccess: true,
+                isSuccess: (status == 'accept') ||
+                    (status == 'pickup') ||
+                    (status == 'delivered'),
               ),
               OrderStatusProgressLinear(
-                isSuccess: true,
+                isSuccess: (status == 'accept') ||
+                    (status == 'pickup') ||
+                    (status == 'delivered'),
               ),
               OrderStatusIcon(
-                isSuccess: false,
+                isSuccess: (status == 'pickup') || (status == 'delivered'),
               ),
               OrderStatusProgressLinear(
-                isSuccess: false,
+                isSuccess: (status == 'pickup') || (status == 'delivered'),
               ),
               OrderStatusIcon(
-                isSuccess: false,
+                isSuccess: status == 'delivered',
               ),
             ],
           ),
@@ -310,24 +278,6 @@ class _OrderStatusSectionState extends State<OrderStatusSection> {
     );
   }
 
-  Widget _buildStatusText() {
-    return AnimatedDefaultTextStyle(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.easeInOut,
-      style: TextStyle(),
-      child: Text(
-        _getStatusText(_currentStatus),
-        style: Theme.of(context).textTheme.headline6,
-      ),
-    );
-  }
-
-  Widget _buildProgressBar() {
-    return LinearProgressIndicator(
-      value: _currentStatus / 2, // Adjust value based on status
-    );
-  }
-
   Widget _buildDeliveryPersonInfo() {
     // Implement your delivery person information here
     return Row(
@@ -336,19 +286,6 @@ class _OrderStatusSectionState extends State<OrderStatusSection> {
         // Delivery person name
       ],
     );
-  }
-
-  String _getStatusText(int status) {
-    switch (status) {
-      case 0:
-        return 'Accepted';
-      case 1:
-        return 'Picked Up';
-      case 2:
-        return 'Delivered';
-      default:
-        return '';
-    }
   }
 }
 

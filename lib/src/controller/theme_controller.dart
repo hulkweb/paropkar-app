@@ -114,7 +114,7 @@ class ThemeProvider extends ChangeNotifier {
       headline4: TextStyle(
         fontSize: 34.0,
         fontWeight: FontWeight.w400,
-        color: Colors.white60,
+        color: Color.fromARGB(153, 23, 18, 18),
       ),
       headline5: TextStyle(
         fontSize: 24.0,

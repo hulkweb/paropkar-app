@@ -2,11 +2,12 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
+import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/app_textstyles.dart';
 
 // ignore: must_be_immutable
-class TextFormWidget extends StatelessWidget {
-  TextFormWidget({
+class CustomTextFormWidget extends StatelessWidget {
+  CustomTextFormWidget({
     super.key,
     required this.hintText,
     this.onChanged,
@@ -77,7 +78,6 @@ class TextFormWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double mw = MediaQuery.of(context).size.width;
     //c= (1/mw)*392.72727272727275;
-    c = (1 / 392.72727272727275) * mw;
     return SizedBox(
       // height:height??mh*.05,
       height: height,
@@ -93,7 +93,8 @@ class TextFormWidget extends StatelessWidget {
         onEditingComplete: () {
           FocusScope.of(context).unfocus();
         },
-        style: contentStyle ?? AppTextStyles.normalBlack,
+        style:
+            contentStyle ?? Theme.of(context).textTheme.bodyMedium!.copyWith(),
         onFieldSubmitted: onFieldSubmitted ??
             (value) {
               FocusScope.of(context).nextFocus();
@@ -101,6 +102,7 @@ class TextFormWidget extends StatelessWidget {
         scrollPadding: EdgeInsets.only(bottom: scrollPaddingBottom ?? 0),
         keyboardType: keyboardType ?? TextInputType.emailAddress,
         maxLength: maxLength ?? 50,
+
         decoration: InputDecoration(
           prefixIcon: prefixWidget,
           suffixIcon: suffixWidget,
@@ -129,6 +131,10 @@ class TextFormWidget extends StatelessWidget {
                     ),
                 borderRadius: borderRadius ?? BorderRadius.circular(5.0),
               ),
+          errorStyle: Theme.of(context)
+              .textTheme
+              .labelMedium!
+              .copyWith(color: Colors.red, fontWeight: FontWeight.w300),
           errorBorder: OutlineInputBorder(
             borderSide: borderSide ??
                 const BorderSide(
@@ -138,15 +144,17 @@ class TextFormWidget extends StatelessWidget {
                 ),
             borderRadius: borderRadius ?? BorderRadius.circular(5.0),
           ),
-          label: Text(hintText),
+          // label: Text(hintText),
+
           //  focusedBorder: InputBorder.none,
           contentPadding: contentpadding ??
               const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-          // hintText: hintText,
+          hintText: hintText,
           hintStyle: hintStyle ??
-              TextStyle(
-                color: const Color(0xffBCC8D1).withOpacity(1),
-              ),
+              Theme.of(context)
+                  .textTheme
+                  .bodySmall!
+                  .copyWith(fontWeight: FontWeight.w300),
         ),
         validator: validator,
         onChanged: onChanged,
@@ -166,10 +174,10 @@ class TextFormWidget extends StatelessWidget {
 
 String? validatePhone(String? value) {
   if (value!.isEmpty) {
-    return 'Phone number is required';
+    return 'Enter Mobile Number';
   }
   if (value.length != 10) {
-    return 'Phone number should be 10 digit';
+    return 'Mobile number should be 10 digit';
   }
   return null;
 }

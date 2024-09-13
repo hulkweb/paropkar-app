@@ -7,15 +7,15 @@ class RTextTheme {
     headlineLarge: const TextStyle().copyWith(
         fontSize: 32.0, fontWeight: FontWeight.bold, color: Colors.black,fontFamily: AppFonts.bold),
     headlineMedium: const TextStyle().copyWith(
-        fontSize: 24.0, fontWeight: FontWeight.w600, color: Colors.black,fontFamily: AppFonts.semiBold),
+        fontSize: 24.0, fontWeight: FontWeight.w500, color: Colors.black,fontFamily: AppFonts.semiBold),
     headlineSmall: const TextStyle().copyWith(
-        fontSize: 18.0, fontWeight: FontWeight.w400, color: Colors.black,fontFamily: AppFonts.medium),
+        fontSize: 18.0, fontWeight: FontWeight.w300, color: Colors.black,fontFamily: AppFonts.medium),
     titleLarge: const TextStyle().copyWith(
-        fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.black,fontFamily: AppFonts.semiBold),
+        fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black,fontFamily: AppFonts.semiBold),
     titleMedium: const TextStyle().copyWith(
         fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.black,fontFamily: AppFonts.semiBold),
     titleSmall: const TextStyle().copyWith(
-        fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.black,fontFamily: AppFonts.medium),
+        fontSize: 16.0, fontWeight: FontWeight.w300, color: Colors.black,fontFamily: AppFonts.medium),
     bodyLarge: const TextStyle().copyWith(
         fontSize: 14.0, fontWeight: FontWeight.w500, color: Colors.black,fontFamily: AppFonts.semiBold),
     bodyMedium: const TextStyle().copyWith(
@@ -35,15 +35,15 @@ class RTextTheme {
     headlineLarge: const TextStyle().copyWith(
         fontSize: 32.0, fontWeight: FontWeight.bold, color: Colors.white,fontFamily: AppFonts.bold),
     headlineMedium: const TextStyle().copyWith(
-        fontSize: 24.0, fontWeight: FontWeight.w600, color: Colors.white,fontFamily: AppFonts.semiBold),
+        fontSize: 24.0, fontWeight: FontWeight.w500, color: Colors.white,fontFamily: AppFonts.semiBold),
     headlineSmall: const TextStyle().copyWith(
-        fontSize: 18.0, fontWeight: FontWeight.w400, color: Colors.white,fontFamily: AppFonts.semiBold),
+        fontSize: 18.0, fontWeight: FontWeight.w300, color: Colors.white,fontFamily: AppFonts.semiBold),
     titleLarge: const TextStyle().copyWith(
-        fontSize: 16.0, fontWeight: FontWeight.w600, color: Colors.white,fontFamily: AppFonts.semiBold),
+        fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.white,fontFamily: AppFonts.semiBold),
     titleMedium: const TextStyle().copyWith(
         fontSize: 16.0, fontWeight: FontWeight.w500, color: Colors.white,fontFamily: AppFonts.semiBold),
     titleSmall: const TextStyle().copyWith(
-        fontSize: 16.0, fontWeight: FontWeight.w400, color: Colors.white,fontFamily: AppFonts.medium),
+        fontSize: 16.0, fontWeight: FontWeight.w300, color: Colors.white,fontFamily: AppFonts.medium),
     bodyLarge: const TextStyle().copyWith(
         fontSize: 14.0, fontWeight: FontWeight.w500, color: Colors.white,fontFamily: AppFonts.semiBold),
     bodyMedium: const TextStyle().copyWith(

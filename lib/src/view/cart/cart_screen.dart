@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
@@ -19,8 +20,8 @@ const whiteColor = Color(0xFFFFFFFF); // Example white background
 
 // Main Cart Screen
 class CartScreen extends StatelessWidget {
-  const CartScreen({Key? key}) : super(key: key);
-
+  CartScreen({super.key});
+  final cartController = CartController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +36,7 @@ class CartScreen extends StatelessWidget {
             backgroundColor: AppColors.primaryColor.withOpacity(.7),
             size: 20,
             icon: Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: 10),
               child: Icon(
                 Icons.arrow_back_ios,
                 color: Theme.of(context).cardColor,
@@ -67,53 +68,126 @@ class CartScreen extends StatelessWidget {
               color: Theme.of(context).canvasColor),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 12,top: 12,right: 12),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: const [
-                  CartItem(
-                    title: 'Hing Powder',
-                    subTitle: 'Masala',
-                    price: 250.00,
-                    unit: '1 KG',
-                    quantity: 1,
-                  ),
-                  CartItem(
-                    title: 'Maida',
-                    subTitle: 'Flours',
-                    price: 350.00,
-                    unit: '1 KG',
-                    quantity: 1,
-                  ),
-                  CartItem(
-                    title: 'Soya Oil',
-                    subTitle: 'Oil',
-                    price: 250.00,
-                    unit: '1 LIT',
-                    quantity: 1,
-                  ),
-                  SizedBox(height: 10),
-                  CheckoutSection(
-                    subTotal: 850.00,
-                    deliveryCharges: 100.00,
-                    discount: 150.00,
-                    total: 850.00,
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
+          child: Column(
+            children: [
+              Column(
+                  children: List.generate(
+                      cartController.cartItemList.length,
+                      (index) => CartItem(
+                            title: cartController.cartItemList[index].title,
+                            subTitle:
+                                cartController.cartItemList[index].subTitle,
+                            price: cartController.cartItemList[index].price,
+                            unit: cartController.cartItemList[index].title,
+                            quantity:
+                                cartController.cartItemList[index].quantity,
+                          ))),
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(top: 15),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: whiteColor,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 50,
+                        child: CustomTextFormWidget(
+                          controller: cartController.couponTextController,
+                          contentpadding: const EdgeInsets.only(left: 20),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(40)),
+                          fillColor: AppColors.primaryColor.withOpacity(.1),
+                          hintText: "Enter code",
+                          validator: (String? value) {
+                            return null;
+                          },
+                          suffixWidget: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CustomButton(
+                              text: 'Apply',
+                              height: 40,
+                              width: 70,
+                              borderRadius: 39,
+                              ontap: () {
+                                cartController.ontapApplyCoupon(context);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Sub Total',
+                            style: Theme.of(context).textTheme.bodyLarge),
+                        Text('₹ ${cartController.subtotal}',
+                            style: Theme.of(context).textTheme.bodyLarge),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Delivery Charges',
+                            style: Theme.of(context).textTheme.bodyLarge),
+                        Text('₹ ${cartController.deiiveryCages}',
+                            style: Theme.of(context).textTheme.bodyLarge),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Discount',
+                            style: Theme.of(context).textTheme.bodyLarge),
+                        Text('- ₹ ${cartController.discount}',
+                            style: Theme.of(context).textTheme.bodyLarge),
+                      ],
+                    ),
+                    const Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Total Price',
+                            style: Theme.of(context).textTheme.titleLarge),
+                        Text('₹ ${cartController.total}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                    color: AppColors.primaryColor,
+                                    fontSize: 20)),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 30),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: SizedBox(
         height: screenWidth * .3,
         child: CheckoutButton(
           total: 850.00,
+          // onPressed: () {},
           onPressed: () {
-            AppNavigation.navigation(context, CheckoutScreen());
+            cartController.ontapContinueButton(context);
           },
           text: 'Continue',
         ),
@@ -180,7 +254,8 @@ class CartItem extends StatelessWidget {
                   width: screenWidth * .4,
                   child: Text(
                     title,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ),
                 SizedBox(
@@ -248,107 +323,6 @@ class CartItem extends StatelessWidget {
                   ),
                 ],
               ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Custom Checkout Section Widget
-class CheckoutSection extends StatelessWidget {
-  final double subTotal;
-  final double deliveryCharges;
-  final double discount;
-  final double total;
-
-  const CheckoutSection({
-    super.key,
-    required this.subTotal,
-    required this.deliveryCharges,
-    required this.discount,
-    required this.total,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      margin: const EdgeInsets.only(top: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: whiteColor,
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 50,
-              child: TextFormWidget(
-                contentpadding: EdgeInsets.only(left: 20),
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-                fillColor: AppColors.primaryColor.withOpacity(.1),
-                hintText: "Enter code",
-                validator: (String? value) {
-                  return null;
-                },
-                suffixWidget: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomButton(
-                    text: 'Apply',
-                    height: 40,
-                    width: 70,
-                    borderRadius: 39,
-                    ontap: () {},
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Sub Total', style: Theme.of(context).textTheme.bodyLarge),
-              Text('₹ $subTotal', style:  Theme.of(context).textTheme.bodyLarge),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Delivery Charges',
-                  style: Theme.of(context).textTheme.bodyLarge),
-              Text('₹ $deliveryCharges',
-                  style: Theme.of(context).textTheme.bodyLarge),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Discount', style: Theme.of(context).textTheme.bodyLarge),
-              Text('- ₹ $discount',
-                  style: Theme.of(context).textTheme.bodyLarge),
-            ],
-          ),
-          Divider(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Total Price',
-                  style: Theme.of(context).textTheme.titleLarge),
-              Text('₹ $total',
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(color: AppColors.primaryColor, fontSize: 20)),
             ],
           ),
         ],

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
-import 'package:paropkar/src/controller/checkout_controller.dart';
+import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
@@ -112,7 +112,6 @@ class CheckoutScreen extends StatelessWidget {
                           )),
                 );
               }),
-              SizedBox(height: 10),
               const SizedBox(height: 20),
               Padding(
                 padding: EdgeInsets.only(
@@ -154,7 +153,7 @@ class CheckoutScreen extends StatelessWidget {
                   isSelected: checkoutController.getPaymentType() == 'online',
                   image: AppAssets.atmCard,
                   title: 'Pay Onlinne',
-                  setPaymentStaus: () {
+                  setPaymentStaus: (){
                     checkoutController.setPayment('online');
                   },
                 );
@@ -170,7 +169,7 @@ class CheckoutScreen extends StatelessWidget {
         child: CheckoutButton(
           total: 850.00,
           onPressed: () {
-            checkoutController.openPopup(context);
+            checkoutController.ontapContinue(context);
           },
           text: 'Continue',
         ),

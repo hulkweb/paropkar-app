@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/order/order_detail_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/order/customer_detail_screen.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
@@ -24,6 +26,7 @@ class OrderDetailScreen extends StatefulWidget {
 }
 
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
+  final orderDetailController = OrderDetailController();
   bool isLoginWithOtp = false;
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
             backgroundColor: AppColors.primaryColor.withOpacity(.7),
             size: 20,
             icon: Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: 10),
               child: Icon(
                 Icons.arrow_back_ios,
                 color: Theme.of(context).cardColor,
@@ -125,10 +128,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 setState(() {
                                   isLoginWithOtp = true;
                                 });
-                                AppNavigation.navigation(
-                                    context,
-                                    CustomerDetailScreen(
-                                    ));
+                                orderDetailController
+                                    .ontapCustomerButton(context);
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
@@ -200,19 +201,26 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     padding: const EdgeInsets.only(left: 13, right: 13),
                     child: Column(
                         children: List.generate(
-                            2,
+                            orderDetailController.productOrderList.length,
                             (index) => OrderItem(
-                                  productName: 'hing powder',
-                                  productType: 'Masala',
-                                  price: '850.00',
-                                  quantity: '250g',
+                                  productName: orderDetailController
+                                          .productOrderList[index].name ??
+                                      '',
+                                  productType: orderDetailController
+                                          .productOrderList[index].type ??
+                                      '',
+                                  price:
+                                      "${orderDetailController.productOrderList[index].price ?? ''}",
+                                  quantity: orderDetailController
+                                          .productOrderList[index].quntity ??
+                                      '',
                                   status: '',
                                   onTap: () {
                                     // AppNavigation.navigation(
                                     //   context,
                                     // );
                                   },
-                                ))),
+                    ))),
                   ),
                   Padding(
                     padding:
@@ -252,17 +260,17 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10, right: 10),
+                 smallHeight,
+                   Padding(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
                     child: PriceSection(
-                      subTotal: 850.00,
-                      deliveryCharges: 100.00,
-                      discount: 150.00,
-                      total: 850.00,
+                      subTotal: orderDetailController.subtotal??0,
+                      deliveryCharges:  orderDetailController.deiiveryCages??0,
+                      discount:  orderDetailController.discount??0,
+                      total:  orderDetailController.total??0,
                     ),
                   ),
-                  SizedBox(height: 30),
+                 const SizedBox(height: 30),
                 ],
               ),
             ),

@@ -4,9 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/order/customer_detail_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/order/customer_detail_screen.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
@@ -26,6 +28,7 @@ class CustomerDetailScreen extends StatefulWidget {
 }
 
 class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
+  final orderDetailController = CustomerDetailController();
   bool isLoginWithOtp = false;
   @override
   Widget build(BuildContext context) {
@@ -124,9 +127,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              SizedBox(
-                                width: 10,
-                              ),
+                              mediumHeight,
                               Padding(
                                 padding:
                                     const EdgeInsets.only(top: 20, bottom: 20),
@@ -137,28 +138,44 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                             ],
                           ),
                           OrderStatusSection(
-                            isSuccess: true,
+                            isSuccess: (orderDetailController.orderSatus ==
+                                    'readyToPickup') ||
+                                (orderDetailController.orderSatus ==
+                                    'orderProcessed') ||
+                                (orderDetailController.orderSatus ==
+                                    'paymentConfirm') ||
+                                (orderDetailController.orderSatus ==
+                                    'orderPlaced'),
                             title: 'Ready to Pickup',
                             subtitle: 'Order #135426 from Hing Powder',
                             date: '12 sep',
                             isLast: false,
                           ),
                           OrderStatusSection(
-                            isSuccess: false,
+                            isSuccess: (orderDetailController.orderSatus ==
+                                    'orderProcessed') ||
+                                (orderDetailController.orderSatus ==
+                                    'paymentConfirm') ||
+                                (orderDetailController.orderSatus ==
+                                    'orderPlaced'),
                             title: 'Order Processed',
                             subtitle: 'Order #135426 from Hing Powder',
                             date: '12 sep',
                             isLast: false,
                           ),
                           OrderStatusSection(
-                            isSuccess: false,
+                            isSuccess: (orderDetailController.orderSatus ==
+                                    'paymentConfirm') ||
+                                (orderDetailController.orderSatus ==
+                                    'orderPlaced'),
                             title: 'Payment Confirm',
                             subtitle: 'Order #135426 from Hing Powder',
                             date: '12 sep',
                             isLast: false,
                           ),
                           OrderStatusSection(
-                            isSuccess: false,
+                            isSuccess: (orderDetailController.orderSatus ==
+                                'orderPlaced'),
                             title: 'Order Placed',
                             subtitle: 'Order #135426 from Hing Powder',
                             date: '12 sep',
@@ -225,7 +242,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
 }
 
 class OrderStatusSection extends StatelessWidget {
-  OrderStatusSection(
+  const OrderStatusSection(
       {super.key,
       required this.isSuccess,
       required this.title,

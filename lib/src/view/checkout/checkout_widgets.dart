@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
-import 'package:paropkar/src/controller/checkout_controller.dart';
+import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
@@ -267,9 +267,9 @@ class OrderSuccessPopup extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                side: BorderSide(color: AppColors.primaryColor),
+                side: const BorderSide(color: AppColors.primaryColor),
               ),
-              child: Text(
+              child: const Text(
                 'Go Back',
                 style: TextStyle(fontSize: 16, color: primaryColor),
               ),

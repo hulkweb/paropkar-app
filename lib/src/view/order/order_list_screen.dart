@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/order/order_List_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
-import 'package:paropkar/src/utills/navigation_function.dart';
-import 'package:paropkar/src/view/order/order_detail_screen.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
 
 // Colors for the theme
@@ -17,8 +16,8 @@ const whiteColor = Color(0xFFFFFFFF); // Example white background
 
 // Main Cart Screen
 class OrderListScreen extends StatelessWidget {
-  const OrderListScreen({super.key});
-
+  OrderListScreen({super.key});
+  final orderController = OrderListController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,17 +71,18 @@ class OrderListScreen extends StatelessWidget {
             Expanded(
               child: ListView(
                   children: List.generate(
-                      15,
+                      orderController.orderItemList.length,
                       (index) => OrderItem(
-                            title: '#13256420',
-                            subTitle: 'Masala',
-                            starCount: 4,
-                            timing: 'Arriving Soon ',
+                            orderId:
+                                orderController.orderItemList[index].orderId,
+                            title: orderController.orderItemList[index].title,
+                            starCount:
+                                orderController.orderItemList[index].rating,
+                            timing: orderController.orderItemList[index].time,
                             quantity: 1,
                             status: '',
                             onTap: () {
-                              AppNavigation.navigation(
-                                  context, OrderDetailScreen());
+                              orderController.ontapOrder("orderId", context);
                             },
                           ))),
             ),
@@ -96,7 +96,7 @@ class OrderListScreen extends StatelessWidget {
 // Custom Cart Item Widget
 class OrderItem extends StatelessWidget {
   final String title;
-  final String subTitle;
+  final String orderId;
   final String timing;
   final double starCount;
   final int quantity;
@@ -106,7 +106,7 @@ class OrderItem extends StatelessWidget {
   const OrderItem({
     super.key,
     required this.title,
-    required this.subTitle,
+    required this.orderId,
     required this.timing,
     required this.starCount,
     required this.quantity,
@@ -153,13 +153,13 @@ class OrderItem extends StatelessWidget {
               children: [
                 SizedBox(
                   width: screenWidth * .4,
-                  child: Text(title,
+                  child: Text(orderId,
                       style: Theme.of(context).textTheme.bodyLarge!),
                 ),
                 SizedBox(
                   width: screenWidth * .4,
                   child: Text(
-                    subTitle,
+                    title,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: AppColors.primaryColor,
                         overflow: TextOverflow.ellipsis,

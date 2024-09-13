@@ -17,7 +17,7 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
     HomeScreen(),
     const CategoryProductScreen(),
     CartScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   // Bottom Navigation Bar tap handler
@@ -59,6 +59,3 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
     );
   }
 }
-
-
-

@@ -6,6 +6,7 @@ import 'package:paropkar/main.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/profile/edit_profile.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
@@ -18,7 +19,7 @@ const whiteColor = Color(0xFFFFFFFF); // Example white background
 
 // Main Cart Screen
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +171,7 @@ class ListTileProfileSction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-     padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: ontap,
         child: Row(
@@ -182,18 +183,14 @@ class ListTileProfileSction extends StatelessWidget {
               image: image,
               backgroundColor: AppColors.primaryColor,
             ),
-            SizedBox(
-              width: 10,
-            ),
+            smallWidth,
             Text(
               title,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             Expanded(
-                child: SizedBox(
-              width: 10,
-            )),
-            Icon(
+                child: smallHeight),
+            const Icon(
               Icons.arrow_forward_ios,
               size: 14,
             )

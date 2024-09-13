@@ -12,6 +12,7 @@ import 'package:paropkar/src/widgets/custom_textfied.dart';
 import 'package:paropkar/src/widgets/otp_custom.dart';
 
 class AcceptContinueScreen extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
     return CommanWidget(
@@ -37,12 +38,12 @@ class AcceptContinueScreen extends StatelessWidget {
 
               Padding(
                 padding: EdgeInsets.only(
-                  left: screenWidth * .2,
-                  right: screenWidth * .2,
+                  left: screenWidth * .16,
+                  right: screenWidth * .16,
                 ),
                 child: Text(
                   'By continuining and acepting, you agree to',
-                  style: Theme.of(context).textTheme.labelLarge!,
+                  style: Theme.of(context).textTheme.labelMedium!,
                   textAlign: TextAlign.center,
                 ),
               ),
