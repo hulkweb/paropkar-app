@@ -6,7 +6,7 @@ import 'package:paropkar/src/view/auth/signup/accept_continue_screen.dart';
 import 'package:paropkar/src/view/auth/signup/enter_shopname_screen.dart';
 import 'package:paropkar/src/view/auth/signup/enter_shops_pincode.dart';
 import 'package:paropkar/src/view/auth/signup/otp_verify_screen.dart';
-import 'package:paropkar/src/widgets/custom_textfied.dart';
+import 'package:paropkar/src/widgets/textfields/custom_textfied.dart';
 
 class SignUpController extends ChangeNotifier {
   // mobile field
@@ -15,9 +15,9 @@ class SignUpController extends ChangeNotifier {
   String? mobileValidation(value) {
     return validatePhone(value);
   }
-
+  
   sendOtp(BuildContext context) {
-    AppNavigation.navigation(context, OtpVerifyScreen());
+    AppNavigation.navigationPush(context, OtpVerifyScreen());
   }
 
   void ontapTermCondition() {
@@ -43,14 +43,14 @@ class SignUpController extends ChangeNotifier {
   }
 
   verifyOtp(BuildContext context) {
-    AppNavigation.navigation(context, AcceptContinueScreen());
+    AppNavigation.navigationPush(context, AcceptContinueScreen());
   }
 
   /// name screen
   final nameController = TextEditingController();
 
   ontapNameContinueButton(BuildContext context) {
-    AppNavigation.navigation(context, EnterShopNameScreen());
+    AppNavigation.navigationPush(context, EnterShopNameScreen());
   }
 
   String? nameValidation(value) {
@@ -60,12 +60,11 @@ class SignUpController extends ChangeNotifier {
     return null;
   }
 
-  
   /// shop screen
   final shopController = TextEditingController();
 
   ontapShopContinueButton(BuildContext context) {
-    AppNavigation.navigation(context, EnterShopsPincodeScreen());
+    AppNavigation.navigationPush(context, EnterShopsPincodeScreen());
   }
 
   String? shopValidation(value) {
@@ -75,19 +74,18 @@ class SignUpController extends ChangeNotifier {
     return null;
   }
 
-  
   ///shop's pincode screen
   final pincodeController = TextEditingController();
 
   ontapPincodeContinueButton(BuildContext context) {
-    AppNavigation.navigation(context, BottomBarListScreen());
+    AppNavigation.navigationPush(context, BottomBarListScreen());
   }
 
   String? pincodeValidation(value) {
     if (value!.isEmpty) {
-      return 'Enter Your Shop Name';
+      return 'Enter Your Shop Pincode';
     }
-    if (value!.length<6) {
+    if (value!.length < 6) {
       return 'Enter Valid Pincode';
     }
     return null;

@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/bottom_bar_controller.dart';
+import 'package:paropkar/src/controller/product/product_listing_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/product/product_detail_screen.dart';
-import 'package:paropkar/src/widgets/product_card.dart';
-
-class CategoryProductScreen extends StatelessWidget {
-  const CategoryProductScreen({super.key});
-
+import 'package:paropkar/src/widgets/cards/product_card_custom.dart';
+import 'package:provider/provider.dart';
+class ProductListingScreen extends StatelessWidget {
+  ProductListingScreen({super.key});
+  final productListingController = ProductListingController();
   @override
   Widget build(BuildContext context) {
+     final bottomController =
+        Provider.of<BottomBarListController>(context);
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -38,7 +43,9 @@ class CategoryProductScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          pop(context);
+                        },
                         icon: Padding(
                           padding: const EdgeInsets.only(left: 5),
                           child: Icon(
@@ -88,11 +95,13 @@ class CategoryProductScreen extends StatelessWidget {
                   // Handle favorite icon press
                 },
                 onAddToCartPressed: () async {
+                  bottomController.changeIndex(2);
+                  productListingController.ontapProductCart(context: context);
                   // Handle add to cart press
-                  AppNavigation.navigation(context, CartScreen());
                 },
                 onProductPressed: () {
-                  AppNavigation.navigation(context, ProductDetailScreen());
+                  AppNavigation.navigationPush(
+                      context,  ProductDetailScreen());
                 },
               ),
             )),
@@ -100,4 +109,3 @@ class CategoryProductScreen extends StatelessWidget {
     );
   }
 }
-

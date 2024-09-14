@@ -2,21 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
+import 'package:paropkar/src/view/product/category_listing_screen.dart';
 import 'package:paropkar/src/view/product/product_detail_screen.dart';
+import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/widgets/carousel_widget.dart';
+import 'package:paropkar/src/widgets/custom_buttons/view_all_button.dart';
 import 'package:paropkar/src/widgets/custom_status_bar.dart';
-import 'package:paropkar/src/widgets/product_card.dart';
+import 'package:paropkar/src/widgets/cards/product_card_custom.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
+  HomeScreen({super.key});
+  final bottomBarListController = BottomBarListController();
   @override
   Widget build(BuildContext context) {
+    final bottomController = Provider.of<BottomBarListController>(context);
     return StatusBarCustom(
       statusBarBrightnessLight: true,
       statusBarColor: AppColors.primaryColor,
@@ -179,11 +185,11 @@ class HomeScreen extends StatelessWidget {
                     //     ],
                     //   ),
                     // ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     ImageCarousel(
                       imageUrls: List.generate(4, (index) => AppAssets.banner),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     // Categories Section
@@ -194,30 +200,35 @@ class HomeScreen extends StatelessWidget {
                           'Categories',
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
-                        Text(
-                          'View All',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
+                        ViewAllButton(
+                          onPressed: () {
+                            bottomController.changeIndex(1);
+                          },
+                        )
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
                     // Categories List
                     SizedBox(
                       height: screenWidth * .4,
                       child: ListView(
-                          physics: ScrollPhysics(),
+                          physics: const ScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           children: List.generate(
                               6,
                               (index) => Padding(
                                     padding: EdgeInsets.only(left: 10),
                                     child: CategoryItem(
+                                        ontap: () {
+                                          AppNavigation.navigationPush(context,
+                                               ProductListingScreen());
+                                        },
                                         name: 'Mustard Oil',
                                         imagePath: AppAssets.bottle),
                                   ))),
                     ),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
                     // Popular Section
                     Text(
@@ -248,10 +259,10 @@ class HomeScreen extends StatelessWidget {
                             },
                             onAddToCartPressed: () async {
                               // Handle add to cart press
-                              AppNavigation.navigation(context, CartScreen());
+                              bottomController.changeIndex(2);
                             },
                             onProductPressed: () {
-                              AppNavigation.navigation(
+                              AppNavigation.navigationPush(
                                   context, ProductDetailScreen());
                             },
                           ),
@@ -271,28 +282,36 @@ class HomeScreen extends StatelessWidget {
 class CategoryItem extends StatelessWidget {
   final String name;
   final String imagePath;
+  final VoidCallback ontap;
 
-  const CategoryItem({required this.name, required this.imagePath});
+  const CategoryItem(
+      {required this.name, required this.imagePath, required this.ontap});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          width: screenWidth * .3,
-          height: screenWidth * .3,
-          decoration: BoxDecoration(
-            color: Color(0xffFFFBF0),
-            border: Border.all(color: Colors.grey.shade100),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.withOpacity(.2), offset: Offset(1, 1))
-            ],
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
-            image: DecorationImage(
-              image: AssetImage(imagePath),
-              fit: BoxFit.cover,
+        InkWell(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+          onTap: ontap,
+          child: Container(
+            width: screenWidth * .3,
+            height: screenWidth * .3,
+            decoration: BoxDecoration(
+              color: const Color(0xffFFFBF0),
+              border: Border.all(color: Colors.grey.shade100),
+              boxShadow: [
+                BoxShadow(
+                    color: Colors.grey.withOpacity(.2), offset: Offset(1, 1))
+              ],
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
+              image: DecorationImage(
+                image: AssetImage(imagePath),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

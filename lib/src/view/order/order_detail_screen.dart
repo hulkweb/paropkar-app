@@ -7,6 +7,7 @@ import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/order/customer_detail_screen.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
@@ -49,7 +50,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 size: 23,
               ),
             ),
-            onPress: () {},
+            onPress: () {
+                pop(context);
+            },
           ),
         ),
         actions: [
@@ -447,7 +450,7 @@ class PriceSection extends StatelessWidget {
             children: [
               Text('Discount',
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: AppColors.primaryColor,
+                        color:Colors.red,
                       )),
               Text('- ₹ $discount',
                   style: Theme.of(context).textTheme.bodyLarge),

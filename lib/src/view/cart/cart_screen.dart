@@ -2,15 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/checkout/checkout_screen.dart';
-import 'package:paropkar/src/widgets/custom_button.dart';
+import 'package:paropkar/src/widgets/custom_buttons/custom_button.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
-import 'package:paropkar/src/widgets/custom_textfied.dart';
+import 'package:paropkar/src/widgets/textfields/custom_textfied.dart';
+import 'package:provider/provider.dart';
 
 // Colors for the theme
 const primaryColor =
@@ -22,8 +25,10 @@ const whiteColor = Color(0xFFFFFFFF); // Example white background
 class CartScreen extends StatelessWidget {
   CartScreen({super.key});
   final cartController = CartController();
+  // final bottomBarListController = BottomBarListController();
   @override
   Widget build(BuildContext context) {
+    final bottomController = Provider.of<BottomBarListController>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
@@ -43,7 +48,9 @@ class CartScreen extends StatelessWidget {
                 size: 23,
               ),
             ),
-            onPress: () {},
+            onPress: () {
+              bottomController.changeIndex(0);
+            },
           ),
         ),
         actions: [
@@ -153,7 +160,7 @@ class CartScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Discount',
-                            style: Theme.of(context).textTheme.bodyLarge),
+                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color:Colors.red)),
                         Text('- ₹ ${cartController.discount}',
                             style: Theme.of(context).textTheme.bodyLarge),
                       ],
@@ -301,7 +308,7 @@ class CartItem extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
                     child: Text(
-                      '1KG',
+                      ' 1 ',
                       style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: AppColors.primaryColor,
                           overflow: TextOverflow.ellipsis,

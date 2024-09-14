@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
-import 'package:paropkar/src/widgets/custom_textfied.dart';
+import 'package:paropkar/src/widgets/textfields/custom_textfied.dart';
 
 class LoginController extends ChangeNotifier {
   String _screenType = 'loginWithOtp';
@@ -77,10 +77,10 @@ class LoginController extends ChangeNotifier {
 
   //verify otp
   verifyOtp(BuildContext context) {
-    AppNavigation.navigation(context, BottomBarListScreen());
+    AppNavigation.navigationPush(context, BottomBarListScreen());
   }
 
   verifyPass(BuildContext context) {
-    AppNavigation.navigation(context, BottomBarListScreen());
+    AppNavigation.navigationPush(context, BottomBarListScreen());
   }
 }

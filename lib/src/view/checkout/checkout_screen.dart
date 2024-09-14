@@ -7,8 +7,11 @@ import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/checkout/checkout_widgets.dart';
+import 'package:paropkar/src/widgets/cards/address_card_selective.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
 import 'package:provider/provider.dart';
+
+import 'package:paropkar/src/utills/globle_func.dart';
 
 class CheckoutScreen extends StatelessWidget {
   CheckoutScreen({super.key});
@@ -35,7 +38,9 @@ class CheckoutScreen extends StatelessWidget {
                 size: 23,
               ),
             ),
-            onPress: () {},
+            onPress: () {
+              pop(context);
+            },
           ),
         ),
         actions: [
@@ -96,7 +101,7 @@ class CheckoutScreen extends StatelessWidget {
                       2,
                       (index) => Padding(
                             padding: const EdgeInsets.only(top: 14),
-                            child: AddressCard(
+                            child: AddressCardSelective(
                               onTap: () {
                                 checkoutController.setAddress(index);
                               },
@@ -153,7 +158,7 @@ class CheckoutScreen extends StatelessWidget {
                   isSelected: checkoutController.getPaymentType() == 'online',
                   image: AppAssets.atmCard,
                   title: 'Pay Onlinne',
-                  setPaymentStaus: (){
+                  setPaymentStaus: () {
                     checkoutController.setPayment('online');
                   },
                 );

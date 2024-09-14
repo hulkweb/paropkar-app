@@ -12,8 +12,8 @@ import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/app_textstyles.dart';
 import 'package:paropkar/src/view/auth/signup/otp_verify_screen.dart';
 import 'package:paropkar/src/widgets/comman_widget.dart';
-import 'package:paropkar/src/widgets/custom_button.dart';
-import 'package:paropkar/src/widgets/custom_textfied.dart';
+import 'package:paropkar/src/widgets/custom_buttons/custom_button.dart';
+import 'package:paropkar/src/widgets/textfields/custom_textfied.dart';
 import 'package:country_picker/country_picker.dart';
 
 class SignUpPage extends StatefulWidget {

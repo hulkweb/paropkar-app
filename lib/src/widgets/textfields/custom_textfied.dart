@@ -184,12 +184,12 @@ String? validatePhone(String? value) {
 
 String? validateEmail(String? value) {
   if (value!.isEmpty) {
-    return 'email_cannot_be_empty';
+    return 'email can not be empty';
   } else if (!value.contains('@') || !value.contains('.')
       // ||
       // !value.contains('com')
       ) {
-    return 'pls_enter_valid_email';
+    return 'please enter  valid email';
   }
   return null;
 }

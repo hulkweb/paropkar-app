@@ -36,6 +36,6 @@ class OrderDetailController with ChangeNotifier {
   }
 
   ontapCustomerButton(BuildContext context) {
-    AppNavigation.navigation(context, const CustomerDetailScreen());
+    AppNavigation.navigationPush(context, const CustomerDetailScreen());
   }
 }

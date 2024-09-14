@@ -4,20 +4,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/product/product_detail_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
-import 'package:paropkar/src/view/product/category_product_listing_screen.dart';
+import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/widgets/carousel_widget.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
-import 'package:paropkar/src/widgets/product_card.dart';
+import 'package:paropkar/src/widgets/cards/product_card_custom.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  const ProductDetailScreen({super.key});
+  ProductDetailScreen({super.key});
 
+  final productDetailController = ProductDetailController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -157,23 +161,29 @@ class ProductDetailScreen extends StatelessWidget {
                                       Icons.remove,
                                       color: AppColors.primaryColor,
                                     ),
-                                    onPress: () {},
+                                    onPress: () {
+                                      productDetailController
+                                          .ontapProductIncrease();
+                                    },
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: Text(
-                                      '1KG',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge!
-                                          .copyWith(
-                                              color: AppColors.primaryColor,
-                                              overflow: TextOverflow.ellipsis,
-                                              fontFamily: AppFonts.semiBold,
-                                              fontSize: 20),
-                                    ),
-                                  ),
+                                  Consumer<ProductDetailController>(
+                                      builder: (context, provider, child) {
+                                    return Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 10),
+                                      child: Text(
+                                        '${provider.productCount}KG',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge!
+                                            .copyWith(
+                                                color: AppColors.primaryColor,
+                                                overflow: TextOverflow.ellipsis,
+                                                fontFamily: AppFonts.semiBold,
+                                                fontSize: 20),
+                                      ),
+                                    );
+                                  }),
                                   CustomIconImage(
                                     spreadRadius: 0,
                                     borderRadius: 0,
@@ -253,26 +263,29 @@ class ProductDetailScreen extends StatelessWidget {
                         crossAxisSpacing: 7,
                         mainAxisSpacing: 10,
                         childAspectRatio: 0.7,
-                        children:  List.generate(
-              10,
-              (index) => ProductCard(
-                imageUrl: AppAssets.maida, // Replace with actual image URL
-                productName: "Toor Daal",
-                price: "₹150.00",
-                offerText: "Buy 3 Items, Save Extra 5%",
-                isFavorite: index % 2 == 0,
-                onFavoritePressed: () {
-                  // Handle favorite icon press
-                },
-                onAddToCartPressed: () async {
-                  // Handle add to cart press
-                  AppNavigation.navigation(context, CartScreen());
-                },
-                onProductPressed: () {
-                  AppNavigation.navigation(context, ProductDetailScreen());
-                },
-              ),
-            )),
+                        children: List.generate(
+                          10,
+                          (index) => ProductCard(
+                            imageUrl: AppAssets
+                                .maida, // Replace with actual image URL
+                            productName: "Toor Daal",
+                            price: "₹150.00",
+                            offerText: "Buy 3 Items, Save Extra 5%",
+                            isFavorite: index % 2 == 0,
+                            onFavoritePressed: () {
+                              // Handle favorite icon press
+                            },
+                            onAddToCartPressed: () async {
+                              // Handle add to cart press
+                              AppNavigation.navigationPush(
+                                  context, CartScreen());
+                            },
+                            onProductPressed: () {
+                              AppNavigation.navigationPush(
+                                  context, ProductDetailScreen());
+                            },
+                          ),
+                        )),
                   ],
                 ),
               ),
@@ -288,7 +301,9 @@ class ProductDetailScreen extends StatelessWidget {
                     color: AppColors.primaryColor,
                   ),
                 ),
-                onPress: () {},
+                onPress: () {
+                  pop(context);
+                },
               ),
             ),
             Positioned(

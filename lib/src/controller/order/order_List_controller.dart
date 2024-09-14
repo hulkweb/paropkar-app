@@ -54,6 +54,6 @@ class OrderListController with ChangeNotifier {
 
   ontapOrder(String orderId, BuildContext context) {
     print(orderId);
-    AppNavigation.navigation(context, OrderDetailScreen());
+    AppNavigation.navigationPush(context, OrderDetailScreen());
   }
 }

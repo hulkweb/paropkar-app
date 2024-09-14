@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:paropkar/src/controller/address/address_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
+import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
+import 'package:paropkar/src/controller/notification/notification_controller.dart';
+import 'package:paropkar/src/controller/product/product_detail_controller.dart';
+import 'package:paropkar/src/controller/product/product_listing_controller.dart';
 import 'package:paropkar/src/controller/splash_controller.dart';
 import 'package:paropkar/src/controller/theme_controller.dart';
 import 'package:paropkar/src/models/splash_model.dart';
 import 'package:paropkar/src/utills/theme.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
+import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/view/splach_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -39,14 +45,20 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => CheckoutController()),
         ChangeNotifierProvider(create: (_) => LoginController()),
-        ChangeNotifierProvider(create: (_) => SignUpController())
+        ChangeNotifierProvider(create: (_) => SignUpController()),
+        ChangeNotifierProvider(create: (_) => BottomBarListController()),
+        ChangeNotifierProvider(create: (_) => ProductListingController()),
+        ChangeNotifierProvider(create: (_) => ProductListingController()), 
+        ChangeNotifierProvider(create: (_) => ProductDetailController()),
+        ChangeNotifierProvider(create: (_) => AddressController()),
+        ChangeNotifierProvider(create: (_) => NotificationController()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: RAppTheme.lightTheme, // Apply the custom light theme
         darkTheme: RAppTheme.lightTheme, // Apply the custom dark theme
         themeMode: ThemeMode.system, // Use the current theme mode from provider
-        home: SplashView(controller: splashController),
+        home: BottomBarListScreen()// SplashView(controller: splashController),
       ),
     );
   }

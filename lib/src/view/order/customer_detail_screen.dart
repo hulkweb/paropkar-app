@@ -9,6 +9,7 @@ import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/order/customer_detail_screen.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
@@ -51,7 +52,9 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                 size: 23,
               ),
             ),
-            onPress: () {},
+            onPress: () {
+                pop(context);
+            },
           ),
         ),
         actions: [

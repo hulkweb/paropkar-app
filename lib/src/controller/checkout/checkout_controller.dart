@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:paropkar/src/controller/address/address_mode.dart';
+import 'package:paropkar/src/models/address/address_model.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/checkout/checkout_widgets.dart';
 import 'package:paropkar/src/view/order/order_list_screen.dart';
@@ -80,7 +80,7 @@ class CheckoutController with ChangeNotifier {
     if (kDebugMode) {
       print('navigation');
     }
-    AppNavigation.navigation(context, OrderListScreen());
+    AppNavigation.navigationPush(context, OrderListScreen());
   }
 
   ontapCall() {
@@ -96,6 +96,4 @@ class CheckoutController with ChangeNotifier {
     }
     // AppNavigation.navigation(context, OrderListScreen());
   }
-
- 
 }

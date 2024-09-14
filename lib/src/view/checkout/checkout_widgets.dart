@@ -1,100 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
-import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/checkout/order_status_screen.dart';
-import 'package:paropkar/src/widgets/custom_button.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
-import 'package:provider/provider.dart';
-
-class AddressCard extends StatelessWidget {
-  final String addressType;
-  final String address;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const AddressCard({
-    Key? key,
-    required this.addressType,
-    required this.address,
-    required this.isSelected,
-    required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(1),
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Theme.of(context).cardColor,
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).dividerColor.withOpacity(.3),
-                blurRadius: 6,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(left: 16, right: 10, top: 0, bottom: 16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, top: 10),
-                  child: Icon(
-                    isSelected ? Icons.check_circle : Icons.circle_outlined,
-                    color: isSelected ? Colors.green : Colors.grey,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        addressType,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        width: screenWidth * .5,
-                        child: Text(
-                          address,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleSmall!
-                              .copyWith(fontSize: 14),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    // Edit address action
-                  },
-                  icon: Icon(Icons.edit, color: Theme.of(context).hintColor),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+import 'package:paropkar/src/widgets/custom_buttons/custom_button.dart';
 
 class PaymentCard extends StatelessWidget {
   final String image;
@@ -247,7 +159,7 @@ class OrderSuccessPopup extends StatelessWidget {
             CustomButton(
               ontap: () {
                 // Handle Track My Order action
-                AppNavigation.navigation(context, OrderStatusScreen());
+                AppNavigation.navigationPush(context, OrderStatusScreen());
               },
               width: screenWidth * .6,
               height: 40,

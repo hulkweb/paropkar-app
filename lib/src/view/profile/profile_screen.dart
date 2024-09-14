@@ -3,13 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
-import 'package:paropkar/src/view/profile/edit_profile.dart';
+import 'package:paropkar/src/view/address/address_screen.dart';
+import 'package:paropkar/src/view/invoice/invoice_screen.dart';
+import 'package:paropkar/src/view/notification/notification_list_screen.dart';
+import 'package:paropkar/src/view/profile/edit_profile_screen.dart';
+import 'package:paropkar/src/widgets/cards/invoice_card.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:provider/provider.dart';
 
 // Colors for the theme
 const primaryColor =
@@ -23,6 +30,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bottomController = Provider.of<BottomBarListController>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
@@ -35,14 +43,16 @@ class ProfileScreen extends StatelessWidget {
             backgroundColor: AppColors.primaryColor.withOpacity(.7),
             size: 20,
             icon: Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: 10),
               child: Icon(
                 Icons.arrow_back_ios,
                 color: Theme.of(context).cardColor,
                 size: 23,
               ),
             ),
-            onPress: () {},
+            onPress: () {
+              bottomController.changeIndex(0);
+            },
           ),
         ),
         actions: [
@@ -55,7 +65,9 @@ class ProfileScreen extends StatelessWidget {
                 color: Theme.of(context).cardColor,
                 size: 23,
               ),
-              onPress: () {},
+              onPress: () {
+                AppNavigation.navigationPush(context, NotificationScreen());
+              },
             ),
           ),
         ],
@@ -68,50 +80,52 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
+        padding: const EdgeInsets.only(top: 12),
         child: Column(
           children: [
-            Row(
-              children: [
-                Container(
-                  height: screenWidth * .16,
-                  width: screenWidth * .16,
-                  decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.primaryColor),
-                      shape: BoxShape.circle,
-                      image: const DecorationImage(
-                          image: AssetImage(
-                            AppAssets.profile,
-                          ),
-                          fit: BoxFit.cover)),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Somya Jain',
-                      style:
-                          Theme.of(context).textTheme.titleMedium!.copyWith(),
-                    ),
-                    Text(
-                      '+91-9876543210',
-                      style: Theme.of(context).textTheme.bodySmall!.copyWith(),
-                    ),
-                  ],
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
+              child: Row(
+                children: [
+                  Container(
+                    height: screenWidth * .16,
+                    width: screenWidth * .16,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.primaryColor),
+                        shape: BoxShape.circle,
+                        image: const DecorationImage(
+                            image: AssetImage(
+                              AppAssets.profile,
+                            ),
+                            fit: BoxFit.cover)),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Somya Jain',
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(),
+                      ),
+                      Text(
+                        '+91-9876543210',
+                        style:
+                            Theme.of(context).textTheme.bodySmall!.copyWith(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            SizedBox(
-              height: 40,
-            ),
+            largeHeight,
             Column(
               children: [
                 ListTileProfileSction(
                   ontap: () {
-                    AppNavigation.navigation(context, EditProfileScreen());
+                    AppNavigation.navigationPush(context, EditProfileScreen());
                   },
                   image: AppAssets.editProfile,
                   title: 'Edit profile',
@@ -123,12 +137,16 @@ class ProfileScreen extends StatelessWidget {
                     title: 'Change password',
                     padding: 8),
                 ListTileProfileSction(
-                    ontap: () {},
+                    ontap: () {
+                      AppNavigation.navigationPush(context, AddressScreen());
+                    },
                     image: AppAssets.location,
                     title: 'My address',
                     padding: 5),
                 ListTileProfileSction(
-                    ontap: () {},
+                    ontap: () {
+                      AppNavigation.navigationPush(context, InvoiceScreen());
+                    },
                     image: AppAssets.appInfo,
                     title: 'App information',
                     padding: 8),
@@ -170,10 +188,11 @@ class ListTileProfileSction extends StatelessWidget {
   final double padding;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: ontap,
+    return InkWell(
+      onTap: ontap,
+      child: Padding(
+        padding:
+            const EdgeInsets.only(left: 15, top: 12, right: 20, bottom: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -188,11 +207,15 @@ class ListTileProfileSction extends StatelessWidget {
               title,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            Expanded(
-                child: smallHeight),
-            const Icon(
-              Icons.arrow_forward_ios,
-              size: 14,
+            Expanded(child: smallHeight),
+            InkWell(
+              onTap: () {
+                pop(context);
+              },
+              child: const Icon(
+                Icons.arrow_forward_ios,
+                size: 14,
+              ),
             )
           ],
         ),

@@ -6,6 +6,7 @@ import 'package:paropkar/src/controller/order/order_List_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/widgets/custom_image_icon.dart';
 
 // Colors for the theme
@@ -39,7 +40,9 @@ class OrderListScreen extends StatelessWidget {
                 size: 23,
               ),
             ),
-            onPress: () {},
+            onPress: () {
+                pop(context);
+            },
           ),
         ),
         actions: [

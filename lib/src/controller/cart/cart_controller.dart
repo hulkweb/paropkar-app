@@ -36,6 +36,6 @@ class CartController extends ChangeNotifier {
   }
 
   void ontapContinueButton(BuildContext context) {
-    AppNavigation.navigation(context, CheckoutScreen());
+    AppNavigation.navigationPush(context, CheckoutScreen());
   }
 }

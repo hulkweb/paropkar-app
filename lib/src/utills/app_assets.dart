@@ -21,4 +21,6 @@ class AppAssets {
   static const String language = 'assets/images/language.png';
   static const String location = 'assets/images/location.png';
   static const String logout = 'assets/images/logout.png';
+  static const String camera = 'assets/images/camera.png';
+  static const String notification = 'assets/images/notification.png';
 }
