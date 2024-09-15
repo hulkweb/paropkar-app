@@ -10,7 +10,10 @@ import 'package:paropkar/src/view/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
 
 class BottomBarListScreen extends StatefulWidget {
+  const BottomBarListScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _BottomBarListScreenState createState() => _BottomBarListScreenState();
 }
 
@@ -30,6 +33,7 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
   Widget build(BuildContext context) {
     final controller = context.watch<BottomBarListController>();
     return Builder(builder: (context) {
+      // ignore: deprecated_member_use
       return WillPopScope(
         onWillPop: () async {
           if (controller.selectedIndex == 0) {
@@ -40,36 +44,35 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
           return false;
         },
         child: Scaffold(
-          body: _pages[controller.selectedIndex], // Display selected page
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: controller.selectedIndex,
-            onTap: (index) {
-              controller.changeIndex(index);
-              print(controller.selectedIndex);
-            },
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.category),
-                label: 'Category',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: 'Cart',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-            ],
-            type: BottomNavigationBarType.fixed,
-            selectedItemColor: Colors.green,
-            unselectedItemColor: Colors.grey,
-          ),
-        ),
+            body: _pages[controller.selectedIndex], // Display selected page
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: controller.selectedIndex,
+              onTap: (index) {
+                controller.changeIndex(index);
+                print(controller.selectedIndex);
+              },
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.category),
+                  label: 'Category',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.shopping_cart),
+                  label: 'Cart',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ],
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: Colors.green,
+              unselectedItemColor: Colors.grey,
+            )),
       );
     });
   }

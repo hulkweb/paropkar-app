@@ -39,7 +39,7 @@ class CustomTextFormWidget extends StatelessWidget {
     this.readOnly,
     this.hintStyle,
     this.contentStyle,
-    this.titleStyle,
+    this.titleStyle, this.isDense,
   });
 
   final TextEditingController? controller;
@@ -67,6 +67,7 @@ class CustomTextFormWidget extends StatelessWidget {
   final Widget? prefixWidget;
   final Widget? suffixWidget;
   final bool? isObs;
+  final bool? isDense;
   final int? maxLines;
   final EdgeInsetsGeometry? contentpadding;
   final double? titlePadding;
@@ -93,6 +94,7 @@ class CustomTextFormWidget extends StatelessWidget {
         onEditingComplete: () {
           FocusScope.of(context).unfocus();
         },
+        
         style:
             contentStyle ?? Theme.of(context).textTheme.bodyMedium!.copyWith(),
         onFieldSubmitted: onFieldSubmitted ??
@@ -102,7 +104,7 @@ class CustomTextFormWidget extends StatelessWidget {
         scrollPadding: EdgeInsets.only(bottom: scrollPaddingBottom ?? 0),
         keyboardType: keyboardType ?? TextInputType.emailAddress,
         maxLength: maxLength ?? 50,
-
+        
         decoration: InputDecoration(
           prefixIcon: prefixWidget,
           suffixIcon: suffixWidget,
@@ -111,6 +113,7 @@ class CustomTextFormWidget extends StatelessWidget {
           counterText: '',
           border: border ??
               OutlineInputBorder(
+                
                 borderSide: borderSide ??
                     const BorderSide(color: AppColors.primaryColor, width: 1),
                 borderRadius: BorderRadius.circular(8.0),
@@ -145,7 +148,7 @@ class CustomTextFormWidget extends StatelessWidget {
             borderRadius: borderRadius ?? BorderRadius.circular(5.0),
           ),
           // label: Text(hintText),
-
+            isDense: isDense??false,
           //  focusedBorder: InputBorder.none,
           contentPadding: contentpadding ??
               const EdgeInsets.symmetric(vertical: 20, horizontal: 10),

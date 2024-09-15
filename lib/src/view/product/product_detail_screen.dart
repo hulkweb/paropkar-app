@@ -13,9 +13,9 @@ import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
-import 'package:paropkar/src/widgets/carousel_widget.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
-import 'package:paropkar/src/widgets/cards/product_card_custom.dart';
+import 'package:paropkar/src/custom_widgets/carousel_widget.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
+import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetailScreen extends StatelessWidget {

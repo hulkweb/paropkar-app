@@ -5,10 +5,14 @@ import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/navigation_function.dart';
+import 'package:paropkar/src/view/address/create_address_screen_.dart';
+import 'package:paropkar/src/view/address/manage_address_screen.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/checkout/checkout_widgets.dart';
-import 'package:paropkar/src/widgets/cards/address_card_selective.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:paropkar/src/custom_widgets/cards/address_card_selective.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/view_all_button.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:provider/provider.dart';
 
 import 'package:paropkar/src/utills/globle_func.dart';
@@ -84,13 +88,13 @@ class CheckoutScreen extends StatelessWidget {
                       'Address',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
-                    Text(
-                      'Add new',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge!
-                          .copyWith(color: Theme.of(context).primaryColor),
-                    ),
+                    ViewAllButton(
+                      onPressed: () {
+                        AppNavigation.navigationPush(
+                            context,const CreateAddressScreen());
+                      },
+                      buttonText: 'Add new',
+                    )
                   ],
                 ),
               ),

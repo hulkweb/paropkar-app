@@ -7,12 +7,16 @@ import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class ProductListingController extends ChangeNotifier {
+  ProductListingController() {}
+
   ontapProduct({required String productId, required BuildContext context}) {
-    AppNavigation.navigationPush(context,  ProductDetailScreen());
+    AppNavigation.navigationPush(context, ProductDetailScreen());
   }
 
   ontapProductCart({required BuildContext context}) {
     // Provider.of<BottomBarListController>(context).changeIndex(2);
-    AppNavigation.navigationReplacement(context,  BottomBarListScreen());
+    AppNavigation.navigationReplacement(context, BottomBarListScreen());
   }
+
+
 }

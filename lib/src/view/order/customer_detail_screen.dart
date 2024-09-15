@@ -12,7 +12,7 @@ import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/order/customer_detail_screen.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 
 // Colors for the theme
 const primaryColor =

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:paropkar/src/controller/address/address_controller.dart';
+import 'package:paropkar/src/controller/address/manage_address_controller.dart';
 import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/controller/notification/notification_controller.dart';
 import 'package:paropkar/src/controller/profile/profile_edit_controller.dart';
@@ -12,12 +12,12 @@ import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/view/checkout/checkout_widgets.dart';
-import 'package:paropkar/src/widgets/cards/address_card_selective.dart';
-import 'package:paropkar/src/widgets/cards/address_card_simple.dart';
-import 'package:paropkar/src/widgets/cards/notification_card.dart';
-import 'package:paropkar/src/widgets/custom_buttons/custom_button.dart';
-import 'package:paropkar/src/widgets/custom_buttons/view_all_button.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:paropkar/src/custom_widgets/cards/address_card_selective.dart';
+import 'package:paropkar/src/custom_widgets/cards/address_card_simple.dart';
+import 'package:paropkar/src/custom_widgets/cards/notification_card.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/view_all_button.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatelessWidget {

@@ -10,9 +10,9 @@ import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/checkout/checkout_screen.dart';
-import 'package:paropkar/src/widgets/custom_buttons/custom_button.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
-import 'package:paropkar/src/widgets/textfields/custom_textfied.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
+import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
 import 'package:provider/provider.dart';
 
 // Colors for the theme
@@ -22,9 +22,16 @@ const greyColor = Color(0xFF757575); // Example grey color for text
 const whiteColor = Color(0xFFFFFFFF); // Example white background
 
 // Main Cart Screen
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
   final cartController = CartController();
+
   // final bottomBarListController = BottomBarListController();
   @override
   Widget build(BuildContext context) {
@@ -81,17 +88,35 @@ class CartScreen extends StatelessWidget {
           child: Column(
             children: [
               Column(
-                  children: List.generate(
-                      cartController.cartItemList.length,
-                      (index) => CartItem(
-                            title: cartController.cartItemList[index].title,
-                            subTitle:
-                                cartController.cartItemList[index].subTitle,
-                            price: cartController.cartItemList[index].price,
-                            unit: cartController.cartItemList[index].title,
-                            quantity:
-                                cartController.cartItemList[index].quantity,
-                          ))),
+                  children: List.generate(cartController.cartItemList.length,
+                      (index) {
+                print(cartController.cartItemList[index].quantity);
+                return CartItem(
+                  title: cartController.cartItemList[index].productName,
+                  subTitle: cartController.cartItemList[index].category,
+                  price: cartController.cartItemList[index].price,
+                  unit: cartController.cartItemList[index].productName,
+                  quantity: cartController.cartItemList[index].quantity,
+                  onChange: (String value) {
+                    if(value.isEmpty || value=='0'){
+                           cartController.changeProductQuantity(
+                        index: index, value: '1');
+                    }else {
+                      cartController.changeProductQuantity(
+                        index: index, value: value);
+                    }
+                    setState(() {});
+                  },
+                  onIncrease: () {
+                    cartController.onIncreaseProduct(index: index);
+                    setState(() {});
+                  },
+                  onDecrease: () {
+                    cartController.onDecreaseProduct(index: index);
+                    setState(() {});
+                  },
+                );
+              })),
               const SizedBox(height: 10),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -160,7 +185,10 @@ class CartScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('Discount',
-                            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color:Colors.red)),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(color: Colors.red)),
                         Text('- ₹ ${cartController.discount}',
                             style: Theme.of(context).textTheme.bodyLarge),
                       ],
@@ -204,12 +232,15 @@ class CartScreen extends StatelessWidget {
 }
 
 // Custom Cart Item Widget
-class CartItem extends StatelessWidget {
+class CartItem extends StatefulWidget {
   final String title;
   final String subTitle;
   final double price;
   final String unit;
-  final int quantity;
+  final String quantity;
+  final Function(String value) onChange;
+  final Function() onIncrease;
+  final Function() onDecrease;
 
   const CartItem({
     super.key,
@@ -218,7 +249,26 @@ class CartItem extends StatelessWidget {
     required this.price,
     required this.unit,
     required this.quantity,
+    required this.onChange,
+    required this.onIncrease,
+    required this.onDecrease,
   });
+
+  @override
+  State<CartItem> createState() => _CartItemState();
+}
+
+class _CartItemState extends State<CartItem> {
+  bool _isEditing = false;
+  TextEditingController _controller =
+      TextEditingController(text: '1'); // Initially "1"
+  @override
+  void initState() {
+    _controller = TextEditingController(text: widget.quantity);
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -260,7 +310,7 @@ class CartItem extends StatelessWidget {
                 SizedBox(
                   width: screenWidth * .4,
                   child: Text(
-                    title,
+                    widget.title,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 16),
                   ),
@@ -268,7 +318,7 @@ class CartItem extends StatelessWidget {
                 SizedBox(
                   width: screenWidth * .4,
                   child: Text(
-                    subTitle,
+                    widget.subTitle,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: AppColors.primaryColor,
                         overflow: TextOverflow.ellipsis,
@@ -277,7 +327,7 @@ class CartItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '₹ $price',
+                  '₹ ${widget.price}',
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       color: AppColors.primaryColor,
                       overflow: TextOverflow.ellipsis,
@@ -303,19 +353,82 @@ class CartItem extends StatelessWidget {
                       size: 19,
                       color: AppColors.primaryColor,
                     ),
-                    onPress: () {},
+                    onPress: widget.onDecrease,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: Text(
-                      ' 1 ',
-                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                          color: AppColors.primaryColor,
-                          overflow: TextOverflow.ellipsis,
-                          fontFamily: AppFonts.semiBold,
-                          fontSize: 15),
-                    ),
-                  ),
+
+                  ///first code
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 10, right: 10),
+                  //   child: Text(
+                  //     ' 1 ',
+                  //     style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                  //         color: AppColors.primaryColor,
+                  //         overflow: TextOverflow.ellipsis,
+                  //         fontFamily: AppFonts.semiBold,
+                  //         fontSize: 15),
+                  //   ),
+                  // ),
+
+                  //after code
+                  GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isEditing = true;
+                        });
+                      },
+                      child: _isEditing
+                          ? SizedBox(
+                              width: 50, // Small width for the text field
+                              child: TextField(
+                                keyboardType: TextInputType.number,
+                                controller: _controller,
+                                autofocus:
+                                    true, // Automatically focuses the text field
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontSize: 18), // Adjust font size as needed
+                                decoration: const InputDecoration(
+                                  counterText: '',
+                                  isDense: true,
+                                  contentPadding:
+                                      EdgeInsets.symmetric(vertical: 5),
+                                  focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.black),
+                                  ),
+                                   border: InputBorder.none,
+                                  enabledBorder: InputBorder.none
+                                  // enabledBorder:
+                                  
+                                  //  UnderlineInputBorder(
+                                    
+                                  //   borderSide:
+                                  //       BorderSide(color: Colors.transparent,width: 0),
+                                  // ),
+                                ),
+                                cursorColor: AppColors.primaryColor,
+                                onSubmitted: (newValue) {
+                                  setState(() {
+                                    _isEditing = false;
+                                  });
+                                },
+                                onChanged: widget.onChange,
+                                maxLength: 3,
+                              ),
+                            )
+                          : SizedBox(
+                              width: 60, // Small width for the text field
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                   child: Text(
+                                      widget.quantity,
+                                      style: const TextStyle(
+                                          fontSize: 18), // Adjust the font size
+                                    ),
+                                ),
+                              ),
+                            )),
                   CustomIconImage(
                     spreadRadius: 0,
                     borderRadius: 0,
@@ -326,7 +439,7 @@ class CartItem extends StatelessWidget {
                       size: 19,
                       color: Theme.of(context).cardColor,
                     ),
-                    onPress: () {},
+                    onPress: widget.onIncrease,
                   ),
                 ],
               ),

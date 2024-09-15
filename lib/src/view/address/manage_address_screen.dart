@@ -1,24 +1,22 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:paropkar/src/controller/address/address_controller.dart';
-import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
-import 'package:paropkar/src/controller/profile/profile_edit_controller.dart';
+import 'package:paropkar/src/controller/address/manage_address_controller.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
-import 'package:paropkar/src/view/checkout/checkout_widgets.dart';
-import 'package:paropkar/src/widgets/cards/address_card_selective.dart';
-import 'package:paropkar/src/widgets/cards/address_card_simple.dart';
-import 'package:paropkar/src/widgets/custom_buttons/custom_button.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:paropkar/src/utills/navigation_function.dart';
+import 'package:paropkar/src/view/address/create_address_screen_.dart';
+import 'package:paropkar/src/custom_widgets/cards/address_card_simple.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:provider/provider.dart';
-class AddressScreen extends StatelessWidget {
-   AddressScreen({super.key});
+
+class ManageAddressScreen extends StatelessWidget {
+  const ManageAddressScreen({super.key});
 
   // final  addressController = AddressController();
 
@@ -75,7 +73,7 @@ class AddressScreen extends StatelessWidget {
           padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
           child: Column(
             children: [
-              Consumer<AddressController>(
+              Consumer<ManageAddressController>(
                   builder: (context, addressController, child) {
                 return Column(
                   children: List.generate(
@@ -83,6 +81,9 @@ class AddressScreen extends StatelessWidget {
                       (index) => Padding(
                             padding: const EdgeInsets.only(top: 14),
                             child: AddressCardSimple(
+                              ontapEdit: () {
+                                AppNavigation.navigationPush(context, CreateAddressScreen());
+                              },
                               onTap: () {
                                 addressController.setAddress(index);
                               },
@@ -101,9 +102,7 @@ class AddressScreen extends StatelessWidget {
               // Submit Button
               CustomButton(
                 text: 'Save',
-                ontap: () {
-                  
-                },
+                ontap: () {},
               ),
               mediumHeight,
               mediumHeight

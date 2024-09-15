@@ -5,8 +5,8 @@ import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/checkout/checkout_widgets.dart';
 import 'package:paropkar/src/view/order/order_list_screen.dart';
 
-class AddressController with ChangeNotifier {
-  AddressController() {
+class ManageAddressController with ChangeNotifier {
+  ManageAddressController() {
     if (kDebugMode) {
       print('CheckoutController created');
     }

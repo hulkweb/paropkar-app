@@ -6,6 +6,7 @@ import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_dimensions.dart';
 import 'package:paropkar/src/utills/app_textstyles.dart';
+import 'package:paropkar/src/utills/constant.dart';
 
 class CommanWidget extends StatelessWidget {
   final String? title;
@@ -56,6 +57,8 @@ class CommanWidget extends StatelessWidget {
               ),
               const Expanded(child: SizedBox()),
               Container(
+                width: screenWidth,
+                padding: EdgeInsets.zero,
                 height: AppDimensions.getHeight(60),
                 decoration: const BoxDecoration(
                     color: AppColors.white,
@@ -63,7 +66,7 @@ class CommanWidget extends StatelessWidget {
                         topLeft: Radius.circular(40),
                         topRight: Radius.circular(40))),
                 child: widget,
-              )
+              ),
             ],
           ),
         ),

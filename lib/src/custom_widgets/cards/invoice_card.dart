@@ -5,7 +5,7 @@ import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/constant.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 
 class InvoiceCard extends StatelessWidget {
   final String title;

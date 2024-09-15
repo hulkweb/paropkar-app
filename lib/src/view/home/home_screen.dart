@@ -11,10 +11,10 @@ import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/product/category_listing_screen.dart';
 import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
-import 'package:paropkar/src/widgets/carousel_widget.dart';
-import 'package:paropkar/src/widgets/custom_buttons/view_all_button.dart';
-import 'package:paropkar/src/widgets/custom_status_bar.dart';
-import 'package:paropkar/src/widgets/cards/product_card_custom.dart';
+import 'package:paropkar/src/custom_widgets/carousel_widget.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/view_all_button.dart';
+import 'package:paropkar/src/custom_widgets/custom_status_bar.dart';
+import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {

@@ -17,14 +17,46 @@ class CartController extends ChangeNotifier {
   getCarts() {
     cartItemList.clear();
     cartItemList.addAll([
-      CartItemModel('Maida', 'Flours', 350.00, '1 KG', 1),
-      CartItemModel('Soya Oil', 'Oil', 250.00, '1 LIT', 10),
-      CartItemModel('Maida', 'Flours', 350.00, '1 KG', 1),
+      CartItemModel(
+        productName: 'Maida',
+        category: 'Flours',
+        price: 350.00,
+        quantity: "1",
+        id: '1',
+      ),
+      CartItemModel(
+        productName: 'Soya Oil',
+        category: 'Maida',
+        price: 350.00,
+        quantity: "2",
+        id: '1',
+      ),
+      CartItemModel(
+        productName: 'Maida',
+        category: 'Flours',
+        price: 350.00,
+        quantity: "1",
+        id: '1',
+      ),
     ]);
     subtotal = 850.0;
     deiiveryCages = 100.0;
     discount = 150.0;
     total = 850.0;
+  }
+
+  onIncreaseProduct({required int index}) {
+    cartItemList[index].quantity =
+        (int.parse(cartItemList[index].quantity) + 1).toString();
+  }
+
+  onDecreaseProduct({required int index}) {
+    cartItemList[index].quantity =
+        (int.parse(cartItemList[index].quantity) - 1).toString();
+  }
+
+  changeProductQuantity({required int index, required String value}) {
+    cartItemList[index].quantity = value;
   }
 
   final couponTextController = TextEditingController();

@@ -6,7 +6,7 @@ import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/checkout/order_status_screen.dart';
-import 'package:paropkar/src/widgets/custom_buttons/custom_button.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
 
 class PaymentCard extends StatelessWidget {
   final String image;

@@ -6,7 +6,7 @@ import 'package:paropkar/src/view/auth/signup/accept_continue_screen.dart';
 import 'package:paropkar/src/view/auth/signup/enter_shopname_screen.dart';
 import 'package:paropkar/src/view/auth/signup/enter_shops_pincode.dart';
 import 'package:paropkar/src/view/auth/signup/otp_verify_screen.dart';
-import 'package:paropkar/src/widgets/textfields/custom_textfied.dart';
+import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
 
 class SignUpController extends ChangeNotifier {
   // mobile field
@@ -15,7 +15,7 @@ class SignUpController extends ChangeNotifier {
   String? mobileValidation(value) {
     return validatePhone(value);
   }
-  
+
   sendOtp(BuildContext context) {
     AppNavigation.navigationPush(context, OtpVerifyScreen());
   }
@@ -53,9 +53,9 @@ class SignUpController extends ChangeNotifier {
     AppNavigation.navigationPush(context, EnterShopNameScreen());
   }
 
-  String? nameValidation(value) {
+  String? nameValidation(value, {String? emptyText}) {
     if (value!.isEmpty) {
-      return 'Enter Your Full Name';
+      return emptyText ?? 'Enter Your Full Name';
     }
     return null;
   }
@@ -90,4 +90,29 @@ class SignUpController extends ChangeNotifier {
     }
     return null;
   }
+
+  // Email validation logic
+  String? validateEmail(String? value) {
+    if (value!.isEmpty) {
+      return 'Enter Email Address';
+    } else if (!value.contains('@') || !value.contains('.')
+        // ||
+        // !value.contains('com')
+        ) {
+      return 'Enter Valid Email';
+    }
+    return null;
+  }
+
+  String? passwordValidation(value) {
+    if (value!.isEmpty) {
+      return 'Enter Password';
+    }
+    return null;
+  }
+
+  final nameRegisterController = TextEditingController();
+  final phoneRegisterController = TextEditingController();
+  final emailRegisterController = TextEditingController();
+  final passwordRegisterController = TextEditingController();
 }

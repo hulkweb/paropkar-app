@@ -7,9 +7,10 @@ import 'package:paropkar/src/utills/app_colors.dart';
 class ImageCarousel extends StatefulWidget {
   final List<String> imageUrls;
 
-  ImageCarousel({required this.imageUrls});
+  const ImageCarousel({required this.imageUrls});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ImageCarouselState createState() => _ImageCarouselState();
 }
 
@@ -32,9 +33,9 @@ class _ImageCarouselState extends State<ImageCarousel> {
             },
             itemBuilder: (context, index) {
               return Padding(
-                 padding: EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.only(left: 10),
                 child: Container(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   height: 150,
                   decoration: BoxDecoration(
                     color: Colors.green,
@@ -43,7 +44,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
                   child: Row(
                     children: [
                       Image.asset(AppAssets.maidagroup),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Column(
@@ -72,7 +73,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            child: Text(
+                            child: const Text(
                               'Shop Now',
                               style: TextStyle(color: Colors.green),
                             ),
@@ -98,23 +99,21 @@ class _ImageCarouselState extends State<ImageCarousel> {
           ),
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: widget.imageUrls.map((url) {
-            int index = widget.imageUrls.indexOf(url);
-            return Container(
-              width: 8.0,
-              height: 8.0,
-              margin:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: _currentIndex == index
-                    ? AppColors.primaryColor
-                    : Colors.grey,
-              ),
-            );
-          }).toList(),
-        ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+                widget.imageUrls.length,
+                (index) => Container(
+                      width: 8.0,
+                      height: 8.0,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 2.0),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _currentIndex == index
+                            ? AppColors.primaryColor
+                            : Colors.grey,
+                      ),
+                    ))),
       ],
     );
   }

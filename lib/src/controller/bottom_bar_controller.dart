@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:paropkar/src/view/auth/login_screen.dart';
-import 'package:paropkar/src/widgets/comman_widget.dart';
+import 'package:paropkar/src/custom_widgets/comman_widget.dart';
 import '../models/splash_model.dart';
 
 class BottomBarListController extends ChangeNotifier {

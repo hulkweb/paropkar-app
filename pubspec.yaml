@@ -53,6 +53,8 @@ dev_dependencies:
   google_maps_flutter: ^2.5.3
   fluttertoast: ^8.2.1
   url_launcher: ^6.0.20
+  http: ^1.2.1
+  shared_preferences: ^2.2.2
   
   
 # For information on the generic Dart part of this file, see the

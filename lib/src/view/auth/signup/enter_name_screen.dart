@@ -8,10 +8,10 @@ import 'package:paropkar/src/utills/app_textstyles.dart';
 import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/view/auth/signup/enter_shopname_screen.dart';
 import 'package:paropkar/src/view/auth/signup/signup_screen.dart';
-import 'package:paropkar/src/widgets/comman_widget.dart';
-import 'package:paropkar/src/widgets/custom_buttons/custom_button.dart';
-import 'package:paropkar/src/widgets/textfields/custom_textfied.dart';
-import 'package:paropkar/src/widgets/otp_custom.dart';
+import 'package:paropkar/src/custom_widgets/comman_widget.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
+import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
+import 'package:paropkar/src/custom_widgets/otp_custom.dart';
 
 class EnterNameScreen extends StatefulWidget {
   EnterNameScreen({super.key});

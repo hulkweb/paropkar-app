@@ -8,10 +8,10 @@ import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
-import 'package:paropkar/src/widgets/cards/invoice_card.dart';
-import 'package:paropkar/src/widgets/cards/notification_card.dart';
-import 'package:paropkar/src/widgets/custom_buttons/view_all_button.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:paropkar/src/custom_widgets/cards/invoice_card.dart';
+import 'package:paropkar/src/custom_widgets/cards/notification_card.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/view_all_button.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:provider/provider.dart';
 
 class InvoiceScreen extends StatelessWidget {

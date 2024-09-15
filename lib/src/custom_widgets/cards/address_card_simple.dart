@@ -4,19 +4,18 @@ import 'package:paropkar/main.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
-import 'package:paropkar/src/utills/constant.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
 
-class NotificationCard extends StatelessWidget {
-  final String title;
-  final String description;
+class AddressCardSimple extends StatelessWidget {
+  final String addressType;
+  final String address;
   final VoidCallback onTap;
+  final VoidCallback ontapEdit;
 
-  const NotificationCard({
+  const AddressCardSimple({
     Key? key,
-    required this.title,
-    required this.description,
-    required this.onTap,
+    required this.addressType,
+    required this.address,
+    required this.onTap, required this.ontapEdit,
   }) : super(key: key);
 
   @override
@@ -38,12 +37,10 @@ class NotificationCard extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding:
-                const EdgeInsets.only(left: 5, right: 5, top: 0, bottom: 6),
+            padding: const EdgeInsets.only(left: 5, right: 5, top: 0, bottom: 6),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
                 const SizedBox(width: 10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -51,7 +48,7 @@ class NotificationCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title,
+                        addressType,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 8),
@@ -60,25 +57,16 @@ class NotificationCard extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(2.0),
-                            child: CustomIconImage(
-                              onPress: () {},
-                              padding: 10,
-                              backgroundColor: AppColors.grey.withOpacity(.4),
-                              image: AppAssets.notification,
-                            ),
+                            child: Image.asset(AppAssets.location,height: 25,width: 25,color:Theme.of(context).disabledColor,),
                           ),
-                          smallWidth,
                           SizedBox(
                             width: screenWidth * .5,
                             child: Text(
-                              description,
+                              address,
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall!
-                                  .copyWith(
-                                      fontSize: 14,
-                                      color: AppColors.primaryColor,
-                                      fontFamily: AppFonts.medium),
+                                  .copyWith(fontSize: 14,color: AppColors.primaryColor,fontFamily: AppFonts.medium),
                             ),
                           ),
                         ],
@@ -87,7 +75,10 @@ class NotificationCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-               
+                IconButton(
+                  onPressed: ontapEdit,
+                  icon: Icon(Icons.edit, color: Theme.of(context).primaryColor),
+                ),
               ],
             ),
           ),

@@ -4,16 +4,18 @@ import 'package:paropkar/main.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 
-class AddressCardSimple extends StatelessWidget {
-  final String addressType;
-  final String address;
+class NotificationCard extends StatelessWidget {
+  final String title;
+  final String description;
   final VoidCallback onTap;
 
-  const AddressCardSimple({
+  const NotificationCard({
     Key? key,
-    required this.addressType,
-    required this.address,
+    required this.title,
+    required this.description,
     required this.onTap,
   }) : super(key: key);
 
@@ -36,10 +38,12 @@ class AddressCardSimple extends StatelessWidget {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5, top: 0, bottom: 6),
+            padding:
+                const EdgeInsets.only(left: 5, right: 5, top: 0, bottom: 6),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                
                 const SizedBox(width: 10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -47,7 +51,7 @@ class AddressCardSimple extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        addressType,
+                        title,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(height: 8),
@@ -56,16 +60,25 @@ class AddressCardSimple extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(2.0),
-                            child: Image.asset(AppAssets.location,height: 25,width: 25,color:Theme.of(context).disabledColor,),
+                            child: CustomIconImage(
+                              onPress: () {},
+                              padding: 10,
+                              backgroundColor: AppColors.grey.withOpacity(.4),
+                              image: AppAssets.notification,
+                            ),
                           ),
+                          smallWidth,
                           SizedBox(
                             width: screenWidth * .5,
                             child: Text(
-                              address,
+                              description,
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall!
-                                  .copyWith(fontSize: 14,color: AppColors.primaryColor,fontFamily: AppFonts.medium),
+                                  .copyWith(
+                                      fontSize: 14,
+                                      color: AppColors.primaryColor,
+                                      fontFamily: AppFonts.medium),
                             ),
                           ),
                         ],
@@ -74,12 +87,7 @@ class AddressCardSimple extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                IconButton(
-                  onPressed: () {
-                    // Edit address action
-                  },
-                  icon: Icon(Icons.edit, color: Theme.of(context).primaryColor),
-                ),
+               
               ],
             ),
           ),

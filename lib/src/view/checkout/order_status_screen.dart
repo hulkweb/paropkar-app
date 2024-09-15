@@ -11,7 +11,7 @@ import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/order/order_list_screen.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 
 class OrderStatusScreen extends StatefulWidget {
   const OrderStatusScreen({super.key});

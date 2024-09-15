@@ -5,20 +5,23 @@ import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_textstyles.dart';
 import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/globle_func.dart';
+import 'package:paropkar/src/view/auth/register_screen.dart';
 import 'package:paropkar/src/view/auth/signup/signup_screen.dart';
-import 'package:paropkar/src/widgets/comman_widget.dart';
-import 'package:paropkar/src/widgets/custom_buttons/custom_button.dart';
-import 'package:paropkar/src/widgets/textfields/custom_textfied.dart';
+import 'package:paropkar/src/custom_widgets/comman_widget.dart';
+import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
+import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
 import 'package:provider/provider.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  // ignore: library_private_types_in_public_api
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginScreenState extends State<LoginScreen> {
   final _formKeyOtp = GlobalKey<FormState>();
   final _formKeyPass = GlobalKey<FormState>();
   final loginController = LoginController();
@@ -127,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: CustomButton(
                                   ontap: () {
-                                    loginController.veryfyMobile(true);
+                                    loginController.verifyMobile(context);
                                   },
                                   text: 'verify',
                                   height: 40,
@@ -142,7 +145,8 @@ class _LoginPageState extends State<LoginPage> {
                                       mediumHeight,
                                       CustomTextFormWidget(
                                         scrollPaddingBottom: 100,
-                                        controller: loginController.otpFieldController,
+                                        controller:
+                                            loginController.otpFieldController,
                                         maxLength: 6,
                                         keyboardType: TextInputType.number,
                                         fillColor: AppColors.white,
@@ -159,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                             CustomButton(
                               ontap: () {
                                 if (_formKeyOtp.currentState!.validate()) {
-                                  loginController.verifyOtp(context);
+                                  loginController.loginWithOtp(context);
                                 }
                               },
                               text: 'Login',
@@ -184,7 +188,8 @@ class _LoginPageState extends State<LoginPage> {
                             mediumHeight,
                             CustomTextFormWidget(
                               scrollPaddingBottom: 100,
-                              controller: loginController.passwordFieldController,
+                              controller:
+                                  loginController.passwordFieldController,
                               isObs: loginController.isPasswordVisible,
                               maxLength: 15,
                               keyboardType: TextInputType.visiblePassword,
@@ -225,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                             CustomButton(
                               ontap: () {
                                 if (_formKeyPass.currentState!.validate()) {
-                                  loginController.verifyPass(context);
+                                  loginController.loginWithPassword(context);
                                 }
                               },
                               text: 'Login',
@@ -282,7 +287,8 @@ class _LoginPageState extends State<LoginPage> {
                     // Navigate to Sign-up
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpPage()),
+                      MaterialPageRoute(
+                          builder: (context) => RegistrationScreen()),
                     );
                   },
                   child: const Text(

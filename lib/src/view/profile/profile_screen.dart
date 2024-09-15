@@ -10,12 +10,12 @@ import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/constant.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
-import 'package:paropkar/src/view/address/address_screen.dart';
+import 'package:paropkar/src/view/address/manage_address_screen.dart';
 import 'package:paropkar/src/view/invoice/invoice_screen.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
 import 'package:paropkar/src/view/profile/edit_profile_screen.dart';
-import 'package:paropkar/src/widgets/cards/invoice_card.dart';
-import 'package:paropkar/src/widgets/custom_image_icon.dart';
+import 'package:paropkar/src/custom_widgets/cards/invoice_card.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:provider/provider.dart';
 
 // Colors for the theme
@@ -138,7 +138,8 @@ class ProfileScreen extends StatelessWidget {
                     padding: 8),
                 ListTileProfileSction(
                     ontap: () {
-                      AppNavigation.navigationPush(context, AddressScreen());
+                      AppNavigation.navigationPush(
+                          context, ManageAddressScreen());
                     },
                     image: AppAssets.location,
                     title: 'My address',
