@@ -12,7 +12,7 @@ import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
-class ProductListingScreen extends StatelessWidget {
+class ProductListingScreen extends StatelessWidget{
   ProductListingScreen({super.key});
   final productListingController = ProductListingController();
   @override

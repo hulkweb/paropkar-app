@@ -37,7 +37,7 @@ pop(context) {
 }
 
 showDialogBox(BuildContext context,
-    {String? type, String? title, String? description}) {
+    {required String type, required String  title, required String description, VoidCallback? ontapOk}) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -48,10 +48,10 @@ showDialogBox(BuildContext context,
       //       "Your booking has been confirmed. Check your email for details.",
       // );
       return DialogBox(
-        type: 'error',
-        title: title ?? "Sorry!",
-        description: description ??
-            "Your booking has not been confirmed. An Error Occured ",
+        type:type,
+        title: title,
+        description: description,
+        ontapOk: ontapOk,
       );
     },
   );
@@ -62,9 +62,11 @@ showDialogBox(BuildContext context,
 getFinalResponse(http.StreamedResponse response) async {
   String result = await response.stream.bytesToString();
   if (kDebugMode) {
-    print('status');
+    print('+++++status+++++');
     print(response.statusCode);
   }
+  print('+++++result+++++');
+  print(result);
   return jsonDecode(result);
 }
 

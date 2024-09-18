@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:paropkar/src/controller/notification/notification_controller.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
-import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/custom_widgets/cards/invoice_card.dart';
 import 'package:paropkar/src/custom_widgets/cards/notification_card.dart';

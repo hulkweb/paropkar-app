@@ -36,6 +36,7 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
       // ignore: deprecated_member_use
       return WillPopScope(
         onWillPop: () async {
+          return true;//pls comment it
           if (controller.selectedIndex == 0) {
             exit(0);
           } else {

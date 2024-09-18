@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:paropkar/src/services/post_api.dart';
+import 'package:paropkar/src/user_preference/user_pref/user_pref_model.dart';
+import 'package:paropkar/src/utills/constants.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
 import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
+
+import '../../user_preference/user_pref/user_preference.dart';
 
 class LoginController extends ChangeNotifier {
   String _screenType = 'loginWithOtp';
@@ -35,7 +39,6 @@ class LoginController extends ChangeNotifier {
   }
 
   showOtpField(value) {
-
     if (mobileFieldController.text.length < 10) {
       showCustomToast(title: 'Enter valid mobile number');
       return;
@@ -69,6 +72,9 @@ class LoginController extends ChangeNotifier {
     if (value!.isEmpty) {
       return 'Enter Password';
     }
+    if (value!.length < 8) {
+      return 'The password must be at least 8 characters';
+    }
     return null;
   }
 
@@ -76,7 +82,7 @@ class LoginController extends ChangeNotifier {
     showOtpField(true);
     return;
     postApi(
-      body: {'mobile': mobileFieldController.value},
+      body: {'mobile': mobileFieldController.value.text},
       url: '',
       context: context,
       onSuccess: (response) {
@@ -87,56 +93,66 @@ class LoginController extends ChangeNotifier {
             description: 'Otp has sent on your device');
       },
       onFailed: (response) {
+        showDialogBox(context,
+            type: 'success', title: 'Done', description: 'You have not login');
+      },
+      onException: () {},
+    );
+  }
+
+  loginWithMobile(BuildContext context, {required String type}) {
+    AppNavigation.navigationPush(context,
+        AppNavigation.navigationPush(context, const BottomBarListScreen()));
+    return;
+    Map<String, String> bodyField = (type == 'otp')
+        ? {
+            'mobile': mobileFieldController.value.text,
+            'otp': otpFieldController.value.text,
+          }
+        : {
+            'mobile': mobileFieldController.value.text,
+            'password': passwordFieldController.value.text
+          };
+    if (type == 'password') {
+      bodyField.addAll({
+        'otp': '123456',
+      });
+    }
+    print(bodyField);
+    postApi(
+      isShowMessageToast: false,
+      body: bodyField,
+      header: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      url: AppUrl.loginMobile,
+      context: context,
+      onSuccess: (response) {
+        UserPreference userPreference = UserPreference();
+        userPreference
+            .saveUser(UserPrefModel(token: response['token'].toString()));
+        getToken();
+        showDialogBox(
+          context,
+          type: 'success',
+          title: 'Successful',
+          description: response['message'].toString(),
+        );
+      },
+      onFailed: (response) {
         showDialogBox(
           context,
           type: 'error',
+          title: 'Sorry!',
+          description: response['message'].toString(),
+          ontapOk: () {
+            AppNavigation.navigationPush(
+                context,
+                AppNavigation.navigationPush(
+                    context, const BottomBarListScreen()));
+          },
         );
-      },
-      onException: () {},
-    );
-  }
-
-  loginWithOtp(BuildContext context) {
-    AppNavigation.navigationPush(context,
-        AppNavigation.navigationPush(context, const BottomBarListScreen()));
-    return;
-    postApi(
-      body: {
-        'mobile': mobileFieldController.value,
-        'otp': otpFieldController.value,
-      },
-      url: '',
-      context: context,
-      onSuccess: (response) {
-        showCustomToast(title: '');
-        AppNavigation.navigationPush(context,
-            AppNavigation.navigationPush(context, const BottomBarListScreen()));
-      },
-      onFailed: (response) {
-        showDialogBox(context, type: 'error', title: 'Sorry', description: '');
-      },
-      onException: () {},
-    );
-  }
-
-  loginWithPassword(BuildContext context) {
-    AppNavigation.navigationPush(context,
-        AppNavigation.navigationPush(context, const BottomBarListScreen()));
-    return;
-    postApi(
-      body: {
-        'mobile': mobileFieldController.value,
-        'password': passwordFieldController.value,
-      },
-      url: '',
-      context: context,
-      onSuccess: (response) {
-        showCustomToast(title: '');
-        AppNavigation.navigationPush(context,
-            AppNavigation.navigationPush(context, const BottomBarListScreen()));
-      },
-      onFailed: (response) {
-        showDialogBox(context, type: 'error', title: 'Sorry', description: '');
       },
       onException: () {},
     );

@@ -3,18 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
-import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
 
 class DialogBox extends StatelessWidget {
   final String title;
   final String description;
   final String type;
-
+  final VoidCallback? ontapOk;
   const DialogBox({
     Key? key,
     required this.title,
     required this.description,
-    required this.type,
+    required this.type,  this.ontapOk,
   }) : super(key: key);
 
   @override
@@ -77,7 +77,7 @@ class DialogBox extends StatelessWidget {
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        onPressed: () {
+                        onPressed:ontapOk?? () {
                           Navigator.of(context).pop(); // Close the dialog
                         },
                         child: Text("OK",

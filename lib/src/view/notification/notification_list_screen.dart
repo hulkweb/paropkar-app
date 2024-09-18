@@ -9,7 +9,7 @@ import 'package:paropkar/src/controller/notification/notification_controller.dar
 import 'package:paropkar/src/controller/profile/profile_edit_controller.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
-import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/view/checkout/checkout_widgets.dart';
 import 'package:paropkar/src/custom_widgets/cards/address_card_selective.dart';

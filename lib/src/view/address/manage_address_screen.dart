@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:paropkar/src/controller/address/manage_address_controller.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
-import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/address/create_address_screen_.dart';

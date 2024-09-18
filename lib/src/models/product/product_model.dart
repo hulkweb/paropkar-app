@@ -1,23 +1,65 @@
-class Product {
-  String id;
-  String productName;
-  String productCategory;
-  String description;
-  double price;
-  double discount;
-  String image;
-  bool isFavorite;
-  bool isAddedToCart;
+class ProductModel {
+    int? id;
+    String? name;
+    int? categoryId;
+    int? subcategoryId;
+    String? price;
+    int? stock;
+    String? discountType;
+    String? discountValue;
+    String? image;
+    String? productType;
+    String? description;
+    int? status;
+    dynamic deletedAt;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+    Category? category;
+    Category? subcategory;
+    
+    ProductModel({
+        this.id,
+        this.name,
+        this.categoryId,
+        this.subcategoryId,
+        this.price,
+        this.stock,
+        this.discountType,
+        this.discountValue,
+        this.image,
+        this.productType,
+        this.description,
+        this.status,
+        this.deletedAt,
+        this.createdAt,
+        this.updatedAt,
+        this.category,
+        this.subcategory,
+    });
 
-  Product({
-    required this.id,
-    required this.productName,
-    required this.productCategory,
-    required this.description,
-    required this.price,
-    required this.discount,
-    required this.image,
-    this.isFavorite = false,
-    this.isAddedToCart = false,
-  });
+}
+
+class Category {
+    int? id;
+    String? name;
+    String? image;
+    String? description;
+    int? status;
+    dynamic deletedAt;
+    DateTime? createdAt;
+    DateTime? updatedAt;
+    int? categoryId;
+
+    Category({
+        this.id,
+        this.name,
+        this.image,
+        this.description,
+        this.status,
+        this.deletedAt,
+        this.createdAt,
+        this.updatedAt,
+        this.categoryId,
+    });
+
 }

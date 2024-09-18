@@ -9,7 +9,7 @@ import 'package:paropkar/src/user_preference/user_pref/user_preference.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 
 Future<void> postApi(
-    {required Map<String, dynamic> body,
+    {required Map<String, String> body,
     required String url,
     Map<String, String>? header,
     bool? loader,
@@ -17,7 +17,7 @@ Future<void> postApi(
     Function(dynamic)? onFailed,
     Function()? onException,
     required BuildContext context,
-    bool? isShowMessageToast}) async{
+    bool? isShowMessageToast}) async {
   try {
     //  show loading if loading
     if (loader ?? false) {
@@ -29,16 +29,26 @@ Future<void> postApi(
     var token = await getToken();
     var headers = header ??
         {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
-    var request = http.Request('POST', Uri.parse(url));
-    request.body = json.encode(body);
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    print('here is the body');
+    print(body);
+    print(url);
+    request.fields.addAll(body);
     request.headers.addAll(headers);
+    print('++++++body and url++++++');
+    print(request.url);
     http.StreamedResponse response =
         await request.send().timeout(const Duration(seconds: 15));
+    print('getting response');
+    print(response);
     var finallRes = await getFinalResponse(response);
-    print('response.statusCode');
-    print(response.statusCode);
+    print('++++final response++++');
+    print(finallRes);
     if (isSuccess(response.statusCode)) {
-      onSuccess!(finallRes) ?? () {};
+      onSuccess!(finallRes) ??
+          () async {
+            finallRes = await getFinalResponse(response);
+          };
     } else {
       onFailed!(finallRes) ?? () {};
     }
@@ -67,6 +77,72 @@ Future<void> postApi(
     onException!();
   }
 }
+
+// Future<void> postApi(
+//     {required Map<String, dynamic> body,
+//     required String url,
+//     Map<String, String>? header,
+//     bool? loader,
+//     Function(dynamic)? onSuccess,
+//     Function(dynamic)? onFailed,
+//     Function()? onException,
+//     required BuildContext context,
+//     bool? isShowMessageToast}) async {
+//   try {
+//     //  show loading if loading
+//     if (loader ?? false) {
+//       if (kDebugMode) {
+//         print('show loading');
+//       }
+//       Loader.showLoaderDialog(context);
+//     }
+//     var token = await getToken();
+//     var headers = header ??
+//         {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
+//     var request = http.Request('POST', Uri.parse(url));
+//     print('here is the body');
+//     print(body);
+//     print(url);
+//     request.body = json.encode(body);
+//     request.headers.addAll(headers);
+//     print('++++++body and url++++++');
+//     print(request.url);
+//     print(request.body);
+//     http.StreamedResponse response =
+//         await request.send().timeout(const Duration(seconds: 15));
+//         print('getting response');
+//         print(response);
+//     var finallRes = await getFinalResponse(response);
+//     if (isSuccess(response.statusCode)) {
+//       onSuccess!(finallRes) ?? () {};
+//     } else {
+//       onFailed!(finallRes) ?? () {};
+//     }
+//     if (isShowMessageToast ?? true) showMessageToast(finallRes);
+//     // hide loading if loading
+//     if (loader ?? false) {
+//       // ignore: use_build_context_synchronously
+//       Loader.hideLoaderDialog(context);
+//       if (kDebugMode) {
+//         print('hide loading');
+//       }
+//     }
+//   } on Exception catch (error, stackTrace) {
+//     print('getting error');
+//     print(error);
+//     print('stackTrace');
+//     print(stackTrace);
+//     print('enter in error');
+//     if (loader ?? false) {
+//       // ignore: use_build_context_synchronously
+//       Loader.hideLoaderDialog(context);
+//       if (kDebugMode) {
+//         print('hide loading');
+//       }
+//     }
+//     onException!();
+//   }
+// }
 
 showMessageToast(finallRes) {
   print(finallRes);
@@ -148,6 +224,9 @@ Future<void> postMultipartApi({
     }
     http.StreamedResponse response =
         await request.send().timeout(const Duration(seconds: 45));
+    print('final response');
+    print(response);
+
     var finallRes = await getFinalResponse(response);
     print('finalRes');
     print(finallRes);

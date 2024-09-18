@@ -4,7 +4,7 @@ import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_textstyles.dart';
-import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/view/auth/register_screen.dart';
 import 'package:paropkar/src/view/auth/signup/signup_screen.dart';
@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             CustomButton(
                               ontap: () {
                                 if (_formKeyOtp.currentState!.validate()) {
-                                  loginController.loginWithOtp(context);
+                                  loginController.loginWithMobile(context, type: 'otp');
                                 }
                               },
                               text: 'Login',
@@ -230,7 +230,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             CustomButton(
                               ontap: () {
                                 if (_formKeyPass.currentState!.validate()) {
-                                  loginController.loginWithPassword(context);
+                                  loginController.loginWithMobile(context,
+                                      type: 'password');
                                 }
                               },
                               text: 'Login',

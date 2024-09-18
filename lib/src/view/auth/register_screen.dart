@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/auth_controller/registration_controller.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
-import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/custom_widgets/comman_widget.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
 import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';

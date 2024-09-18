@@ -6,7 +6,7 @@ import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_dimensions.dart';
 import 'package:paropkar/src/utills/app_textstyles.dart';
-import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
 
 class CommanWidget extends StatelessWidget {
   final String? title;

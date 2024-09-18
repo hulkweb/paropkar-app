@@ -5,7 +5,7 @@ import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_textstyles.dart';
-import 'package:paropkar/src/utills/constant.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/view/auth/signup/enter_shopname_screen.dart';
 import 'package:paropkar/src/view/auth/signup/signup_screen.dart';
 import 'package:paropkar/src/custom_widgets/comman_widget.dart';

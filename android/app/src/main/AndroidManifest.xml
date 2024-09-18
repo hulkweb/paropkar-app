@@ -3,11 +3,11 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
-        android:label="paropkar"
-        android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAAzpePCxZ8fp-habEMV2EcXfd9mU-vDRM" />
+    android:label="paropkar"
+    android:name="${applicationName}"
+    android:icon="@mipmap/ic_launcher"
+    android:enableOnBackInvokedCallback="true"> <!-- Correct placement of the attribute -->
+    
         <activity
             android:name=".MainActivity"
             android:exported="true"
