@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
-import 'package:paropkar/src/utills/app_fonts.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.light;

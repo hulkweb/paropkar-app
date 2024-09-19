@@ -4,6 +4,7 @@ import 'package:paropkar/src/controller/address/manage_address_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
+import 'package:paropkar/src/controller/category/category_controller.dart';
 import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/controller/notification/notification_controller.dart';
 import 'package:paropkar/src/controller/product/product_detail_controller.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ManageAddressController()),
         ChangeNotifierProvider(create: (_) => NotificationController()),
           ChangeNotifierProvider(create: (_) => CreateAddressController()),
+          ChangeNotifierProvider(create: (_) => CategoryListingController()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -64,7 +66,7 @@ class MyApp extends StatelessWidget {
           themeMode:
               ThemeMode.system, // Use the current theme mode from provider
           home:
-               SplashView(controller: splashController),
+            BottomBarListScreen() // SplashView(controller: splashController),
           ),
     );
   }

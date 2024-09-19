@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:paropkar/src/controller/bottom_bar_controller.dart';
-import 'package:paropkar/src/utills/navigation_function.dart';
-import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
-import 'package:paropkar/src/view/product/product_detail_screen.dart';
-import 'package:provider/provider.dart';
-
+import 'package:paropkar/src/models/product/product_detail_model.dart';
+import 'package:paropkar/src/services/get_api.dart';
+// For jsonDecode
+import 'package:flutter/foundation.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
+import 'package:paropkar/src/utills/constants.dart';
 class ProductDetailController extends ChangeNotifier {
-  ontapProduct({required String productId, required BuildContext context}) {
-    AppNavigation.navigationPush(context,  ProductDetailScreen());
-  }
+
+  
 
   int _productCount = 0;
   int get productCount => _productCount;
@@ -22,5 +21,26 @@ class ProductDetailController extends ChangeNotifier {
   ontapProductDecrease() {
     _productCount--;
     notifyListeners();
+  }
+
+   ProductDetailModel? productDetailData;
+  DataStatus _productDetailDataStatus = DataStatus.loading;
+  DataStatus get productDetailDataStatus => _productDetailDataStatus;
+  changeDataStatus(DataStatus status){
+    _productDetailDataStatus = status;
+    print('status changed $status');
+    notifyListeners();
+  }
+
+  getProductDetail({required String id}) {
+    getApi(
+      url: '${AppUrl.get_single_product}/$id',
+      header: {'Accept': 'application/json'},
+      onSuccess: (response) {
+        productDetailData = ProductDetailModel.fromJson(response);
+        changeDataStatus(DataStatus.success);
+      },
+      onFailed: (response) {},
+    );
   }
 }

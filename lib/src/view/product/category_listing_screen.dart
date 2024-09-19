@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
+import 'package:paropkar/src/controller/category/category_controller.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
-import 'package:paropkar/src/utills/app_fonts.dart';
-import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
-import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
-import 'package:paropkar/src/view/cart/cart_screen.dart';
-import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/custom_widgets/cards/category_card_custom.dart';
-import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
 
 class CategoryListingScreen extends StatelessWidget {
@@ -75,25 +71,41 @@ class CategoryListingScreen extends StatelessWidget {
             ),
           ];
         },
-        body: GridView.count(
-            crossAxisCount: 2,
-            padding: EdgeInsets.all(screenWidth * .04),
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: screenWidth / screenWidth * .95,
-            children: List.generate(
-              10,
-              (index) => CategoryCard(
-                imageUrl: AppAssets.maida, // Replace with actual image URL
-                categoryText: "Pulses",
-                onPressed: () {
-                  AppNavigation.navigationPush(
-                      context,  ProductListingScreen());
-                },
-              ),
-            )),
+        body: Consumer<CategoryListingController>(
+          builder: (context,controller,child) {
+            return DataStateWidget(
+              status: controller.categoryDataStatus,
+              ontapRetry: () { controller.getCategories();  controller.getCategories();},
+             isDataEmpty: controller.categoryData ==null || (controller.categoryData!.categories == null) ||
+                  (controller.categoryData!.categories!.isEmpty),
+              child: GridView.count(
+                  crossAxisCount: 2,
+                  padding: EdgeInsets.all(screenWidth * .04),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: screenWidth / screenWidth * .95,
+                  children: (controller.categoryData == null) || (controller.categoryData!.categories == null) ||
+                        (controller.categoryData!.categories!.isEmpty)
+                    ? [const SizedBox()]
+                    : List.generate(
+                    controller.categoryData!.categories!.length,
+                    (index)  {
+                       final category =  controller.categoryData!.categories![index];
+                        return CategoryCard(
+                          imageUrl: category.image??'', // Replace with actual image URL
+                          categoryText: category.name??'',
+                          onPressed: () {
+                            AppNavigation.navigationPush(
+                                context,  ProductListingScreen());
+                          },
+                        );
+                      }
+                  )),
+            );
+          }
+        ),
       ),
     );
   }

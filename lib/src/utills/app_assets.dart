@@ -23,4 +23,5 @@ class AppAssets {
   static const String logout = 'assets/images/logout.png';
   static const String camera = 'assets/images/camera.png';
   static const String notification = 'assets/images/notification.png';
+  static const String emptyData = 'assets/images/emptyData.png';
 }

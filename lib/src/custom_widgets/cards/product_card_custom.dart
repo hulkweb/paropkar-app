@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/custom_widgets/custom_network_image.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 class ProductCard extends StatelessWidget {
   final String imageUrl;
   final String productName;
   final String price;
-  final String offerText;
+  final String categoryName;
   final bool isFavorite;
   final VoidCallback onFavoritePressed;
   final VoidCallback onAddToCartPressed;
@@ -17,7 +18,7 @@ class ProductCard extends StatelessWidget {
     required this.imageUrl,
     required this.productName,
     required this.price,
-    required this.offerText,
+    required this.categoryName,
     this.isFavorite = false,
     required this.onFavoritePressed,
     required this.onAddToCartPressed,
@@ -48,12 +49,16 @@ class ProductCard extends StatelessWidget {
                     const SizedBox(
                       height: 30,
                     ),
-                    Image.asset(
-                      imageUrl,
-                      width: double.infinity,
-                      height: screenHeight * .1,
-                      fit: BoxFit.contain,
-                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10,right: 10),
+                      child: CustomNetworkImage(imageUrl: imageUrl,height: screenHeight * .12,),
+                    )
+                    // Image.network(
+                    //   imageUrl,
+                    //   width: double.infinity,
+                    //   height: screenHeight * .1,
+                    //   fit: BoxFit.contain,
+                    // ),
                   ],
                 ),
                 Positioned(
@@ -87,13 +92,13 @@ class ProductCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: Text(
-                offerText,
+                categoryName,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       color: AppColors.primaryColor,
                       fontFamily: AppFonts.medium,
                       overflow: TextOverflow.ellipsis,
                     ),
-                maxLines: 2,
+                maxLines: 1,
               ),
             ),
             const Expanded(child: SizedBox(height: 4.0)),

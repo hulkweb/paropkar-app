@@ -62,7 +62,7 @@ showDialogBox(BuildContext context,
 getFinalResponse(http.StreamedResponse response) async {
   String result = await response.stream.bytesToString();
   if (kDebugMode) {
-    print('+++++status+++++');
+    print('+++++status+ ++++');
     print(response.statusCode);
   }
   print('+++++result+++++');

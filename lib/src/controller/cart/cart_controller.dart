@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:paropkar/src/models/cart/cart_model.dart';
+import 'package:paropkar/src/services/get_api.dart';
+import 'package:paropkar/src/utills/constants.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/checkout/checkout_screen.dart';
 
@@ -69,5 +71,17 @@ class CartController extends ChangeNotifier {
 
   void ontapContinueButton(BuildContext context) {
     AppNavigation.navigationPush(context, CheckoutScreen());
+  }
+
+ 
+  getCartsApi() {
+    getApi(
+        url: 'cart url',
+        onSuccess: (response) {
+          print('done here');
+        },
+        onFailed: (response) {
+          print('here');
+        });
   }
 }

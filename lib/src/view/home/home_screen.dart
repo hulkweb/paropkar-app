@@ -252,7 +252,7 @@ class HomeScreen extends StatelessWidget {
                                 .maida, // Replace with actual image URL
                             productName: "Toor Daal",
                             price: "₹150.00",
-                            offerText: "Buy 3 Items, Save Extra 5%",
+                            categoryName: "Buy 3 Items, Save Extra 5%",
                             isFavorite: index % 2 == 0,
                             onFavoritePressed: () {
                               // Handle favorite icon press
@@ -263,7 +263,7 @@ class HomeScreen extends StatelessWidget {
                             },
                             onProductPressed: () {
                               AppNavigation.navigationPush(
-                                  context, ProductDetailScreen());
+                                  context, ProductDetailScreen(id: '',));
                             },
                           ),
                         )),

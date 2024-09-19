@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/custom_widgets/custom_network_image.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 
 // Custom Category Card Widget
@@ -48,12 +49,12 @@ class CategoryCard extends StatelessWidget {
                     top: 20, bottom: 10, left: 10, right: 10),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    imageUrl,
+                  child:
+                     CustomNetworkImage( 
                     height: screenWidth * .3,
-                    width: screenWidth * .3,
-                    fit: BoxFit.cover,
-                  ),
+                    width: screenWidth * .3, imageUrl: imageUrl,),
+                  
+                 
                 ),
               ),
               Padding(
