@@ -4,15 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
-import 'package:paropkar/src/utills/globle_func.dart';
-import 'package:paropkar/src/utills/navigation_function.dart';
-import 'package:paropkar/src/view/checkout/checkout_screen.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
 import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
+import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:provider/provider.dart';
 
 // Colors for the theme
@@ -30,12 +29,20 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final cartController = CartController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    Future.microtask(() {
+      Provider.of<CartController>(context, listen: false).getCarts();
+    });
+    super.initState();
+  }
 
   // final bottomBarListController = BottomBarListController();
   @override
   Widget build(BuildContext context) {
     final bottomController = Provider.of<BottomBarListController>(context);
+
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
@@ -82,151 +89,238 @@ class _CartScreenState extends State<CartScreen> {
               color: Theme.of(context).canvasColor),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
-          child: Column(
-            children: [
-              Column(
-                  children: List.generate(cartController.cartItemList.length,
-                      (index) {
-                print(cartController.cartItemList[index].quantity);
-                return CartItem(
-                  title: cartController.cartItemList[index].productName,
-                  subTitle: cartController.cartItemList[index].category,
-                  price: cartController.cartItemList[index].price,
-                  unit: cartController.cartItemList[index].productName,
-                  quantity: cartController.cartItemList[index].quantity,
-                  onChange: (String value) {
-                    if(value.isEmpty || value=='0'){
-                           cartController.changeProductQuantity(
-                        index: index, value: '1');
-                    }else {
-                      cartController.changeProductQuantity(
-                        index: index, value: value);
-                    }
-                    setState(() {});
-                  },
-                  onIncrease: () {
-                    cartController.onIncreaseProduct(index: index);
-                    setState(() {});
-                  },
-                  onDecrease: () {
-                    cartController.onDecreaseProduct(index: index);
-                    setState(() {});
-                  },
-                );
-              })),
-              const SizedBox(height: 10),
-              Container(
-                padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.only(top: 15),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: whiteColor,
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 6,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        height: 50,
-                        child: CustomTextFormWidget(
-                          controller: cartController.couponTextController,
-                          contentpadding: const EdgeInsets.only(left: 20),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(40)),
-                          fillColor: AppColors.primaryColor.withOpacity(.1),
-                          hintText: "Enter code",
-                          validator: (String? value) {
-                            return null;
-                          },
-                          suffixWidget: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CustomButton(
-                              text: 'Apply',
-                              height: 40,
-                              width: 70,
-                              borderRadius: 39,
-                              ontap: () {
-                                cartController.ontapApplyCoupon(context);
-                              },
-                            ),
+      body: Consumer<CartController>(builder: (context, controller, child) {
+        final isDataEmpty = controller.carts == null ||
+            controller.carts!.data == null ||
+            controller.carts!.data!.isEmpty;
+        return DataStateWidget(
+          isOverlay: controller.addCartDataStatus == DataStatus.loading,
+          ontapRetry: () {
+            controller.getCarts();
+          },
+          status: controller.cartsDataStatus,
+          isDataEmpty: isDataEmpty,
+          child: isDataEmpty
+              ? null
+              : SizedBox(
+                  height: screenHeight,
+                  child: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 12, top: 12, right: 12),
+                          child: Column(
+                            children: [
+                              Column(
+                                  children: List.generate(
+                                      controller.carts!.data!.length, (index) {
+                                final cart = controller.carts!.data![index];
+                                // print(controller.cartItemList[index].quantity);
+                                return cart.product == null
+                                    ? const SizedBox()
+                                    : CartItem(
+                                        title: formatData(cart.product!.name),
+                                        category: formatData(
+                                            cart.product!.description),
+                                        price: formatData(cart.product!.price),
+                                        quantity: formatData(controller
+                                            .carts!.data![index].quantity),
+                                        onChange: (String value) {
+                                          setState(() {});
+                                        },
+                                        onIncrease: ()async{
+                                          await controller
+                                              .onIncreaseProduct(
+                                            index: index,
+                                            product_id:
+                                                formatData(cart.product!.id),
+                                            variation_id:
+                                                cart.variationId!.toString(),
+                                            quantity: 1,
+                                            context: context,
+                                          );
+                                          await controller.getCarts();
+                                          setState(() {});
+                                        },
+                                        onDecrease: () async {
+                                          controller.onDecreaseProduct(
+                                            index: index,
+                                            product_id:
+                                                formatData(cart.product!.id),
+                                            variation_id:
+                                                cart.variationId!.toString(),
+                                            quantity: 1,
+                                            context: context,
+                                          );
+                                        },
+                                        onSubmitted: (String value) async {
+                                          await controller
+                                              .changeProductQuantity(
+                                            index: index,
+                                            product_id:
+                                                formatData(cart.product!.id),
+                                            variation_id:
+                                                cart.variationId!.toString(),
+                                            quantity: cart.product!.stock!,
+                                            context: context,
+                                          );
+                                          controller.getCarts();
+                                        },
+                                      );
+                              })),
+                              const SizedBox(height: 10),
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                margin: const EdgeInsets.only(top: 15),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: whiteColor,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                        height: 50,
+                                        child: CustomTextFormWidget(
+                                          controller: controller
+                                              .couponTextController,
+                                          contentpadding:
+                                              const EdgeInsets.only(left: 20),
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(40)),
+                                          fillColor: AppColors.primaryColor
+                                              .withOpacity(.1),
+                                          hintText: "Enter code",
+                                          validator: (String? value) {
+                                            return null;
+                                          },
+                                          suffixWidget: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: CustomButton(
+                                              text: 'Apply',
+                                              height: 40,
+                                              width: 70,
+                                              borderRadius: 39,
+                                              ontap: () {
+                                                controller
+                                                    .ontapApplyCoupon(context);
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Sub Total',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge),
+                                        Text('₹ ${controller.subtotal}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Delivery Charges',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge),
+                                        Text(
+                                            '₹ ${controller.deiiveryCages}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Discount',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge!
+                                                .copyWith(color: Colors.red)),
+                                        Text('- ₹ ${controller.discount}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyLarge),
+                                      ],
+                                    ),
+                                    const Divider(),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text('Total Price',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge),
+                                        Text('₹ ${controller.total}',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge!
+                                                .copyWith(
+                                                    color:
+                                                        AppColors.primaryColor,
+                                                    fontSize: 20)),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 30),
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Sub Total',
-                            style: Theme.of(context).textTheme.bodyLarge),
-                        Text('₹ ${cartController.subtotal}',
-                            style: Theme.of(context).textTheme.bodyLarge),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Delivery Charges',
-                            style: Theme.of(context).textTheme.bodyLarge),
-                        Text('₹ ${cartController.deiiveryCages}',
-                            style: Theme.of(context).textTheme.bodyLarge),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Discount',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyLarge!
-                                .copyWith(color: Colors.red)),
-                        Text('- ₹ ${cartController.discount}',
-                            style: Theme.of(context).textTheme.bodyLarge),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Total Price',
-                            style: Theme.of(context).textTheme.titleLarge),
-                        Text('₹ ${cartController.total}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(
-                                    color: AppColors.primaryColor,
-                                    fontSize: 20)),
-                      ],
-                    ),
-                  ],
+                      // Expanded(child: SizedBox(height: 10,)),
+                      Positioned(
+                        bottom: 0,
+                        child: SizedBox(
+                          height: screenWidth * .3,
+                          child: CheckoutButton(
+                            total: 850.00,
+                            // onPressed: () {},
+                            onPressed: () {
+                              controller.ontapContinueButton(context);
+                            },
+                            text: 'Continue',
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: SizedBox(
-        height: screenWidth * .3,
-        child: CheckoutButton(
-          total: 850.00,
-          // onPressed: () {},
-          onPressed: () {
-            cartController.ontapContinueButton(context);
-          },
-          text: 'Continue',
-        ),
-      ),
+        );
+      }),
+      // bottomNavigationBar: SizedBox(
+      //   height: screenWidth * .3,
+      //   child: CheckoutButton(
+      //     total: 850.00,
+      //     // onPressed: () {},
+      //     onPressed: () {
+      //       controller.ontapContinueButton(context);
+      //     },
+      //     text: 'Continue',
+      //   ),
+      // ),
     );
   }
 }
@@ -234,24 +328,24 @@ class _CartScreenState extends State<CartScreen> {
 // Custom Cart Item Widget
 class CartItem extends StatefulWidget {
   final String title;
-  final String subTitle;
-  final double price;
-  final String unit;
+  final String category;
+  final String price;
   final String quantity;
   final Function(String value) onChange;
   final Function() onIncrease;
   final Function() onDecrease;
+  final Function(String value) onSubmitted;
 
   const CartItem({
     super.key,
     required this.title,
-    required this.subTitle,
+    required this.category,
     required this.price,
-    required this.unit,
     required this.quantity,
     required this.onChange,
     required this.onIncrease,
     required this.onDecrease,
+    required this.onSubmitted,
   });
 
   @override
@@ -318,7 +412,7 @@ class _CartItemState extends State<CartItem> {
                 SizedBox(
                   width: screenWidth * .4,
                   child: Text(
-                    widget.subTitle,
+                    widget.category,
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: AppColors.primaryColor,
                         overflow: TextOverflow.ellipsis,
@@ -388,29 +482,22 @@ class _CartItemState extends State<CartItem> {
                                 style: const TextStyle(
                                     fontSize: 18), // Adjust font size as needed
                                 decoration: const InputDecoration(
-                                  counterText: '',
-                                  isDense: true,
-                                  contentPadding:
-                                      EdgeInsets.symmetric(vertical: 5),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.black),
-                                  ),
-                                   border: InputBorder.none,
-                                  enabledBorder: InputBorder.none
-                                  // enabledBorder:
-                                  
-                                  //  UnderlineInputBorder(
-                                    
-                                  //   borderSide:
-                                  //       BorderSide(color: Colors.transparent,width: 0),
-                                  // ),
-                                ),
+                                    counterText: '',
+                                    isDense: true,
+                                    contentPadding:
+                                        EdgeInsets.symmetric(vertical: 5),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                    ),
+                                    border: InputBorder.none,
+                                    enabledBorder: InputBorder.none),
                                 cursorColor: AppColors.primaryColor,
                                 onSubmitted: (newValue) {
                                   setState(() {
                                     _isEditing = false;
                                   });
+                                  widget.onSubmitted(newValue);
                                 },
                                 onChanged: widget.onChange,
                                 maxLength: 3,
@@ -421,11 +508,11 @@ class _CartItemState extends State<CartItem> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Center(
-                                   child: Text(
-                                      widget.quantity,
-                                      style: const TextStyle(
-                                          fontSize: 18), // Adjust the font size
-                                    ),
+                                  child: Text(
+                                    widget.quantity,
+                                    style: const TextStyle(
+                                        fontSize: 18), // Adjust the font size
+                                  ),
                                 ),
                               ),
                             )),

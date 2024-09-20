@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:paropkar/src/custom_widgets/dialog/success_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
+
 void showCustomToast({
   required String title,
   ToastGravity gravity = ToastGravity.BOTTOM,
@@ -37,7 +38,10 @@ pop(context) {
 }
 
 showDialogBox(BuildContext context,
-    {required String type, required String  title, required String description, VoidCallback? ontapOk}) {
+    {required String type,
+    required String title,
+    required String description,
+    VoidCallback? ontapOk}) {
   return showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -48,7 +52,7 @@ showDialogBox(BuildContext context,
       //       "Your booking has been confirmed. Check your email for details.",
       // );
       return DialogBox(
-        type:type,
+        type: type,
         title: title,
         description: description,
         ontapOk: ontapOk,
@@ -56,8 +60,6 @@ showDialogBox(BuildContext context,
     },
   );
 }
-
-
 
 getFinalResponse(http.StreamedResponse response) async {
   String result = await response.stream.bytesToString();
@@ -76,6 +78,7 @@ bool getDataEmptyOrNot(var finalRes) {
   }
   return false;
 }
+
 // bool successStatus = (201 || 201);
 isSuccess(int statusCode) {
   if (statusCode == 201 || statusCode == 200) {
@@ -83,4 +86,21 @@ isSuccess(int statusCode) {
   } else {
     return false;
   }
+}
+
+String formatData(dynamic data) {
+  if (data == null) {
+    return ''; // Return empty string if data is null
+  } else if (data is String) {
+    return data; // Return string if data is already a string
+  } else if (data is double || data is int) {
+    return data.toString(); // Convert double/int to string
+  } else {
+    return ''; // Return empty string for any other type
+  }
+}
+
+bool hasNoData( data) {
+  print('-------${data.runtimeType}----${data}-------');
+  return (data == null || data.isEmpty);
 }

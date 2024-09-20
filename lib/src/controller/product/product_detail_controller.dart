@@ -33,6 +33,7 @@ class ProductDetailController extends ChangeNotifier {
   }
 
   getProductDetail({required String id}) {
+    changeDataStatus(DataStatus.loading);
     getApi(
       url: '${AppUrl.get_single_product}/$id',
       header: {'Accept': 'application/json'},
@@ -40,7 +41,10 @@ class ProductDetailController extends ChangeNotifier {
         productDetailData = ProductDetailModel.fromJson(response);
         changeDataStatus(DataStatus.success);
       },
-      onFailed: (response) {},
+      onFailed: (response) {
+        changeDataStatus(DataStatus.error);
+
+      },
     );
   }
 }

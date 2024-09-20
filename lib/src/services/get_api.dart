@@ -29,7 +29,7 @@ Future<void> getApi(
     }
     var token = await getToken();
     var headers = header ??
-        {'Content-Type': 'application/json', 'Authorization': 'Bearer $token'};
+        { 'Authorization': 'Bearer $token','Accept': 'application/json',};
     print('___________________');
     print(headers);
     var request = http.Request('GET', Uri.parse(url));

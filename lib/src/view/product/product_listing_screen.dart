@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
+import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/controller/product/product_detail_controller.dart';
 import 'package:paropkar/src/controller/product/product_listing_controller.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
@@ -15,11 +16,12 @@ import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
 
 class ProductListingScreen extends StatelessWidget {
-  ProductListingScreen({super.key});
-  final productListingController = ProductListingController();
+  const ProductListingScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    final bottomController = Provider.of<BottomBarListController>(context);
+    // final bottomController = Provider.of<BottomBarListController>(context);
+    final cartController = Provider.of<CartController>(context, listen: true);
+
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -90,6 +92,7 @@ class ProductListingScreen extends StatelessWidget {
                 controller.changeDataStatus(DataStatus.loading);
                 controller.getProducts();
               },
+              isOverlay: cartController.addCartDataStatus==DataStatus.loading,
               // isDataEmpty:  (controller.productsData!.data != null) &&
               //         (controller.productsData!.data!.isEmpty),
               isDataEmpty: controller.productsData == null ||
@@ -124,23 +127,23 @@ class ProductListingScreen extends StatelessWidget {
                             // Handle favorite icon press
                           },
                           onAddToCartPressed: () async {
-                            bottomController.changeIndex(2);
-                            productListingController.ontapProductCart(
+                            cartController.addCart(
+                                product_id: product.id.toString(),
+                                variation_id: '1',
+                                quantity: "1",
                                 context: context);
                           },
                           onProductPressed: () {
-                            // context
-                            //     .read<ProductDetailController>()
-                            //     .getProductDetail(id: '${product.id ?? ''}');
-                            //same functions result
-                            Provider.of<ProductDetailController>(context,
-                                    listen: false)
-                               .getProductDetail(id: '${product.id ?? ''}');
-                            AppNavigation.navigationPush(
-                                context,
-                                ProductDetailScreen(
-                                  id: '${product.id ?? ''}',
-                                ));
+                            context
+                                .read<ProductDetailController>()
+                                .getProductDetail(id: '${product.id ?? ''}');
+                            // same functions result
+
+                                 AppNavigation.navigationPush(
+                            context,
+                            ProductDetailScreen(
+                              id: '${product.id ?? ''}',
+                            ));
                           },
                         );
                       }),

@@ -4,6 +4,7 @@ import 'package:paropkar/src/controller/address/manage_address_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
+import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/controller/category/category_controller.dart';
 import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/controller/notification/notification_controller.dart';
@@ -56,18 +57,17 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProductDetailController()),
         ChangeNotifierProvider(create: (_) => ManageAddressController()),
         ChangeNotifierProvider(create: (_) => NotificationController()),
-          ChangeNotifierProvider(create: (_) => CreateAddressController()),
-          ChangeNotifierProvider(create: (_) => CategoryListingController()),
+        ChangeNotifierProvider(create: (_) => CreateAddressController()),
+        ChangeNotifierProvider(create: (_) => CategoryListingController()),
+        ChangeNotifierProvider(create: (_) => CartController()),
       ],
       child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: RAppTheme.lightTheme, // Apply the custom light theme
-          darkTheme: RAppTheme.lightTheme, // Apply the custom dark theme
-          themeMode:
-              ThemeMode.system, // Use the current theme mode from provider
-          home:
-            BottomBarListScreen() // SplashView(controller: splashController),
-          ),
+        debugShowCheckedModeBanner: false,
+        theme: RAppTheme.lightTheme, // Apply the custom light theme
+        darkTheme: RAppTheme.lightTheme, // Apply the custom dark theme
+        themeMode: ThemeMode.system, // Use the current theme mode from provider
+        home: SplashView(controller: splashController),
+      ),
     );
   }
 }

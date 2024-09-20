@@ -101,9 +101,6 @@ class LoginController extends ChangeNotifier {
   }
 
   loginWithMobile(BuildContext context, {required String type}) {
-    AppNavigation.navigationPush(context,
-        AppNavigation.navigationPush(context, const BottomBarListScreen()));
-    return;
     Map<String, String> bodyField = (type == 'otp')
         ? {
             'mobile': mobileFieldController.value.text,
@@ -118,7 +115,6 @@ class LoginController extends ChangeNotifier {
         'otp': '123456',
       });
     }
-    print(bodyField);
     postApi(
       isShowMessageToast: false,
       body: bodyField,
@@ -138,6 +134,9 @@ class LoginController extends ChangeNotifier {
           type: 'success',
           title: 'Successful',
           description: response['message'].toString(),
+          ontapOk: () {
+            AppNavigation.navigationPush(context, const BottomBarListScreen());
+          },
         );
       },
       onFailed: (response) {

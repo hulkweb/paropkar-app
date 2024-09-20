@@ -39,7 +39,7 @@ class ProductDetailScreen extends StatelessWidget {
                         (controller.productDetailData!.product == null);
                   return DataStateWidget(
                     status: controller.productDetailDataStatus,
-                    ontapRetry: () {},
+                    ontapRetry: () {controller.getProductDetail(id: id);},
                     isDataEmpty:isDataEmpty,
                     child:isDataEmpty?const SizedBox(): SizedBox(
                       height: screenHeight,

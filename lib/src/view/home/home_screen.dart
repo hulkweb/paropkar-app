@@ -3,8 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
+import 'package:paropkar/src/controller/cart/cart_controller.dart';
+import 'package:paropkar/src/controller/category/category_controller.dart';
+import 'package:paropkar/src/controller/product/product_detail_controller.dart';
+import 'package:paropkar/src/controller/product/product_listing_controller.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
+import 'package:paropkar/src/utills/constants.dart';
 import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
@@ -23,6 +29,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomController = Provider.of<BottomBarListController>(context);
+    final categoryListingController =
+        Provider.of<CategoryListingController>(context);
+    final cartController = Provider.of<CartController>(context, listen: true);
     return StatusBarCustom(
       statusBarBrightnessLight: true,
       statusBarColor: AppColors.primaryColor,
@@ -210,24 +219,49 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 10),
 
                     // Categories List
-                    SizedBox(
-                      height: screenWidth * .4,
-                      child: ListView(
-                          physics: const ScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          children: List.generate(
-                              6,
-                              (index) => Padding(
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: CategoryItem(
-                                        ontap: () {
-                                          AppNavigation.navigationPush(context,
-                                               ProductListingScreen());
-                                        },
-                                        name: 'Mustard Oil',
-                                        imagePath: AppAssets.bottle),
-                                  ))),
-                    ),
+                    Consumer<CategoryListingController>(
+                        builder: (context, controller, child) {
+                      return DataStateWidget(
+                        status: controller.categoryDataStatus,
+                        ontapRetry: () {
+                          controller.getCategories();
+                          controller.getCategories();
+                        },
+                        loadingWidget: SizedBox(),
+                        isDataEmpty: controller.categoryData == null ||
+                            (controller.categoryData!.categories == null) ||
+                            (controller.categoryData!.categories!.isEmpty),
+                        child: SizedBox(
+                          height: screenWidth * .4,
+                          child: ListView(
+                              physics: const ScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: (controller.categoryData == null) ||
+                                      (controller.categoryData!.categories ==
+                                          null) ||
+                                      (controller
+                                          .categoryData!.categories!.isEmpty)
+                                  ? [const SizedBox()]
+                                  : List.generate(
+                                      controller.categoryData!.categories!
+                                          .length, (index) {
+                                      final category = controller
+                                          .categoryData!.categories![index];
+                                      return Padding(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: CategoryItem(
+                                            ontap: () {
+                                              AppNavigation.navigationPush(
+                                                  context,
+                                                  const ProductListingScreen());
+                                            },
+                                            name: category.name ?? '',
+                                            imagePath: category.image ?? ''),
+                                      );
+                                    })),
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 20),
 
                     // Popular Section
@@ -237,36 +271,76 @@ class HomeScreen extends StatelessWidget {
                     ),
 
                     // Popular Items Grid
-                    GridView.count(
-                        crossAxisCount: 2,
-                        padding: EdgeInsets.all(screenWidth * .04),
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisSpacing: 7,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.6,
-                        children: List.generate(
-                          10,
-                          (index) => ProductCard(
-                            imageUrl: AppAssets
-                                .maida, // Replace with actual image URL
-                            productName: "Toor Daal",
-                            price: "₹150.00",
-                            categoryName: "Buy 3 Items, Save Extra 5%",
-                            isFavorite: index % 2 == 0,
-                            onFavoritePressed: () {
-                              // Handle favorite icon press
-                            },
-                            onAddToCartPressed: () async {
-                              // Handle add to cart press
-                              bottomController.changeIndex(2);
-                            },
-                            onProductPressed: () {
-                              AppNavigation.navigationPush(
-                                  context, ProductDetailScreen(id: '',));
-                            },
-                          ),
-                        )),
+                    Consumer<ProductListingController>(
+                        builder: (context, controller, child) {
+                      return DataStateWidget(
+                        status: controller.productDataStatus,
+                        ontapRetry: () {
+                          controller.changeDataStatus(DataStatus.loading);
+                          controller.getProducts();
+                        },
+                        loadingWidget: const SizedBox(),
+                        isOverlay: false,
+                        // isDataEmpty:  (controller.productsData!.data != null) &&
+                        //         (controller.productsData!.data!.isEmpty),
+                        isDataEmpty: controller.productsData == null ||
+                            (controller.productsData!.data == null) ||
+                            (controller.productsData!.data!.isEmpty),
+                        child: GridView.count(
+                            crossAxisCount: 2,
+                            padding: EdgeInsets.all(screenWidth * .04),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            crossAxisSpacing: 7,
+                            mainAxisSpacing: 10,
+                            childAspectRatio: 0.6,
+                            children: (controller.productsData == null) ||
+                                    (controller.productsData!.data == null) ||
+                                    (controller.productsData!.data!.isEmpty)
+                                ? []
+                                : List.generate(
+                                    controller.productsData!.data!.length,
+                                    (index) {
+                                      final product =
+                                          controller.productsData!.data![index];
+                                      return ProductCard(
+                                        imageUrl: product.image ??
+                                            '', // AppAssets.maida, // Replace with actual image URL
+                                        productName: product.name ?? '',
+                                        price: "₹${product.price ?? ''}",
+                                        categoryName: product.category == null
+                                            ? ""
+                                            : product.category!.name ??
+                                                '', //"Buy 3 Items, Save Extra 5%",
+                                        isFavorite: index % 2 == 0,
+                                        onFavoritePressed: () {
+                                          // Handle favorite icon press
+                                        },
+                                        onAddToCartPressed: () async {
+                                          cartController.addCart(
+                                              product_id: product.id.toString(),
+                                              variation_id: '1',
+                                              quantity: "1",
+                                              context: context);
+                                        },
+                                        onProductPressed: () {
+                                          context
+                                              .read<ProductDetailController>()
+                                              .getProductDetail(
+                                                  id: '${product.id ?? ''}');
+                                          // same functions result
+
+                                          AppNavigation.navigationPush(
+                                              context,
+                                              ProductDetailScreen(
+                                                id: '${product.id ?? ''}',
+                                              ));
+                                        },
+                                      );
+                                    },
+                                  )),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -309,7 +383,7 @@ class CategoryItem extends StatelessWidget {
                   topLeft: Radius.circular(20),
                   bottomRight: Radius.circular(20)),
               image: DecorationImage(
-                image: AssetImage(imagePath),
+                image: NetworkImage(AppUrl.imageUrl + imagePath),
                 fit: BoxFit.cover,
               ),
             ),

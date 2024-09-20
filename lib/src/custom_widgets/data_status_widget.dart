@@ -22,7 +22,7 @@ class DataStateWidget extends StatelessWidget {
   final DataStatus status;
   final Widget? loadingWidget;
   final Widget? errorWidget;
-  final Widget child; //success screen
+  final Widget? child; //success screen
   final double? loadingHeight;
   final double? loadingWidth;
   final double? errorHeight;
@@ -30,6 +30,7 @@ class DataStateWidget extends StatelessWidget {
   final VoidCallback ontapRetry;
   final bool isDataEmpty;
   final Widget? emptyDataWidget;
+  final bool? isOverlay;
 
   const DataStateWidget({
     super.key,
@@ -43,7 +44,7 @@ class DataStateWidget extends StatelessWidget {
     this.errorWidth,
     required this.ontapRetry,
     required this.isDataEmpty,
-    this.emptyDataWidget,
+    this.emptyDataWidget, this.isOverlay,
   });
 
   @override
@@ -83,7 +84,24 @@ class DataStateWidget extends StatelessWidget {
                   height: screenWidth * .3,
                   width: screenWidth * .3,
                 ))
-            : child; // Required success widget
+            :
+            isOverlay??false?
+             Stack(
+                  children: [
+                    child!,
+                    Positioned.fill(
+                      child: Container(
+                        color: Colors.black
+                            .withOpacity(0.5), // Semi-transparent background
+                        child: const Center(
+                          child:
+                              CircularProgressIndicator(color: AppColors.primaryColor,), // Loading indicator
+                        ),
+                      ),
+                    ),
+                  ],
+                ):child ??
+                const SizedBox(); // Required success widget
     }
   }
 }

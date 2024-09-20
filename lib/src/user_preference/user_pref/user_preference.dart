@@ -42,12 +42,12 @@ class UserPreference {
   }
 }
 
-Future<String> getToken() async {
+Future<String?> getToken() async {
   UserPreference userPreference = UserPreference();
-  String token = '';
+  String? token ;
   await userPreference.getUser().then((value) {
     token = value.token ?? '';
-    // token = '665fe0e4d1fd549f010024a2|3JHzMZG9MlhOwTDQfrfqZSNEK2M7zY6pwLWNTDvc';
+   // token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL3Bhcm9wa2FyLmpldGRpZ2l0YWwuaW4vYXBpL3Bvc3Rfb3RwX2xvZ2luIiwiaWF0IjoxNzI2ODI4MDg4LCJleHAiOjE3MjY4MzE2ODgsIm5iZiI6MTcyNjgyODA4OCwianRpIjoicEN2UHlyZnVQT05KYkRLSyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.hz3pGML2mftfLF4OZgU9IRNMrCzIyMG6xkhp_b7_0fU';
   }).onError((error, stackTrace) {
     print('Error:-$error');
   });
