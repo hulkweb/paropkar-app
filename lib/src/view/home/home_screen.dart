@@ -326,14 +326,22 @@ class HomeScreen extends StatelessWidget {
                                         onProductPressed: () {
                                           context
                                               .read<ProductDetailController>()
-                                              .getProductDetail(
-                                                  id: '${product.id ?? ''}');
+                                              .getProductDetail(context,
+                                                  id: '${product.id ?? ''}',
+                                                  category_id:
+                                                      '${product.categoryId ?? ''}',
+                                                  subcategory_id:
+                                                      '${product.subcategoryId ?? ''}');
                                           // same functions result
 
                                           AppNavigation.navigationPush(
                                               context,
                                               ProductDetailScreen(
                                                 id: '${product.id ?? ''}',
+                                                categoryId:
+                                                    '${product.categoryId ?? ''}',
+                                                subcategoryId:
+                                                    '${product.subcategoryId ?? ''}',
                                               ));
                                         },
                                       );

@@ -4,6 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
+import 'package:paropkar/src/controller/profile/profile_controller.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
+import 'package:paropkar/src/custom_widgets/small_widgets.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
@@ -11,6 +14,7 @@ import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/address/manage_address_screen.dart';
+import 'package:paropkar/src/view/favorite/favorite_listing_screen.dart';
 import 'package:paropkar/src/view/invoice/invoice_screen.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
 import 'package:paropkar/src/view/profile/edit_profile_screen.dart';
@@ -31,6 +35,7 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomController = Provider.of<BottomBarListController>(context);
+    final profileController = Provider.of<ProfileController>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
@@ -157,7 +162,33 @@ class ProfileScreen extends StatelessWidget {
                     title: 'Language',
                     padding: 8),
                 ListTileProfileSction(
-                    ontap: () {},
+                    ontap: () {
+                      AppNavigation.navigationPush(context, FavoriteListingScreen());
+                    },
+                    imgColor: AppColors.white,
+                    image: AppAssets.favorite,
+                    title: 'Favorite Items',
+                    padding: 8),
+                ListTileProfileSction(
+                    ontap: () async {
+                      await showModalBottomSheet<void>(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0.0),
+                          ),
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Consumer<ProfileController>(
+                                builder: (context, controller, child) {
+                              return LogoutWidget(
+                                ontapLogout: () async {
+                                  await profileController.logoutEvent(context);
+                                },
+                                isLoading: controller.logoutStatus ==
+                                    DataStatus.loading,
+                              );
+                            });
+                          });
+                    },
                     image: AppAssets.logout,
                     title: 'Logout',
                     padding: 8),
@@ -181,12 +212,13 @@ class ListTileProfileSction extends StatelessWidget {
     required this.ontap,
     required this.image,
     required this.title,
-    required this.padding,
+    required this.padding, this.imgColor,
   });
   final VoidCallback ontap;
   final String image;
   final String title;
   final double padding;
+  final Color? imgColor;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -200,7 +232,7 @@ class ListTileProfileSction extends StatelessWidget {
             CustomIconImage(
               padding: padding,
               onPress: ontap,
-              image: image,
+              image: image,imgColor: imgColor,
               backgroundColor: AppColors.primaryColor,
             ),
             smallWidth,

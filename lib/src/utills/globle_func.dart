@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:paropkar/src/custom_widgets/dialog/success_dialog.dart';
+import 'package:paropkar/src/user_preference/user_pref/user_preference.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 
@@ -59,6 +60,12 @@ showDialogBox(BuildContext context,
       );
     },
   );
+}
+
+
+Future<Map<String, String>> getHeaders()async{
+   var token = await getToken();
+    return  { 'Authorization': 'Bearer $token','Accept': 'application/json',};
 }
 
 getFinalResponse(http.StreamedResponse response) async {

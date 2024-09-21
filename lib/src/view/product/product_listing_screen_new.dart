@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/bloc_provider/product/product_block.dart';
+import 'package:paropkar/src/bloc_provider/product/product_event.dart';
+import 'package:paropkar/src/bloc_provider/product/product_state.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/controller/favorite/favorite_controller.dart';
@@ -15,9 +18,9 @@ import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
-
-class ProductListingScreen extends StatelessWidget {
-  const ProductListingScreen({super.key});
+import 'package:flutter_bloc/flutter_bloc.dart';
+class ProductListingScreenNew extends StatelessWidget {
+  const ProductListingScreenNew({super.key});
   @override
   Widget build(BuildContext context) {
     // final bottomController = Provider.of<BottomBarListController>(context);
@@ -84,21 +87,24 @@ class ProductListingScreen extends StatelessWidget {
             ),
           ];
         },
-        body: Consumer<ProductListingController>(
-            builder: (context, controller, child) {
+        body: BlocBuilder<ProductBloc, ProductState>(
+          builder: (context, state) {
+            DataStatus  dataStatus = (state==ProductLoading)?DataStatus.loading:(state==ProductSuccess)?DataStatus.success:DataStatus.error;
+            final  productData;
+            if(state is ProductSuccess){
+              productData = state.productListData;
+            }
+             
           // print(controller.productDataStatus);
           return DataStateWidget(
-              status: controller.productDataStatus,
+              status: dataStatus,
               ontapRetry: () {
-                controller.changeDataStatus(DataStatus.loading);
-                controller.getProducts();
+                context.read<ProductBloc>().add(FetchProducts());
               },
               isOverlay: cartController.addCartDataStatus == DataStatus.loading,
               // isDataEmpty:  (controller.productsData!.data != null) &&
               //         (controller.productsData!.data!.isEmpty),
-              isDataEmpty: controller.productsData == null ||
-                  (controller.productsData!.data == null) ||
-                  (controller.productsData!.data!.isEmpty),
+              isDataEmpty: false,
               child: GridView.count(
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(screenWidth * .04),
@@ -107,7 +113,7 @@ class ProductListingScreen extends StatelessWidget {
                 crossAxisSpacing: 7,
                 mainAxisSpacing: 10,
                 childAspectRatio: 0.7,
-                children: (controller.productsData == null) ||
+                children: (productData == null) ||
                         (controller.productsData!.data == null) ||
                         (controller.productsData!.data!.isEmpty)
                     ? []

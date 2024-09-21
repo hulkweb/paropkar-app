@@ -16,4 +16,9 @@ class AppNavigation {
           builder: (context) => screenName), // Navigate to home screen
     );
   }
+   static pushAndRemoveUntil(BuildContext context, Widget screenName) {
+    Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => screenName), (route) => false // Navigate to home screen
+    );
+  }
 }

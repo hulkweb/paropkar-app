@@ -57,7 +57,6 @@ Future<String?> getToken() async {
 Future<void> logOut() async {
   UserPreference userPreference = UserPreference();
   await userPreference.removeUser();
-  Fluttertoast.showToast(msg: 'logout successfully');
 }
 
 

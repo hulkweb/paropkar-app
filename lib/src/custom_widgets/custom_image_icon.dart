@@ -12,6 +12,7 @@ class CustomIconImage extends StatelessWidget {
   final Color? backgroundColor;
   final double? imageSize;
   final double? padding;
+  final Color? imgColor;
 
   const CustomIconImage({
     super.key,
@@ -22,7 +23,7 @@ class CustomIconImage extends StatelessWidget {
     this.elevation,
     this.backgroundColor,
     this.spreadRadius,
-    this.borderRadius, this.imageSize, this.padding,
+    this.borderRadius, this.imageSize, this.padding, this.imgColor,
   });
 
   @override
@@ -53,7 +54,7 @@ class CustomIconImage extends StatelessWidget {
           ),
           child: Padding(
             padding:EdgeInsets.all(padding??.0),
-            child: icon ?? Image.asset(image!,height: imageSize,width: imageSize,),
+            child: icon ?? Image.asset(image!,height: imageSize,width: imageSize,color: imgColor,),
           ),
         ),
       ),

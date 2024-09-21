@@ -13,9 +13,6 @@ class ProductListingController extends ChangeNotifier{
     getProducts();
   }
 
-  ontapProduct({required String productId, required BuildContext context}) {
-    AppNavigation.navigationPush(context, ProductDetailScreen(id: '',));
-  }
 
   ontapProductCart({required BuildContext context}) {
     // Provider.of<BottomBarListController>(context).changeIndex(2);

@@ -5,6 +5,7 @@ import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/home/home_screen.dart';
 import 'package:paropkar/src/view/product/category_listing_screen.dart';
+import 'package:paropkar/src/view/product/category_listing_screen_new.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/view/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
   // List of screens for each tab
   final List<Widget> _pages = [
     HomeScreen(),
-    const CategoryListingScreen(),
+    const CategoryListingScreenNew(),
     CartScreen(),
     const ProfileScreen(),
   ];

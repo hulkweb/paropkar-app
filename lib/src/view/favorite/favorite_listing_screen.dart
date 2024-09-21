@@ -16,12 +16,11 @@ import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
-class ProductListingScreen extends StatelessWidget {
-  const ProductListingScreen({super.key});
+class FavoriteListingScreen extends StatelessWidget {
+  const FavoriteListingScreen({super.key});
   @override
   Widget build(BuildContext context) {
     // final bottomController = Provider.of<BottomBarListController>(context);
-    final cartController = Provider.of<CartController>(context, listen: true);
 
     return Scaffold(
       body: NestedScrollView(
@@ -59,16 +58,11 @@ class ProductListingScreen extends StatelessWidget {
                         ),
                       ),
                       ////
-                      InkWell(
-                        onTap: () {
-                          ProductListingController().getProducts();
-                        },
-                        child: Text('Pulses',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge!
-                                .copyWith(color: AppColors.white)),
-                      ),
+                      Text('Favorite List',
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(color: AppColors.white)),
 
                       IconButton(
                         onPressed: () {},
@@ -84,21 +78,21 @@ class ProductListingScreen extends StatelessWidget {
             ),
           ];
         },
-        body: Consumer<ProductListingController>(
-            builder: (context, controller, child) {
+        body:
+            Consumer<FavoriteController>(builder: (context, controller, child) {
           // print(controller.productDataStatus);
           return DataStateWidget(
-              status: controller.productDataStatus,
+              status: controller.favoritesDataStatus,
               ontapRetry: () {
-                controller.changeDataStatus(DataStatus.loading);
-                controller.getProducts();
+                controller.changeFavoritesDataStatus(DataStatus.loading);
+                controller.getFavorites();
               },
-              isOverlay: cartController.addCartDataStatus == DataStatus.loading,
-              // isDataEmpty:  (controller.productsData!.data != null) &&
-              //         (controller.productsData!.data!.isEmpty),
-              isDataEmpty: controller.productsData == null ||
-                  (controller.productsData!.data == null) ||
-                  (controller.productsData!.data!.isEmpty),
+              isOverlay: controller.addFavoriteDataStatus == DataStatus.loading,
+              // isDataEmpty:  (controller.favorites!.data != null) &&
+              //         (controller.favorites!.data!.isEmpty),
+              isDataEmpty: (controller.favorites == null) ||
+                  (controller.favorites!.data == null) ||
+                  (controller.favorites!.data!.isEmpty),
               child: GridView.count(
                 crossAxisCount: 2,
                 padding: EdgeInsets.all(screenWidth * .04),
@@ -107,55 +101,51 @@ class ProductListingScreen extends StatelessWidget {
                 crossAxisSpacing: 7,
                 mainAxisSpacing: 10,
                 childAspectRatio: 0.7,
-                children: (controller.productsData == null) ||
-                        (controller.productsData!.data == null) ||
-                        (controller.productsData!.data!.isEmpty)
+                children: (controller.favorites == null) ||
+                        (controller.favorites!.data == null) ||
+                        (controller.favorites!.data!.isEmpty)
                     ? []
-                    : List.generate(controller.productsData!.data!.length,
+                    : List.generate(controller.favorites!.data!.length,
                         (index) {
-                        final product = controller.productsData!.data![index];
+                        final favorite = controller.favorites!.data![index];
                         return ProductCard(
-                          imageUrl: product.image ??
+                          imageUrl: favorite.product!.image ??
                               '', // AppAssets.maida, // Replace with actual image URL
-                          productName: product.name ?? '',
-                          price: "₹${product.price ?? ''}",
-                          categoryName: product.category == null
-                              ? ""
-                              : product.category!.name ??
-                                  '', //"Buy 3 Items, Save Extra 5%",
-                          isFavorite: false,
-                          onFavoritePressed: () async {
+                          productName: favorite.product!.name ?? '',
+                          price: "₹${favorite.product!.price ?? ''}",
+                          categoryName: '',
+                          // favorite.product!.c == null
+                          //     ? ""
+                          //     : favorite.product!.category!.name ??
+                          //         '', //"Buy 3 Items, Save Extra 5%",
+                          isFavorite: true,
+                          onFavoritePressed: () {
                             // Handle favorite icon press
-                            await Provider.of<FavoriteController>(context,
-                                    listen: false)
-                                .addFavorite(
-                                    product_id: product.id.toString(),
-                                    context: context);
                           },
                           onAddToCartPressed: () async {
-                            cartController.addCart(
-                                product_id: product.id.toString(),
-                                variation_id: '1',
-                                quantity: "1",
-                                context: context);
+                            await Provider.of<CartController>(context,
+                                    listen: false)
+                                .addCart(
+                                    product_id: favorite.product!.id.toString(),
+                                    variation_id: '1',
+                                    quantity: "1",
+                                    context: context);
                           },
                           onProductPressed: () {
                             context
                                 .read<ProductDetailController>()
                                 .getProductDetail(context,
-                                    id: '${product.id ?? ''}',
-                                    category_id: '${product.categoryId ?? ''}',
+                                    id: '${favorite.product!.id ?? ''}',
+                                    category_id:
+                                        '${favorite.product!.categoryId ?? ''}',
                                     subcategory_id:
-                                        '${product.subcategoryId ?? ''}');
+                                        '${favorite.product!.subcategoryId ?? ''}');
                             // same functions result
 
                             AppNavigation.navigationPush(
                                 context,
                                 ProductDetailScreen(
-                                  id: '${product.id ?? ''}',
-                                  categoryId: '${product.categoryId ?? ''}',
-                                  subcategoryId:
-                                      '${product.subcategoryId ?? ''}',
+                                  id: '${favorite.product!.id ?? ''}', categoryId: '${favorite.product!.categoryId ?? ''}', subcategoryId: '${favorite.product!.subcategoryId ?? ''}',
                                 ));
                           },
                         );

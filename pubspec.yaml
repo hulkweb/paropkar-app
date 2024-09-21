@@ -55,6 +55,7 @@ dev_dependencies:
   url_launcher: ^6.0.20
   http: ^1.2.1
   shared_preferences: ^2.2.2
+  flutter_bloc: ^8.1.6
   
   
 # For information on the generic Dart part of this file, see the

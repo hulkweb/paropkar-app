@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:paropkar/main.dart';
@@ -308,113 +309,95 @@ void showDisableConfirmationDialog(BuildContext context, Function() onYesTap) {
   );
 }
 
-logoutFunc(BuildContext context) {
-  showModalBottomSheet<void>(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(0.0),
-      ),
-      // context and builder are
-      // required properties in this widget
-      context: context,
-      builder: (BuildContext context) {
-        // we set up a container inside which
-        // we create center column and display text
 
-        // Returning SizedBox instead of a Container
-        return Container(
-          // width: screenWidth*.9,
-          height: 200,
-          decoration: BoxDecoration(
-            color: AppColors.white,
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: screenWidth * .05,
-                top: screenWidth * .05,
-                bottom: screenWidth * .05 / 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+
+class LogoutWidget extends StatelessWidget {
+  const LogoutWidget({
+    super.key, required this.ontapLogout, required this.isLoading,
+  });
+final Function() ontapLogout;
+final bool isLoading;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(
+            left: screenWidth * .05,
+            top: screenWidth * .05,
+            bottom: screenWidth * .05 / 2),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Logout?',
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.close)),
-                  ],
+                const Text(
+                  'Logout?',
                 ),
-                SizedBox(
-                  height: 1,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: screenWidth * .23),
-                  child: Text(
-                    'Are you sure want to logout from the app?',
-                    overflow: TextOverflow.fade,
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  width: screenWidth,
-                  child: Row(
-                    children: [
-                      Material(
-                        child: CustomButton(
-                          width: screenWidth * .35,
-                          ontap: () {
-                            Navigator.pop(context);
-                          },
-                          isLowerCase: true,
-                          text: 'Cancel',
-                          border: Border.all(color: AppColors.grey, width: 1),
-                          color: AppColors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        width: screenWidth * .1,
-                      ),
-                      Material(
-                        child: CustomButton(
-                          width: screenWidth * .35,
-                          ontap: () async {
-                            print('tap on logout');
-                            await logOut();
-                            var token = await getToken();
-                            print(token);
-                            print('hello');
-                            // Navigator.push(context, MaterialPageRoute(builder: (context){
-                            //   return LoginScreen();
-                            //  }));
-                            // ignore: use_build_context_synchronously
-                            Navigator.pushAndRemoveUntil(context,
-                                MaterialPageRoute(builder: (context) {
-                              return LoginScreen();
-                            }), (route) => false);
-                            print('navigated');
-                          },
-                          isLowerCase: true,
-                          text: 'Logout',
-                        ),
-                      ),
-                      SizedBox(
-                        width: screenWidth * .05,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.close)),
               ],
             ),
-          ),
-        );
-      });
+            const SizedBox(
+              height: 1,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: screenWidth * .23),
+              child: Text(
+                'Are you sure want to logout from the app?',
+                overflow: TextOverflow.fade,
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: screenWidth,
+              child: Row(
+                children: [
+                  Material(
+                    child: CustomButton(
+                      width: screenWidth * .35,
+                      ontap: () {
+                        Navigator.pop(context);
+                      },
+                      isLowerCase: true,
+                      text: 'Cancel',
+                      border: Border.all(color: AppColors.grey, width: 1),
+                      color: AppColors.white,
+                    ),
+                  ),
+                  SizedBox(
+                    width: screenWidth * .1,
+                  ),
+                  Material(
+                    child: CustomButton(
+                      isLoading: isLoading,
+                      width: screenWidth * .35,
+                      ontap: ontapLogout,
+                      isLowerCase: true,
+                      text: 'Logout',
+                    ),
+                  ),
+                  SizedBox(
+                    width: screenWidth * .05,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

@@ -15,16 +15,16 @@ class FavoriteController extends ChangeNotifier {
   }
 
   FavoriteModel? favorites;
-  DataStatus _cartsDataStatus = DataStatus.loading;
-  DataStatus get cartsDataStatus => _cartsDataStatus;
+  DataStatus _favoritesDataStatus = DataStatus.loading;
+  DataStatus get favoritesDataStatus => _favoritesDataStatus;
   changeFavoritesDataStatus(DataStatus status) {
-    _cartsDataStatus = status;
+    _favoritesDataStatus = status;
     print('status changed of getcart $status');
     notifyListeners();
-  }
+}
 
-  getFavorites() {
-    if (kDebugMode) {
+    getFavorites(){
+    if (kDebugMode){
       print('========calling getFavorite=========');
     }
     getApi(
@@ -63,17 +63,13 @@ class FavoriteController extends ChangeNotifier {
 
   addFavorite(
       {required String product_id,
-      required String variation_id,
-      required String quantity,
       required BuildContext context}) {
     changeAddFavoritesDataStatus(DataStatus.loading);
     postApi(
       body: {
-        'product_id': product_id,
-        'variation_id': variation_id,
-        'quantity': quantity
+        'product_id': product_id
       },
-      url: AppUrl.carts,
+      url: AppUrl.favorites,
       onSuccess: (response) {
         getFavorites();
         changeAddFavoritesDataStatus(DataStatus.success);

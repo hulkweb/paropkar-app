@@ -13,6 +13,8 @@ class SplashController {
 
   void navigateAfterSplash(BuildContext context) async {
     String? token = await getToken();
+    print('==============');
+    print(token);
     Timer(
       const Duration(seconds: 3), // Duration of the splash screen
       () {
@@ -20,7 +22,7 @@ class SplashController {
           context,
           MaterialPageRoute(
               builder: (context) =>
-               token==null?    const LoginScreen() : const BottomBarListScreen()), // Navigate to home screen
+               token==null || token.isEmpty?    const LoginScreen() : const BottomBarListScreen()), // Navigate to home screen
         );
       },
     );
