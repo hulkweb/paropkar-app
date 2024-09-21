@@ -113,13 +113,11 @@ class ProductListingScreenNew extends StatelessWidget {
                 crossAxisSpacing: 7,
                 mainAxisSpacing: 10,
                 childAspectRatio: 0.7,
-                children: (productData == null) ||
-                        (controller.productsData!.data == null) ||
-                        (controller.productsData!.data!.isEmpty)
+                children: false
                     ? []
-                    : List.generate(controller.productsData!.data!.length,
+                    : List.generate(5,
                         (index) {
-                        final product = controller.productsData!.data![index];
+                        var product ;;
                         return ProductCard(
                           imageUrl: product.image ??
                               '', // AppAssets.maida, // Replace with actual image URL

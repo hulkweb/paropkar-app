@@ -8,7 +8,6 @@ import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
-import 'package:paropkar/src/custom_widgets/cards/invoice_card.dart';
 import 'package:paropkar/src/custom_widgets/cards/notification_card.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/view_all_button.dart';
 import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
@@ -72,46 +71,46 @@ class InvoiceScreen extends StatelessWidget {
             padding: EdgeInsets.only(left: 12, top: 12, right: 12,bottom: 30),
             child: Column(
               children: [
-                InvoiceCard(
-                  title: 'Product name',
-                  subtitle: 'lux soap',
+                // InvoiceCard(
+                //   title: 'Product name',
+                //   subtitle: 'lux soap',
 
-                ),
-                  InvoiceCard(
-                  title: 'description',
-                  subtitle: '12 box and each box 12 soaps',
+                // ),
+                //   InvoiceCard(
+                //   title: 'description',
+                //   subtitle: '12 box and each box 12 soaps',
 
-                ), InvoiceCard(
-                  title: 'Qty ordered',
-                  subtitle: '12 box',
+                // ), InvoiceCard(
+                //   title: 'Qty ordered',
+                //   subtitle: '12 box',
 
-                ), InvoiceCard(
-                  title: 'price each product/box',
-                  subtitle: 'lux soap',
+                // ), InvoiceCard(
+                //   title: 'price each product/box',
+                //   subtitle: 'lux soap',
 
-                ), InvoiceCard(
-                  title: 'Product name',
-                  subtitle: '240/-',
+                // ), InvoiceCard(
+                //   title: 'Product name',
+                //   subtitle: '240/-',
 
-                ),
-                InvoiceCard(
-                  title: 'total amount',
-                  subtitle: '240 x 12',
-                  price: '2880/-',
+                // ),
+                // InvoiceCard(
+                //   title: 'total amount',
+                //   subtitle: '240 x 12',
+                //   price: '2880/-',
 
-                ),
-                InvoiceCard(
-                  title: 'pending amount',
-                  subtitle: '6 box',
-                  price: '2880/-',
+                // ),
+                // InvoiceCard(
+                //   title: 'pending amount',
+                //   subtitle: '6 box',
+                //   price: '2880/-',
 
-                ),
-                InvoiceCard(
-                  title: 'total amount',
-                  subtitle: '240 x 12',
-                  price: '2880/-',
+                // ),
+                // InvoiceCard(
+                //   title: 'total amount',
+                //   subtitle: '240 x 12',
+                //   price: '2880/-',
 
-                ),
+                // ),
               ],
             )),
       ),

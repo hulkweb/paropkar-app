@@ -18,7 +18,6 @@ import 'package:paropkar/src/view/favorite/favorite_listing_screen.dart';
 import 'package:paropkar/src/view/invoice/invoice_screen.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
 import 'package:paropkar/src/view/profile/edit_profile_screen.dart';
-import 'package:paropkar/src/custom_widgets/cards/invoice_card.dart';
 import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:provider/provider.dart';
 
