@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
+import 'package:paropkar/src/view/cart/cart_screen%20new.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/home/home_screen.dart';
 import 'package:paropkar/src/view/product/category_listing_screen.dart';
@@ -23,7 +24,7 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
   final List<Widget> _pages = [
     HomeScreen(),
     const CategoryListingScreenNew(),
-    CartScreen(),
+    CartScreenNew(),
     const ProfileScreen(),
   ];
 

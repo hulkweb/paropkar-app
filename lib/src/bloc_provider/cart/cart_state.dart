@@ -1,5 +1,5 @@
-import 'package:paropkar/src/models/cart/cart_model.dart';
 
+import 'package:paropkar/src/models/cart/cart_model.dart';
 
 abstract class CartState {}
 

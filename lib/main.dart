@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paropkar/src/bloc_provider/cart/cart_bloc.dart';
 import 'package:paropkar/src/bloc_provider/category/category_block.dart';
 import 'package:paropkar/src/bloc_provider/product/product_block.dart';
 import 'package:paropkar/src/controller/address/create_address_controller.dart';
@@ -17,6 +18,7 @@ import 'package:paropkar/src/controller/profile/profile_controller.dart';
 import 'package:paropkar/src/controller/splash_controller.dart';
 import 'package:paropkar/src/controller/theme_controller.dart';
 import 'package:paropkar/src/models/splash_model.dart';
+import 'package:paropkar/src/repositories/Cart_repository.dart';
 import 'package:paropkar/src/repositories/category_repository.dart';
 import 'package:paropkar/src/repositories/product_repository.dart';
 import 'package:paropkar/src/utills/theme.dart';
@@ -77,6 +79,9 @@ class MyApp extends StatelessWidget {
           ),
            BlocProvider<ProductBloc>(
             create: (context) => ProductBloc(ProductRepository()),
+          ),
+           BlocProvider<CartBloc>(
+            create: (context) => CartBloc(CartRepository()),
           ),
         ],
         child: MaterialApp(

@@ -116,7 +116,7 @@ class ProductListingScreen extends StatelessWidget {
                         ? []
                         : List.generate(
                             state.productListData.data!.length,
-                            (index){
+                            (index) {
                               final product =
                                   state.productListData.data![index];
                               return ProductCard(
