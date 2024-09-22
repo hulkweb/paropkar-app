@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
-import 'package:paropkar/src/bloc_provider/Cart/Cart_event.dart';
 import 'package:paropkar/src/bloc_provider/cart/cart_bloc.dart';
+import 'package:paropkar/src/bloc_provider/cart/cart_event.dart';
 import 'package:paropkar/src/bloc_provider/cart/cart_state.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
-import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
@@ -27,13 +26,12 @@ const whiteColor = Color(0xFFFFFFFF); // Example white background
 
 // Main Cart Screen
 class CartScreenNew extends StatelessWidget {
-  CartScreenNew({super.key});
+  const CartScreenNew({super.key});
 
   // final bottomBarListController = BottomBarListController();
   @override
   Widget build(BuildContext context) {
     final bottomController = Provider.of<BottomBarListController>(context);
-
     return Scaffold(
       backgroundColor: Theme.of(context).cardColor,
       appBar: AppBar(
@@ -81,7 +79,13 @@ class CartScreenNew extends StatelessWidget {
         ),
       ),
 
-      body: BlocBuilder<CartBloc, CartState>(builder: (context, state) {
+      body: BlocConsumer<CartBloc, CartState>(listener: (context, state) {
+        if (state is CartFailure) {
+          // Perform side effect, such as showing a snackbar
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Error loading cart')));
+        }
+      }, builder: (context, state) {
         DataStatus dataStatus = state is CartLoading
             ? DataStatus.loading
             : state is CartSuccess
@@ -90,7 +94,7 @@ class CartScreenNew extends StatelessWidget {
         bool isDataEmpty = (state is CartSuccess) &&
             ((state.cartData.data == null) || state.cartData.data!.isEmpty);
         return DataStateWidget(
-          isOverlay: false,
+          isOverlay: state is AddCartLoading || state is RemoveCartLoading,
           ontapRetry: () {
             context.read<CartBloc>().add(FetchCart());
           },
@@ -121,44 +125,20 @@ class CartScreenNew extends StatelessWidget {
                                         price: formatData(cart.product!.price),
                                         quantity: formatData(cart.quantity),
                                         onChange: (String value) {},
-                                        onIncrease: () async {
-                                          // await controller.onIncreaseProduct(
-                                          //   index: index,
-                                          //   product_id:
-                                          //       formatData(cart.product!.id),
-                                          //   variation_id:
-                                          //       cart.variationId!.toString(),
-                                          //   quantity: 1,
-                                          //   context: context,
-                                          // );
-                                          // await controller.getCarts();
-                                        },
+                                        onIncrease: () async {},
                                         onDecrease: () async {
-                                          // controller.onDecreaseProduct(
-                                          //   index: index,
-                                          //   product_id:
-                                          //       formatData(cart.product!.id),
-                                          //   variation_id:
-                                          //       cart.variationId!.toString(),
-                                          //   quantity: 1,
-                                          //   context: context,
-                                          // );
+                                          context.read<CartBloc>().add(
+                                              AddCartItem(
+                                                  productId: cart.product!.id
+                                                      .toString(),
+                                                  quantity: '1'));
                                         },
                                         onSubmitted: (String value) async {
-                                          // await controller
-                                          //     .changeProductQuantity(
-                                          //   index: index,
-                                          //   product_id:
-                                          //       formatData(cart.product!.id),
-                                          //   variation_id:
-                                          //       cart.variationId!.toString(),
-                                          //   quantity: cart.product!.stock!,
-                                          //   context: context,
-                                          // );
-                                          // ignore: use_build_context_synchronously
-                                          context
-                                              .read<CartBloc>()
-                                              .add(FetchCart());
+                                          context.read<CartBloc>().add(
+                                              AddCartItem(
+                                                  productId: cart.product!.id
+                                                      .toString(),
+                                                  quantity: value));
                                         },
                                       );
                               })),

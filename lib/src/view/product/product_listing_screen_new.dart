@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/bloc_provider/cart/cart_bloc.dart';
+import 'package:paropkar/src/bloc_provider/cart/cart_event.dart';
 import 'package:paropkar/src/bloc_provider/product/product_block.dart';
 import 'package:paropkar/src/bloc_provider/product/product_event.dart';
 import 'package:paropkar/src/bloc_provider/product/product_state.dart';
-import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/controller/favorite/favorite_controller.dart';
 import 'package:paropkar/src/controller/product/product_detail_controller.dart';
 import 'package:paropkar/src/controller/product/product_listing_controller.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
-import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
-import 'package:paropkar/src/utills/constants.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/product/product_detail_screen.dart';
@@ -19,6 +18,7 @@ import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 // ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 class ProductListingScreenNew extends StatelessWidget {
   const ProductListingScreenNew({super.key});
   @override
@@ -87,14 +87,17 @@ class ProductListingScreenNew extends StatelessWidget {
             ),
           ];
         },
-        body: BlocBuilder<ProductBloc, ProductState>(
-          builder: (context, state) {
-            DataStatus  dataStatus = (state==ProductLoading)?DataStatus.loading:(state==ProductSuccess)?DataStatus.success:DataStatus.error;
-            final  productData;
-            if(state is ProductSuccess){
-              productData = state.productListData;
-            }
-             
+        body: BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
+          DataStatus dataStatus = (state == ProductListingLoading)
+              ? DataStatus.loading
+              : (state == ProductListingSuccess)
+                  ? DataStatus.success
+                  : DataStatus.error;
+          final productData;
+          if (state is ProductListingSuccess) {
+            productData = state.productListData;
+          }
+
           // print(controller.productDataStatus);
           return DataStateWidget(
               status: dataStatus,
@@ -115,9 +118,8 @@ class ProductListingScreenNew extends StatelessWidget {
                 childAspectRatio: 0.7,
                 children: false
                     ? []
-                    : List.generate(5,
-                        (index) {
-                        var product ;;
+                    : List.generate(5, (index) {
+                        var product;
                         return ProductCard(
                           imageUrl: product.image ??
                               '', // AppAssets.maida, // Replace with actual image URL
@@ -137,11 +139,9 @@ class ProductListingScreenNew extends StatelessWidget {
                                     context: context);
                           },
                           onAddToCartPressed: () async {
-                            cartController.addCart(
-                                product_id: product.id.toString(),
-                                variation_id: '1',
-                                quantity: "1",
-                                context: context);
+                            context.read<CartBloc>().add(AddCartItem(
+                                productId: product.id,
+                                quantity: product.quantity));
                           },
                           onProductPressed: () {
                             context
@@ -155,7 +155,7 @@ class ProductListingScreenNew extends StatelessWidget {
 
                             AppNavigation.navigationPush(
                                 context,
-                                ProductDetailScreen(
+                                ProductDetailScreenNew(
                                   id: '${product.id ?? ''}',
                                   categoryId: '${product.categoryId ?? ''}',
                                   subcategoryId:

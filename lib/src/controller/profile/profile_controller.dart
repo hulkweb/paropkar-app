@@ -7,6 +7,7 @@ import 'package:paropkar/src/services/post_api.dart';
 import 'package:paropkar/src/user_preference/user_pref/user_preference.dart';
 import 'package:paropkar/src/utills/constants.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
+import 'package:paropkar/src/view/auth/login_screen%20new.dart';
 import 'package:paropkar/src/view/auth/login_screen.dart';
 
 class ProfileController extends ChangeNotifier {

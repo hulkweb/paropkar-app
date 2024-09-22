@@ -144,8 +144,12 @@ class FavoriteListingScreen extends StatelessWidget {
 
                             AppNavigation.navigationPush(
                                 context,
-                                ProductDetailScreen(
-                                  id: '${favorite.product!.id ?? ''}', categoryId: '${favorite.product!.categoryId ?? ''}', subcategoryId: '${favorite.product!.subcategoryId ?? ''}',
+                                ProductDetailScreenNew(
+                                  id: '${favorite.product!.id ?? ''}',
+                                  categoryId:
+                                      '${favorite.product!.categoryId ?? ''}',
+                                  subcategoryId:
+                                      '${favorite.product!.subcategoryId ?? ''}',
                                 ));
                           },
                         );

@@ -9,6 +9,7 @@ import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
+import 'package:paropkar/src/view/product/product_listing_screen_new.dart';
 import 'package:provider/provider.dart';
 
 class CategoryListingScreenNew extends StatelessWidget {
@@ -113,7 +114,7 @@ class CategoryListingScreenNew extends StatelessWidget {
                         imageUrl: category.image ?? '', // Replace with actual image URL
                         categoryText: category.name ?? '',
                         onPressed: () {
-                          AppNavigation.navigationPush(context, ProductListingScreen());
+                          AppNavigation.navigationPush(context, ProductListingScreenNew());
                         },
                       );
                     },

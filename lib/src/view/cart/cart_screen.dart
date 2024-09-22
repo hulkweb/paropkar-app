@@ -22,7 +22,7 @@ const whiteColor = Color(0xFFFFFFFF); // Example white background
 
 // Main Cart Screen
 class CartScreen extends StatefulWidget {
-  CartScreen({super.key});
+  const CartScreen({super.key});
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -31,7 +31,6 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     Future.microtask(() {
       Provider.of<CartController>(context, listen: false).getCarts();
     });

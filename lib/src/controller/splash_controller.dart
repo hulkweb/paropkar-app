@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:paropkar/src/user_preference/user_pref/user_preference.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
+import 'package:paropkar/src/view/auth/login_screen%20new.dart';
 import 'package:paropkar/src/view/auth/login_screen.dart';
 import 'package:paropkar/src/custom_widgets/comman_widget.dart';
 import '../models/splash_model.dart';

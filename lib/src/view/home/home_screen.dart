@@ -10,9 +10,7 @@ import 'package:paropkar/src/bloc_provider/product/product_event.dart';
 import 'package:paropkar/src/bloc_provider/product/product_state.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
-import 'package:paropkar/src/controller/category/category_controller.dart';
 import 'package:paropkar/src/controller/product/product_detail_controller.dart';
-import 'package:paropkar/src/controller/product/product_listing_controller.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
@@ -25,6 +23,7 @@ import 'package:paropkar/src/custom_widgets/carousel_widget.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/view_all_button.dart';
 import 'package:paropkar/src/custom_widgets/custom_status_bar.dart';
 import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
+import 'package:paropkar/src/view/product/product_listing_screen_new.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -267,7 +266,7 @@ class HomeScreen extends StatelessWidget {
                                                 ontap: () {
                                                   AppNavigation.navigationPush(
                                                       context,
-                                                      const ProductListingScreen());
+                                                      const ProductListingScreenNew());
                                                 },
                                                 name: category.name ?? '',
                                                 imagePath:
@@ -289,9 +288,9 @@ class HomeScreen extends StatelessWidget {
                     // Popular Items Grid
                     BlocBuilder<ProductBloc, ProductState>(
                         builder: (context, state) {
-                      DataStatus dataStatus = state is ProductLoading
+                      DataStatus dataStatus = state is ProductListingLoading
                           ? DataStatus.loading
-                          : state is ProductSuccess
+                          : state is ProductListingSuccess
                               ? DataStatus.success
                               : DataStatus.error;
                       return DataStateWidget(
@@ -303,10 +302,10 @@ class HomeScreen extends StatelessWidget {
                         isOverlay: false,
                         // isDataEmpty:  (controller.productListData!.data != null) &&
                         //         (controller.productListData!.data!.isEmpty),
-                        isDataEmpty: (state is ProductSuccess) &&
+                        isDataEmpty: (state is ProductListingSuccess) &&
                             ((state.productListData.data == null) ||
                                 state.productListData.data!.isEmpty),
-                        child: state is ProductSuccess
+                        child: state is ProductListingSuccess
                             ? GridView.count(
                                 crossAxisCount: 2,
                                 padding: EdgeInsets.all(screenWidth * .04),
@@ -360,7 +359,7 @@ class HomeScreen extends StatelessWidget {
 
                                               AppNavigation.navigationPush(
                                                   context,
-                                                  ProductDetailScreen(
+                                                  ProductDetailScreenNew(
                                                     id: '${product.id ?? ''}',
                                                     categoryId:
                                                         '${product.categoryId ?? ''}',
