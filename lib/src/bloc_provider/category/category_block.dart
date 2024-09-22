@@ -18,8 +18,10 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       final categoryData = await repository.fetchCategories();
       print('if data fetched');
       emit(CategorySuccess(categoryData));
+      print('emit state category success');
     } catch (error) {
       emit(CategoryFailure(error.toString()));
+      print('emit state category error');
     }
   }
 }

@@ -53,7 +53,7 @@ class CategoryListingScreenNew extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Text(' categoryData',
+                      Text('Category',
                           style: Theme.of(context)
                               .textTheme
                               .titleLarge!
@@ -75,7 +75,7 @@ class CategoryListingScreenNew extends StatelessWidget {
         body: BlocBuilder<CategoryBloc, CategoryState>(
           builder: (context, state) {
             // ignore: unrelated_type_equality_checks
-            DataStatus  dataStatus = (state==CategoryLoading)?DataStatus.loading:(state==CategorySuccess)?DataStatus.success:DataStatus.error;
+            DataStatus  dataStatus = (state is CategoryLoading)?DataStatus.loading:(state is CategorySuccess)?DataStatus.success:DataStatus.error;
             if (state is CategoryLoading) {
               print('state name');
               print(state);

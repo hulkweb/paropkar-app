@@ -2,6 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/bloc_provider/category/category_block.dart';
+import 'package:paropkar/src/bloc_provider/category/category_event.dart';
+import 'package:paropkar/src/bloc_provider/category/category_state.dart';
+import 'package:paropkar/src/bloc_provider/product/product_block.dart';
+import 'package:paropkar/src/bloc_provider/product/product_event.dart';
+import 'package:paropkar/src/bloc_provider/product/product_state.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/controller/category/category_controller.dart';
@@ -13,8 +19,6 @@ import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/constants.dart';
 import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
-import 'package:paropkar/src/view/cart/cart_screen.dart';
-import 'package:paropkar/src/view/product/category_listing_screen.dart';
 import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/custom_widgets/carousel_widget.dart';
@@ -22,6 +26,7 @@ import 'package:paropkar/src/custom_widgets/custom_buttons/view_all_button.dart'
 import 'package:paropkar/src/custom_widgets/custom_status_bar.dart';
 import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -29,9 +34,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomController = Provider.of<BottomBarListController>(context);
-    final categoryListingController =
-        Provider.of<CategoryListingController>(context);
+    // final categoryListingController =
+    //     Provider.of<CategoryListingController>(context);
     final cartController = Provider.of<CartController>(context, listen: true);
+    context.read<CategoryBloc>().add(FetchCategories());
+    context.read<ProductBloc>().add(FetchProducts());
     return StatusBarCustom(
       statusBarBrightnessLight: true,
       statusBarColor: AppColors.primaryColor,
@@ -219,46 +226,55 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 10),
 
                     // Categories List
-                    Consumer<CategoryListingController>(
-                        builder: (context, controller, child) {
+                    BlocBuilder<CategoryBloc, CategoryState>(
+                        builder: (context, state) {
+                      print('state name $state');
+                      DataStatus dataStatus = (state is CategoryLoading)
+                          ? DataStatus.loading
+                          : (state is CategorySuccess)
+                              ? DataStatus.success
+                              : DataStatus.error;
+                      print('=============');
+                      print(dataStatus);
                       return DataStateWidget(
-                        status: controller.categoryDataStatus,
+                        status: dataStatus,
                         ontapRetry: () {
-                          controller.getCategories();
-                          controller.getCategories();
+                          context.read<CategoryBloc>().add(FetchCategories());
                         },
-                        loadingWidget: SizedBox(),
-                        isDataEmpty: controller.categoryData == null ||
-                            (controller.categoryData!.categories == null) ||
-                            (controller.categoryData!.categories!.isEmpty),
+                        loadingWidget: const SizedBox(),
+                        isDataEmpty: state is CategorySuccess
+                            ? ((state.categoryData.categories == null) ||
+                                (state.categoryData.categories!.isEmpty))
+                            : false,
                         child: SizedBox(
                           height: screenWidth * .4,
                           child: ListView(
                               physics: const ScrollPhysics(),
                               scrollDirection: Axis.horizontal,
-                              children: (controller.categoryData == null) ||
-                                      (controller.categoryData!.categories ==
-                                          null) ||
-                                      (controller
-                                          .categoryData!.categories!.isEmpty)
-                                  ? [const SizedBox()]
-                                  : List.generate(
-                                      controller.categoryData!.categories!
-                                          .length, (index) {
-                                      final category = controller
-                                          .categoryData!.categories![index];
-                                      return Padding(
-                                        padding: EdgeInsets.only(left: 10),
-                                        child: CategoryItem(
-                                            ontap: () {
-                                              AppNavigation.navigationPush(
-                                                  context,
-                                                  const ProductListingScreen());
-                                            },
-                                            name: category.name ?? '',
-                                            imagePath: category.image ?? ''),
-                                      );
-                                    })),
+                              children: state is CategorySuccess
+                                  ? ((state.categoryData.categories == null) ||
+                                          (state.categoryData.categories!
+                                              .isEmpty))
+                                      ? [const SizedBox()]
+                                      : List.generate(
+                                          state.categoryData.categories!.length,
+                                          (index) {
+                                          final category = state
+                                              .categoryData.categories![index];
+                                          return Padding(
+                                            padding: EdgeInsets.only(left: 10),
+                                            child: CategoryItem(
+                                                ontap: () {
+                                                  AppNavigation.navigationPush(
+                                                      context,
+                                                      const ProductListingScreen());
+                                                },
+                                                name: category.name ?? '',
+                                                imagePath:
+                                                    category.image ?? ''),
+                                          );
+                                        })
+                                  : []),
                         ),
                       );
                     }),
@@ -271,82 +287,91 @@ class HomeScreen extends StatelessWidget {
                     ),
 
                     // Popular Items Grid
-                    Consumer<ProductListingController>(
-                        builder: (context, controller, child) {
+                    BlocBuilder<ProductBloc, ProductState>(
+                        builder: (context, state) {
+                      DataStatus dataStatus = state is ProductLoading
+                          ? DataStatus.loading
+                          : state is ProductSuccess
+                              ? DataStatus.success
+                              : DataStatus.error;
                       return DataStateWidget(
-                        status: controller.productDataStatus,
+                        status: dataStatus,
                         ontapRetry: () {
-                          controller.changeDataStatus(DataStatus.loading);
-                          controller.getProducts();
+                          context.read<ProductBloc>().add(FetchProducts());
                         },
                         loadingWidget: const SizedBox(),
                         isOverlay: false,
-                        // isDataEmpty:  (controller.productsData!.data != null) &&
-                        //         (controller.productsData!.data!.isEmpty),
-                        isDataEmpty: controller.productsData == null ||
-                            (controller.productsData!.data == null) ||
-                            (controller.productsData!.data!.isEmpty),
-                        child: GridView.count(
-                            crossAxisCount: 2,
-                            padding: EdgeInsets.all(screenWidth * .04),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisSpacing: 7,
-                            mainAxisSpacing: 10,
-                            childAspectRatio: 0.6,
-                            children: (controller.productsData == null) ||
-                                    (controller.productsData!.data == null) ||
-                                    (controller.productsData!.data!.isEmpty)
-                                ? []
-                                : List.generate(
-                                    controller.productsData!.data!.length,
-                                    (index) {
-                                      final product =
-                                          controller.productsData!.data![index];
-                                      return ProductCard(
-                                        imageUrl: product.image ??
-                                            '', // AppAssets.maida, // Replace with actual image URL
-                                        productName: product.name ?? '',
-                                        price: "₹${product.price ?? ''}",
-                                        categoryName: product.category == null
-                                            ? ""
-                                            : product.category!.name ??
-                                                '', //"Buy 3 Items, Save Extra 5%",
-                                        isFavorite: index % 2 == 0,
-                                        onFavoritePressed: () {
-                                          // Handle favorite icon press
-                                        },
-                                        onAddToCartPressed: () async {
-                                          cartController.addCart(
-                                              product_id: product.id.toString(),
-                                              variation_id: '1',
-                                              quantity: "1",
-                                              context: context);
-                                        },
-                                        onProductPressed: () {
-                                          context
-                                              .read<ProductDetailController>()
-                                              .getProductDetail(context,
-                                                  id: '${product.id ?? ''}',
-                                                  category_id:
-                                                      '${product.categoryId ?? ''}',
-                                                  subcategory_id:
-                                                      '${product.subcategoryId ?? ''}');
-                                          // same functions result
+                        // isDataEmpty:  (controller.productListData!.data != null) &&
+                        //         (controller.productListData!.data!.isEmpty),
+                        isDataEmpty: (state is ProductSuccess) &&
+                            ((state.productListData.data == null) ||
+                                state.productListData.data!.isEmpty),
+                        child: state is ProductSuccess
+                            ? GridView.count(
+                                crossAxisCount: 2,
+                                padding: EdgeInsets.all(screenWidth * .04),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                crossAxisSpacing: 7,
+                                mainAxisSpacing: 10,
+                                childAspectRatio: 0.6,
+                                children: (state.productListData.data ==
+                                            null) ||
+                                        (state.productListData.data!.isEmpty)
+                                    ? []
+                                    : List.generate(
+                                        state.productListData.data!.length,
+                                        (index) {
+                                          final product = state
+                                              .productListData.data![index];
+                                          return ProductCard(
+                                            imageUrl: product.image ??
+                                                '', // AppAssets.maida, // Replace with actual image URL
+                                            productName: product.name ?? '',
+                                            price: "₹${product.price ?? ''}",
+                                            categoryName: product.category ==
+                                                    null
+                                                ? ""
+                                                : product.category!.name ??
+                                                    '', //"Buy 3 Items, Save Extra 5%",
+                                            isFavorite: index % 2 == 0,
+                                            onFavoritePressed: () {
+                                              // Handle favorite icon press
+                                            },
+                                            onAddToCartPressed: () async {
+                                              cartController.addCart(
+                                                  product_id:
+                                                      product.id.toString(),
+                                                  variation_id: '1',
+                                                  quantity: "1",
+                                                  context: context);
+                                            },
+                                            onProductPressed: () {
+                                              context
+                                                  .read<
+                                                      ProductDetailController>()
+                                                  .getProductDetail(context,
+                                                      id: '${product.id ?? ''}',
+                                                      category_id:
+                                                          '${product.categoryId ?? ''}',
+                                                      subcategory_id:
+                                                          '${product.subcategoryId ?? ''}');
+                                              // same functions result
 
-                                          AppNavigation.navigationPush(
-                                              context,
-                                              ProductDetailScreen(
-                                                id: '${product.id ?? ''}',
-                                                categoryId:
-                                                    '${product.categoryId ?? ''}',
-                                                subcategoryId:
-                                                    '${product.subcategoryId ?? ''}',
-                                              ));
+                                              AppNavigation.navigationPush(
+                                                  context,
+                                                  ProductDetailScreen(
+                                                    id: '${product.id ?? ''}',
+                                                    categoryId:
+                                                        '${product.categoryId ?? ''}',
+                                                    subcategoryId:
+                                                        '${product.subcategoryId ?? ''}',
+                                                  ));
+                                            },
+                                          );
                                         },
-                                      );
-                                    },
-                                  )),
+                                      ))
+                            : const SizedBox(),
                       );
                     }),
                   ],
@@ -367,7 +392,10 @@ class CategoryItem extends StatelessWidget {
   final VoidCallback ontap;
 
   const CategoryItem(
-      {required this.name, required this.imagePath, required this.ontap});
+      {super.key,
+      required this.name,
+      required this.imagePath,
+      required this.ontap});
 
   @override
   Widget build(BuildContext context) {

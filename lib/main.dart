@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/src/bloc_provider/category/category_block.dart';
+import 'package:paropkar/src/bloc_provider/product/product_block.dart';
 import 'package:paropkar/src/controller/address/create_address_controller.dart';
 import 'package:paropkar/src/controller/address/manage_address_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
@@ -17,6 +18,7 @@ import 'package:paropkar/src/controller/splash_controller.dart';
 import 'package:paropkar/src/controller/theme_controller.dart';
 import 'package:paropkar/src/models/splash_model.dart';
 import 'package:paropkar/src/repositories/category_repository.dart';
+import 'package:paropkar/src/repositories/product_repository.dart';
 import 'package:paropkar/src/utills/theme.dart';
 import 'package:paropkar/src/view/address/create_address_screen_.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
@@ -63,7 +65,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ManageAddressController()),
         ChangeNotifierProvider(create: (_) => NotificationController()),
         ChangeNotifierProvider(create: (_) => CreateAddressController()),
-        ChangeNotifierProvider(create: (_) => CategoryListingController()),
+        // ChangeNotifierProvider(create: (_) => CategoryListingController()),
         ChangeNotifierProvider(create: (_) => CartController()),
         ChangeNotifierProvider(create: (_) => ProfileController()),
         ChangeNotifierProvider(create: (_) => FavoriteController()),
@@ -72,6 +74,9 @@ class MyApp extends StatelessWidget {
         providers: [
            BlocProvider<CategoryBloc>(
             create: (context) => CategoryBloc(CategoryRepository()),
+          ),
+           BlocProvider<ProductBloc>(
+            create: (context) => ProductBloc(ProductRepository()),
           ),
         ],
         child: MaterialApp(
