@@ -1,26 +1,19 @@
+// login_event.dart
 abstract class LoginEvent {}
 
-class LoginWithMobilePassword extends LoginEvent {
-  final String mobile;
-  final String password;
-  LoginWithMobilePassword(
-    this.mobile,
-    this.password,
-  );
+class ChangeScreenType extends LoginEvent {
+  final String screenType;
+  ChangeScreenType(this.screenType);
 }
 
-class LoginWithMobileOtp extends LoginEvent {
+class VerifyMobile extends LoginEvent {
   final String mobile;
-  final String otp;
-  LoginWithMobileOtp(
-    this.mobile,
-    this.otp,
-  );
+  VerifyMobile(this.mobile);
 }
 
-class MobileVerify extends LoginEvent {
+class LoginWithMobile extends LoginEvent {
   final String mobile;
-  MobileVerify(
-    this.mobile,
-  );
+  final String otpOrPassword;
+  final String type; // 'otp' or 'password'
+  LoginWithMobile({required this.mobile, required this.otpOrPassword, required this.type});
 }

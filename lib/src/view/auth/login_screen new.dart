@@ -1,73 +1,59 @@
+// login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:paropkar/main.dart';
-import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
-import 'package:paropkar/src/utills/app_colors.dart';
-import 'package:paropkar/src/utills/app_textstyles.dart';
-import 'package:paropkar/src/utills/dimentions.dart';
-import 'package:paropkar/src/utills/globle_func.dart';
-import 'package:paropkar/src/view/auth/register_screen.dart';
-import 'package:paropkar/src/view/auth/signup/signup_screen.dart';
-import 'package:paropkar/src/custom_widgets/comman_widget.dart';
+import 'package:paropkar/src/bloc_provider/login/login_bloc.dart';
+import 'package:paropkar/src/bloc_provider/login/login_event.dart';
+import 'package:paropkar/src/bloc_provider/login/login_state.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
 import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
-import 'package:provider/provider.dart';
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final _formKeyOtp = GlobalKey<FormState>();
-  final _formKeyPass = GlobalKey<FormState>();
-  final loginController = LoginController();
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CommanWidget(
-      title: 'Login Customer',
-      widget: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Consumer<LoginController>(
-              builder: (context, loginController, child) {
+    return BlocProvider(
+      create: (_) => LoginBloc(),
+      child: Scaffold(
+        appBar: AppBar(title: Text('Login Customer')),
+        body: BlocConsumer<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is LoginFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Error: ${state.error}')),
+              );
+            } else if (state is LoginSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Login Successful')),
+              );
+              // Navigate to another screen
+            }
+          },
+          builder: (context, state) {
+            if (state is LoginLoading) {
+              return Center(child: CircularProgressIndicator());
+            }
+
             return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                largeHeight,
-                // Toggle Buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Login With OTP button
                     GestureDetector(
                       onTap: () {
-                        loginController.changeScreenType('loginWithOtp');
+                        context.read<LoginBloc>().add(ChangeScreenType('loginWithOtp'));
                       },
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                         decoration: BoxDecoration(
-                          color: loginController.screenType == 'loginWithOtp'
-                              ? Colors.green
-                              : Colors.white,
+                          color: state is LoginWithOtpState ? Colors.green : Colors.white,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(color: Colors.green),
                         ),
                         child: Text(
                           'Login With OTP',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                                 fontSize: 13,
-                                color:
-                                    loginController.screenType == 'loginWithOtp'
-                                        ? Colors.white
-                                        : Colors.green,
+                                color: state is LoginWithOtpState ? Colors.white : Colors.green,
                               ),
                           textAlign: TextAlign.center,
                           maxLines: 1,
@@ -75,232 +61,112 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     smallWidth,
-                    // Login With Password button
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          loginController.changeScreenType('loginWithPass');
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          decoration: BoxDecoration(
-                            color:
-                                !(loginController.screenType == 'loginWithOtp')
-                                    ? Colors.green
-                                    : Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.green),
-                          ),
-                          child: Text(
-                            'Login With Password',
-                            style:
-                                Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      fontSize: 13,
-                                      color: !(loginController.screenType ==
-                                              'loginWithOtp')
-                                          ? Colors.white
-                                          : Colors.green,
-                                    ),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                          ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<LoginBloc>().add(ChangeScreenType('loginWithPass'));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        decoration: BoxDecoration(
+                          color: state is LoginWithPasswordState ? Colors.green : Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.green),
+                        ),
+                        child: Text(
+                          'Login With Password',
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                fontSize: 13,
+                                color: state is LoginWithPasswordState ? Colors.white : Colors.green,
+                              ),
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
                         ),
                       ),
                     ),
                   ],
                 ),
-                largeHeight,
-                loginController.screenType == 'loginWithOtp'
-                    ? Form(
-                        key: _formKeyOtp,
-                        child: Column(
-                          children: [
-                            CustomTextFormWidget(
-                              controller: loginController.mobileFieldController,
-                              maxLength: 10,
-                              scrollPaddingBottom: 100,
-                              keyboardType: TextInputType.phone,
-                              fillColor: AppColors.white,
-                              hintText: "Mobile Number",
-                              validator: (String? value) {
-                                return loginController.mobileValidation(value);
-                              },
-                              suffixWidget: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CustomButton(
-                                  ontap: () {
-                                    loginController.verifyMobile(context);
-                                  },
-                                  text: 'verify',
-                                  height: 40,
-                                  width: 70,
-                                  borderRadius: 39,
-                                ),
-                              ),
-                            ),
-                            loginController.otpGetSuccess
-                                ? Column(
-                                    children: [
-                                      mediumHeight,
-                                      CustomTextFormWidget(
-                                        scrollPaddingBottom: 100,
-                                        controller:
-                                            loginController.otpFieldController,
-                                        maxLength: 6,
-                                        keyboardType: TextInputType.number,
-                                        fillColor: AppColors.white,
-                                        hintText: "Please Enter Otp",
-                                        validator: (value) {
-                                          return loginController
-                                              .otpValidation(value);
-                                        },
-                                      ),
-                                    ],
-                                  )
-                                : const SizedBox(),
-                            mediumHeight,
-                            CustomButton(
-                              ontap: () {
-                                if (_formKeyOtp.currentState!.validate()) {
-                                  loginController.loginWithMobile(context, type: 'otp');
-                                }
-                              },
-                              text: 'Login',
-                            ),
-                          ],
-                        ),
-                      )
-                    : Form(
-                        key: _formKeyPass,
-                        child: Column(
-                          children: [
-                            CustomTextFormWidget(
-                              controller: loginController.mobileFieldController,
-                              maxLength: 10,
-                              keyboardType: TextInputType.phone,
-                              fillColor: AppColors.white,
-                              hintText: "Mobile Number",
-                              validator: (value) {
-                                return loginController.mobileValidation(value);
-                              },
-                            ),
-                            mediumHeight,
-                            CustomTextFormWidget(
-                              scrollPaddingBottom: 100,
-                              controller:
-                                  loginController.passwordFieldController,
-                              isObs: loginController.isPasswordVisible,
-                              maxLength: 15,
-                              keyboardType: TextInputType.visiblePassword,
-                              fillColor: AppColors.white,
-                              hintText: "Password",
-                              validator: (String? value) {
-                                return loginController
-                                    .passwordValidation(value);
-                              },
-                              suffixWidget: InkWell(
-                                onTap: () {
-                                  loginController.passwordVisibility(
-                                      !loginController.isPasswordVisible);
-                                },
-                                child: Icon(loginController.isPasswordVisible
-                                    ? Icons.visibility_outlined
-                                    : Icons.visibility_off),
-                              ),
-                            ),
-                            SizedBox(
-                              width: screenWidth,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      // Forgot password functionality
-                                    },
-                                    child: Text(
-                                      "Forgot Password?",
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            CustomButton(
-                              ontap: () {
-                                if (_formKeyPass.currentState!.validate()) {
-                                  loginController.loginWithMobile(context,
-                                      type: 'password');
-                                }
-                              },
-                              text: 'Login',
-                            ),
-                          ],
-                        ),
-                      ),
-                // Mobile Number Field
-                // isLoginWithOtp
-                //     ? CustomTextFormWidget(
-                //         fillColor: AppColors.white,
-                //         hintText: "Enter Mob. Number",
-                //         validator: (String? value) {
-                //           return null;
-                //         },
-                //         suffixWidget: const Padding(
-                //           padding: EdgeInsets.all(8.0),
-                //           child: CustomButton(
-                //             text: 'verify',
-                //             height: 40,
-                //             width: 70,
-                //             borderRadius: 39,
-                //           ),
-                //         ),
-                //       )
-                //     : CustomTextFormWidget(
-                //         fillColor: AppColors.white,
-                //         hintText: "Please Enter Mob. Number",
-                //         validator: (value) {
-                //           return loginController.mobileValidation(value);
-                //         },
-                //       ),
-                // const SizedBox(height: 10),
-
-                // // Conditional Password or OTP Field
-                // isLoginWithOtp
-                //     ? CustomTextFormWidget(
-                //         fillColor: AppColors.white,
-                //         hintText: "Please Enter Otp",
-                //         validator: (value) {
-                //           return loginController.otpValidation(value);
-                //         },
-                //       )
-                //     : CustomTextFormWidget(
-                //         fillColor: AppColors.white,
-                //         hintText: "Please Enter Password",
-                //         validator: (String? value) {
-                //           return null;
-                //         },
-                //       ),
-
-                TextButton(
-                  onPressed: () {
-                    // Navigate to Sign-up
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RegistrationScreen()),
-                    );
-                  },
-                  child: const Text(
-                    "Register",
-                    style: AppTextStyles.normalPrimary,
-                  ),
-                ),
+                state is LoginWithOtpState ? _buildOtpForm(context) : _buildPasswordForm(context),
               ],
             );
-          }),
+          },
         ),
+      ),
+    );
+  }
+
+  Widget _buildOtpForm(BuildContext context) {
+    final mobileController = TextEditingController();
+    final otpController = TextEditingController();
+
+    return Form(
+      child: Column(
+        children: [
+          CustomTextFormWidget(
+            controller: mobileController,
+            maxLength: 10,
+            keyboardType: TextInputType.phone,
+            fillColor: Colors.white,
+            hintText: "Mobile Number", validator: (String? value) {  },
+          ),
+          CustomTextFormWidget(
+            controller: otpController,
+            maxLength: 6,
+            keyboardType: TextInputType.number,
+            fillColor: Colors.white,
+            hintText: "Please Enter Otp", validator: (String? value) {  },
+          ),
+          CustomButton(
+            ontap: () {
+              context.read<LoginBloc>().add(
+                    LoginWithMobile(
+                      mobile: mobileController.text,
+                      otpOrPassword: otpController.text,
+                      type: 'otp',
+                    ),
+                  );
+            },
+            text: 'Login',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPasswordForm(BuildContext context) {
+    final mobileController = TextEditingController();
+    final passwordController = TextEditingController();
+
+    return Form(
+      child: Column(
+        children: [
+          CustomTextFormWidget(
+            controller: mobileController,
+            maxLength: 10,
+            keyboardType: TextInputType.phone,
+            fillColor: Colors.white,
+            hintText: "Mobile Number", validator: (String? value) {  },
+          ),
+          CustomTextFormWidget(
+            controller: passwordController,
+            isObs: true,
+            maxLength: 15,
+            keyboardType: TextInputType.visiblePassword,
+            fillColor: Colors.white,
+            hintText: "Password", validator: (String? value) {  },
+          ),
+          CustomButton(
+            ontap: () {
+              context.read<LoginBloc>().add(
+                    LoginWithMobile(
+                      mobile: mobileController.text,
+                      otpOrPassword: passwordController.text,
+                      type: 'password',
+                    ),
+                  );
+            },
+            text: 'Login',
+          ),
+        ],
       ),
     );
   }

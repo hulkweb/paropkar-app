@@ -8,6 +8,7 @@ import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/address/create_address_screen_.dart';
 import 'package:paropkar/src/view/address/manage_address_screen.dart';
+import 'package:paropkar/src/view/cart/cart_screen%20new.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/checkout/checkout_widgets.dart';
 import 'package:paropkar/src/custom_widgets/cards/address_card_selective.dart';

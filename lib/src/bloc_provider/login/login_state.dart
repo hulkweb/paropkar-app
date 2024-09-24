@@ -1,8 +1,19 @@
-
+// login_state.dart
 abstract class LoginState {}
+
+class LoginInitial extends LoginState {}
 
 class LoginLoading extends LoginState {}
 
-class LoginSuccess extends LoginState {
-  // final CartModel cartData; 
+class LoginWithOtpState extends LoginState {}
+
+class LoginWithPasswordState extends LoginState {}
+
+class MobileVerified extends LoginState {}
+
+class LoginSuccess extends LoginState {}
+
+class LoginFailure extends LoginState {
+  final String error;
+  LoginFailure(this.error);
 }

@@ -16,6 +16,7 @@ import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
+import 'package:paropkar/src/view/cart/cart_screen%20new.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/custom_widgets/carousel_widget.dart';
@@ -362,7 +363,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                             onAddToCartPressed: () async {
                                               // Handle add to cart press
                                               AppNavigation.navigationPush(
-                                                  context, CartScreen());
+                                                  context, CartScreenNew());
                                             },
                                             onProductPressed: () {
                                               AppNavigation.navigationPush(

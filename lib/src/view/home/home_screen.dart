@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/bloc_provider/cart/cart_bloc.dart';
+import 'package:paropkar/src/bloc_provider/cart/cart_event.dart';
 import 'package:paropkar/src/bloc_provider/category/category_block.dart';
 import 'package:paropkar/src/bloc_provider/category/category_event.dart';
 import 'package:paropkar/src/bloc_provider/category/category_state.dart';
@@ -35,7 +37,7 @@ class HomeScreen extends StatelessWidget {
     final bottomController = Provider.of<BottomBarListController>(context);
     // final categoryListingController =
     //     Provider.of<CategoryListingController>(context);
-    final cartController = Provider.of<CartController>(context, listen: true);
+    // final cartController = Provider.of<CartController>(context, listen: true);
     context.read<CategoryBloc>().add(FetchCategories());
     context.read<ProductBloc>().add(FetchProducts());
     return StatusBarCustom(
@@ -338,12 +340,11 @@ class HomeScreen extends StatelessWidget {
                                               // Handle favorite icon press
                                             },
                                             onAddToCartPressed: () async {
-                                              cartController.addCart(
-                                                  product_id:
-                                                      product.id.toString(),
-                                                  variation_id: '1',
-                                                  quantity: "1",
-                                                  context: context);
+                                              context.read<CartBloc>().add(
+                                                  AddCartItem(
+                                                      productId:
+                                                          product.id.toString(),
+                                                      quantity: "1"));
                                             },
                                             onProductPressed: () {
                                               context

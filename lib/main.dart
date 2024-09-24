@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CheckoutController()),
-        ChangeNotifierProvider(create: (_) => LoginController()),
+        // ChangeNotifierProvider(create: (_) => LoginController()),
         ChangeNotifierProvider(create: (_) => SignUpController()),
         ChangeNotifierProvider(create: (_) => BottomBarListController()),
         ChangeNotifierProvider(create: (_) => ProductListingController()),
@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NotificationController()),
         ChangeNotifierProvider(create: (_) => CreateAddressController()),
         // ChangeNotifierProvider(create: (_) => CategoryListingController()),
-        ChangeNotifierProvider(create: (_) => CartController()),
+        // ChangeNotifierProvider(create: (_) => CartController()),
         ChangeNotifierProvider(create: (_) => ProfileController()),
         ChangeNotifierProvider(create: (_) => FavoriteController()),
       ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/bloc_provider/cart/cart_bloc.dart';
 import 'package:paropkar/src/bloc_provider/cart/cart_event.dart';
+import 'package:paropkar/src/bloc_provider/cart/cart_state.dart';
 import 'package:paropkar/src/bloc_provider/product/product_block.dart';
 import 'package:paropkar/src/bloc_provider/product/product_event.dart';
 import 'package:paropkar/src/bloc_provider/product/product_state.dart';
@@ -24,7 +25,7 @@ class ProductListingScreenNew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final bottomController = Provider.of<BottomBarListController>(context);
-    final cartController = Provider.of<CartController>(context, listen: true);
+    // final cartController = Provider.of<CartController>(context, listen: true);
 
     return Scaffold(
       body: NestedScrollView(
@@ -104,7 +105,7 @@ class ProductListingScreenNew extends StatelessWidget {
               ontapRetry: () {
                 context.read<ProductBloc>().add(FetchProducts());
               },
-              isOverlay: cartController.addCartDataStatus == DataStatus.loading,
+              isOverlay: context.read<CartBloc>().state is AddCartLoading,
               // isDataEmpty:  (controller.productsData!.data != null) &&
               //         (controller.productsData!.data!.isEmpty),
               isDataEmpty: false,

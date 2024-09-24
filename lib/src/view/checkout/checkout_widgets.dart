@@ -181,9 +181,9 @@ class OrderSuccessPopup extends StatelessWidget {
                 ),
                 side: const BorderSide(color: AppColors.primaryColor),
               ),
-              child: const Text(
+              child:  Text(
                 'Go Back',
-                style: TextStyle(fontSize: 16, color: primaryColor),
+                style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
               ),
             ),
           ],

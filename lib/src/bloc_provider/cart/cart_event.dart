@@ -4,7 +4,7 @@ abstract class CartEvent {}
 class FetchCart extends CartEvent {}
 
 // Add item to cart event
-class AddCartItem extends CartEvent {
+class AddCartItem extends CartEvent{
   final String productId;
   final String quantity;
 

@@ -82,8 +82,8 @@ class CartScreenNew extends StatelessWidget {
       body: BlocConsumer<CartBloc, CartState>(listener: (context, state) {
         if (state is CartFailure) {
           // Perform side effect, such as showing a snackbar
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Error loading cart')));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('Error to add cart')));
         }
       }, builder: (context, state) {
         DataStatus dataStatus = state is CartLoading

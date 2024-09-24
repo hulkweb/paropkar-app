@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/bloc_provider/cart/cart_bloc.dart';
+import 'package:paropkar/src/bloc_provider/cart/cart_event.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/controller/favorite/favorite_controller.dart';
@@ -123,13 +125,9 @@ class FavoriteListingScreen extends StatelessWidget {
                             // Handle favorite icon press
                           },
                           onAddToCartPressed: () async {
-                            await Provider.of<CartController>(context,
-                                    listen: false)
-                                .addCart(
-                                    product_id: favorite.product!.id.toString(),
-                                    variation_id: '1',
-                                    quantity: "1",
-                                    context: context);
+                            context.read<CartBloc>().add(AddCartItem(
+                                productId: favorite.product!.id.toString(),
+                                quantity: "1"));
                           },
                           onProductPressed: () {
                             context

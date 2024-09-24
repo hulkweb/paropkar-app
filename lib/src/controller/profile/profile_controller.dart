@@ -51,7 +51,7 @@ class ProfileController extends ChangeNotifier {
   logoutEvent(BuildContext context) async {
     if (await logoutUserApi(context)) {
       await logOut();
-      AppNavigation.pushAndRemoveUntil(context, const LoginScreen());
+      AppNavigation.pushAndRemoveUntil(context,  LoginScreen());
     }
   }
 }

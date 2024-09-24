@@ -30,6 +30,7 @@ class DataStateWidget extends StatelessWidget {
   final VoidCallback ontapRetry;
   final bool isDataEmpty;
   final Widget? emptyDataWidget;
+  final Widget? overLayInsideWidget;
   final bool? isOverlay;
 
   const DataStateWidget({
@@ -44,7 +45,9 @@ class DataStateWidget extends StatelessWidget {
     this.errorWidth,
     required this.ontapRetry,
     required this.isDataEmpty,
-    this.emptyDataWidget, this.isOverlay,
+    this.emptyDataWidget,
+    this.isOverlay,
+    this.overLayInsideWidget,
   });
 
   @override
@@ -84,24 +87,24 @@ class DataStateWidget extends StatelessWidget {
                   height: screenWidth * .3,
                   width: screenWidth * .3,
                 ))
-            :
-            isOverlay??false?
-             Stack(
-                  children: [
-                    child!,
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.black
-                            .withOpacity(0.5), // Semi-transparent background
-                        child: const Center(
-                          child:
-                              CircularProgressIndicator(color: AppColors.primaryColor,), // Loading indicator
+            : isOverlay ?? false
+                ? Stack(
+                    children: [
+                      child!,
+                      Positioned.fill(
+                        child: Container(
+                          color: Colors.black
+                              .withOpacity(0.5), // Semi-transparent background
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.primaryColor,
+                            ), // Loading indicator
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ):child ??
-                const SizedBox(); // Required success widget
+                    ],
+                  )
+                : child ?? const SizedBox(); // Required success widget
     }
   }
 }

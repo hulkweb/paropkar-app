@@ -23,7 +23,7 @@ class SplashController {
           context,
           MaterialPageRoute(
               builder: (context) =>
-               token==null || token.isEmpty?    const LoginScreen() : const BottomBarListScreen()), // Navigate to home screen
+               token==null || token.isEmpty?     LoginScreen() : const BottomBarListScreen()), // Navigate to home screen
         );
       },
     );
