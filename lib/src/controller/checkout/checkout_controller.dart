@@ -12,19 +12,6 @@ class CheckoutController with ChangeNotifier {
     }
   }
 
-  /// address
-
-  List<AddressModel> addressList = [
-    AddressModel(
-      type: "Home",
-      address: "345/A Vijay Nagar Ring Road, A.B Road, M.P. Indore",
-    ),
-    AddressModel(
-      type: "Office",
-      address: "345/A Vijay Nagar Ring Road, A.B Road, M.P. Indore",
-    )
-  ];
-
   int _addresIndex = 0;
   dynamic get addresIndex => _addresIndex;
 

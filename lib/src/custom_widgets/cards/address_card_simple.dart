@@ -4,19 +4,25 @@ import 'package:paropkar/main.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+import 'package:paropkar/src/utills/dimentions.dart';
 
 class AddressCardSimple extends StatelessWidget {
   final String addressType;
   final String address;
   final VoidCallback onTap;
   final VoidCallback ontapEdit;
+  final VoidCallback ontapDelete;
+  final bool isDefault;
 
   const AddressCardSimple({
-    Key? key,
+    super.key,
     required this.addressType,
     required this.address,
-    required this.onTap, required this.ontapEdit,
-  }) : super(key: key);
+    required this.onTap,
+    required this.ontapEdit,
+    required this.ontapDelete,
+    required this.isDefault,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +34,7 @@ class AddressCardSimple extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: Theme.of(context).cardColor,
+            border: Border.all(color:isDefault? AppColors.primaryColor:AppColors.white),
             boxShadow: [
               BoxShadow(
                 color: Theme.of(context).dividerColor.withOpacity(.3),
@@ -36,51 +43,73 @@ class AddressCardSimple extends StatelessWidget {
               ),
             ],
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5, top: 0, bottom: 6),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(width: 10),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        addressType,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 3, top: 0, bottom: 6),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: Image.asset(AppAssets.location,height: 25,width: 25,color:Theme.of(context).disabledColor,),
+                          Text(
+                            addressType,
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
-                          SizedBox(
-                            width: screenWidth * .5,
-                            child: Text(
-                              address,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall!
-                                  .copyWith(fontSize: 14,color: AppColors.primaryColor,fontFamily: AppFonts.medium),
-                            ),
+                          const SizedBox(height: 8),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: Image.asset(
+                                  AppAssets.location,
+                                  height: 25,
+                                  width: 25,
+                                  color: Theme.of(context).disabledColor,
+                                ),
+                              ),
+                              SizedBox(
+                                width: screenWidth * .48,
+                                child: Text(
+                                  address,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(
+                                          fontSize: 14,
+                                          color: AppColors.primaryColor,
+                                          fontFamily: AppFonts.medium),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
+                    ),
+                    
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: ontapEdit,
+                          icon: Icon(Icons.edit, color: Theme.of(context).primaryColor),
+                        ),   IconButton(
+                      onPressed: ontapDelete,
+                      icon: Icon(Icons.delete, color: Theme.of(context).primaryColor),
+                    ),
+                      ],
+                    ),
+                  
+                  ],
                 ),
-                const Spacer(),
-                IconButton(
-                  onPressed: ontapEdit,
-                  icon: Icon(Icons.edit, color: Theme.of(context).primaryColor),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

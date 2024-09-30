@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
+import 'package:paropkar/src/controller/product/product_detail_controller.dart';
 import 'package:paropkar/src/custom_widgets/dialog/success_dialog.dart';
 import 'package:paropkar/src/user_preference/user_pref/user_preference.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -45,6 +46,7 @@ showDialogBox(BuildContext context,
     VoidCallback? ontapOk}) {
   return showDialog(
     context: context,
+    barrierDismissible: false,
     builder: (BuildContext context) {
       // return DialogBox(
       //   type: 'success',
@@ -111,3 +113,4 @@ bool hasNoData( data) {
   print('-------${data.runtimeType}----${data}-------');
   return (data == null || data.isEmpty);
 }
+

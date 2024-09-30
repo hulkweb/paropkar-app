@@ -25,6 +25,7 @@ class DialogBox extends StatelessWidget {
         child: Stack(
           children: [
             Dialog(
+             
               insetPadding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -59,7 +60,7 @@ class DialogBox extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16.0,
                         color: Colors.grey[700],
-                      ),
+                      ),maxLines: 3,
                     ),
                     Expanded(
                         child: SizedBox(

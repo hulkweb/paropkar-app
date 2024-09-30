@@ -11,7 +11,6 @@ import 'package:paropkar/src/view/checkout/checkout_screen.dart';
 class FavoriteController extends ChangeNotifier {
   FavoriteController() {
     changeFavoritesDataStatus(DataStatus.loading);
-    getFavorites();
   }
 
   FavoriteModel? favorites;
@@ -21,10 +20,11 @@ class FavoriteController extends ChangeNotifier {
     _favoritesDataStatus = status;
     print('status changed of getcart $status');
     notifyListeners();
-}
+  }
 
-    getFavorites(){
-    if (kDebugMode){
+  getFavorites() {
+    
+    if (kDebugMode) {
       print('========calling getFavorite=========');
     }
     getApi(
@@ -37,6 +37,7 @@ class FavoriteController extends ChangeNotifier {
         changeFavoritesDataStatus(DataStatus.success);
       },
       onFailed: (response) {
+        favorites = FavoriteModel.fromJson(response);
         changeFavoritesDataStatus(DataStatus.error);
       },
       onException: () {
@@ -45,15 +46,10 @@ class FavoriteController extends ChangeNotifier {
     );
   }
 
-  int _cartIndex = -1;
-  int get cartIndex => _cartIndex;
+ 
   DataStatus _addFavoriteDataStatus = DataStatus.success;
   DataStatus get addFavoriteDataStatus => _addFavoriteDataStatus;
 
-  changeFavoriteIndex(int index) {
-    _cartIndex = index;
-    notifyListeners();
-  }
 
   changeAddFavoritesDataStatus(DataStatus status) {
     _addFavoriteDataStatus = status;
@@ -61,15 +57,11 @@ class FavoriteController extends ChangeNotifier {
     notifyListeners();
   }
 
-  addFavorite(
-      {required String product_id,
-      required BuildContext context}) {
+  addRemoveFavorite({required String product_id, required BuildContext context}) {
     changeAddFavoritesDataStatus(DataStatus.loading);
     postApi(
-      body: {
-        'product_id': product_id
-      },
-      url: AppUrl.favorites,
+      body: {'product_id': product_id},
+      url: "${AppUrl.addFav}$product_id",
       onSuccess: (response) {
         getFavorites();
         changeAddFavoritesDataStatus(DataStatus.success);

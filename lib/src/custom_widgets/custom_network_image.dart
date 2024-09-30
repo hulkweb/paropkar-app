@@ -22,30 +22,36 @@ class CustomNetworkImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.network(
-     AppUrl.imageUrl + imageUrl,
+      AppUrl.imageUrl + imageUrl,
       width: width,
       height: height,
       fit: fit,
-      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+      loadingBuilder: (BuildContext context, Widget child,
+          ImageChunkEvent? loadingProgress) {
         if (loadingProgress == null) {
-          return child;  // Image loaded successfully
+          return child; // Image loaded successfully
         }
         return placeholder ??
             Center(
               child: CircularProgressIndicator(
                 value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes!)
+                    ? loadingProgress.cumulativeBytesLoaded /
+                        (loadingProgress.expectedTotalBytes!)
                     : null,
               ),
             );
       },
-      errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-        return  errorWidget ??SizedBox(width:width ,height: height,
-          child:
-              Center(
-                child: Icon(Icons.error, size: 50, color: Colors.red.withOpacity(.1)),
+      errorBuilder:
+          (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return errorWidget ??
+            SizedBox(
+              width: width,
+              height: height,
+              child: Center(
+                child: Icon(Icons.error,
+                    size: 50, color: Colors.red.withOpacity(.1)),
               ),
-        );
+            );
       },
     );
   }

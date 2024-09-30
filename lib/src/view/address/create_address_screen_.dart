@@ -1,38 +1,31 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
-import 'package:paropkar/src/controller/address/create_address_controller.dart';
-import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
+import 'package:paropkar/src/controller/address/address_controller.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
 import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
-import 'package:paropkar/src/custom_widgets/comman_widget.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
 import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:paropkar/src/custom_widgets/custom_status_bar.dart';
 import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
 import 'package:provider/provider.dart';
 
-class CreateAddressScreen extends StatefulWidget {
-  const CreateAddressScreen({super.key});
-
-  @override
-  State<CreateAddressScreen> createState() => _CreateAddressScreenState();
-}
-
-class _CreateAddressScreenState extends State<CreateAddressScreen> {
+class CreateAddressScreen extends StatelessWidget {
+  CreateAddressScreen({super.key, required this.screenType, this.address_id});
+  final String screenType;
+  final String? address_id;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  final createAddressController = CreateAddressController();
 
   @override
   Widget build(BuildContext context) {
-    final addressProvider = Provider.of<CreateAddressController>(context);
-    final contentpadding = EdgeInsets.only(top: 18, bottom: 18, left: 10);
+    final addressController = Provider.of<AddressController>(context);
+    const contentpadding = EdgeInsets.only(top: 18, bottom: 18, left: 10);
     return StatusBarCustom(
-        statusBarBrightnessLight: true,
+      statusBarBrightnessLight: true,
       statusBarColor: AppColors.primaryColor,
       child: SafeArea(
         child: Scaffold(
@@ -59,7 +52,7 @@ class _CreateAddressScreenState extends State<CreateAddressScreen> {
                 },
               ),
             ),
-            actions: [
+            actions: const [
               // Padding(
               //   padding: const EdgeInsets.only(right: 20),
               //   child: CustomIconImage(
@@ -74,7 +67,7 @@ class _CreateAddressScreenState extends State<CreateAddressScreen> {
               // ),
             ],
             title: Text(
-              'Create Address',
+              screenType == 'edit' ? 'Create Address' : "Create Address",
               style: Theme.of(context).textTheme.displaySmall!.copyWith(
                   fontSize: 20,
                   fontFamily: AppFonts.semiBold,
@@ -94,27 +87,28 @@ class _CreateAddressScreenState extends State<CreateAddressScreen> {
                   // Toggle Buttons
                   largeHeight,
                   CustomTextFormWidget(
-                   contentpadding:contentpadding,
+                    contentpadding: contentpadding,
                     maxLength: 50,
                     keyboardType: TextInputType.name,
                     fillColor: AppColors.white,
-                    controller: createAddressController.nameController,
+                    controller: addressController.nameController,
                     hintText: "Full Name*",
                     validator: (value) {
-                      return createAddressController.nameValidation(value,
+                      return addressController.nameValidation(value,
                           emptyText: 'Enter Full Name');
                     },
                   ),
                   mediumHeight,
                   CustomTextFormWidget(
-                    contentpadding:contentpadding,
-                    maxLength: 50,
-                    keyboardType: TextInputType.name,
+                    contentpadding: contentpadding,
+                    maxLength: 10,
+                    keyboardType: TextInputType.number,
+                     
                     fillColor: AppColors.white,
-                    controller: createAddressController.mobileFieldController,
+                    controller: addressController.mobileFieldController,
                     hintText: "Phone Number*",
                     validator: (value) {
-                      return createAddressController.mobileValidation(value);
+                      return addressController.mobileValidation(value);
                     },
                   ),
                   mediumHeight,
@@ -124,17 +118,16 @@ class _CreateAddressScreenState extends State<CreateAddressScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         CustomTextFormWidget(
-                          contentpadding:contentpadding,
+                          contentpadding: contentpadding,
                           width: screenWidth * .5,
-                          maxLength: 50,
-                          keyboardType: TextInputType.name,
+                          maxLength: 6,
+                          keyboardType: TextInputType.number,
                           fillColor: AppColors.white,
-                          controller: createAddressController.pincodeController,
+                          controller: addressController.pincodeController,
                           hintText: "Pincode*",
                           validator: (value) {
-                            return createAddressController
-                                .pincodeValidation(value);
-                          },
+                            return addressController.pincodeValidation(value);
+                          }, 
                         ),
                       ],
                     ),
@@ -146,29 +139,29 @@ class _CreateAddressScreenState extends State<CreateAddressScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomTextFormWidget(
-                          contentpadding:contentpadding,
+                          contentpadding: contentpadding,
                           width: screenWidth * .44,
                           maxLength: 50,
                           keyboardType: TextInputType.name,
                           fillColor: AppColors.white,
-                          controller: createAddressController.stateController,
+                          controller: addressController.stateController,
                           hintText: "State*",
                           validator: (value) {
-                            return createAddressController.nameValidation(value,
+                            return addressController.nameValidation(value,
                                 emptyText: "Enter State");
                           },
                         ),
                         Expanded(child: smallWidth),
                         CustomTextFormWidget(
-                          contentpadding:contentpadding,
+                          contentpadding: contentpadding,
                           width: screenWidth * .44,
                           maxLength: 50,
                           keyboardType: TextInputType.name,
                           fillColor: AppColors.white,
-                          controller: createAddressController.cityController,
+                          controller: addressController.cityController,
                           hintText: "City*",
                           validator: (value) {
-                            return createAddressController.nameValidation(value,
+                            return addressController.nameValidation(value,
                                 emptyText: "Enter City");
                           },
                         ),
@@ -177,28 +170,28 @@ class _CreateAddressScreenState extends State<CreateAddressScreen> {
                   ),
                   mediumHeight,
                   CustomTextFormWidget(
-                    contentpadding:contentpadding,
+                    contentpadding: contentpadding,
                     maxLength: 50,
                     keyboardType: TextInputType.name,
                     fillColor: AppColors.white,
-                    controller: createAddressController.localAddressController,
+                    controller: addressController.localAddressController,
                     hintText: "House Number, Building Name*",
                     validator: (value) {
-                      return createAddressController.nameValidation(value,
+                      return addressController.nameValidation(value,
                           emptyText: 'Enter Required Information');
                     },
                   ),
                   largeHeight,
                   CustomTextFormWidget(
-                     contentpadding:contentpadding,
+                    contentpadding: contentpadding,
                     // isDense: true,
                     maxLength: 50,
                     keyboardType: TextInputType.name,
                     fillColor: AppColors.white,
-                    controller: createAddressController.landMarkController,
+                    controller: addressController.landMarkController,
                     hintText: "Road Name, Area, Colony*",
                     validator: (value) {
-                      return createAddressController.nameValidation(value,
+                      return addressController.nameValidation(value,
                           emptyText: 'Enter Required Information');
                     },
                   ),
@@ -212,12 +205,12 @@ class _CreateAddressScreenState extends State<CreateAddressScreen> {
                             contentPadding: EdgeInsets.zero,
                             title: const Text('Home'),
                             value: AddressType.home,
-                            fillColor:
-                                MaterialStateProperty.all(AppColors.primaryColor),
-                            groupValue: addressProvider.selectedAddressType,
+                            fillColor: MaterialStateProperty.all(
+                                AppColors.primaryColor),
+                            groupValue: addressController.selectedAddressType,
                             onChanged: (AddressType? value) {
                               if (value != null) {
-                                addressProvider.setAddressType(value);
+                                addressController.setAddressType(value);
                               }
                             },
                           ),
@@ -226,13 +219,13 @@ class _CreateAddressScreenState extends State<CreateAddressScreen> {
                           child: RadioListTile<AddressType>(
                             contentPadding: EdgeInsets.zero,
                             title: const Text('Office'),
-                            fillColor:
-                                MaterialStateProperty.all(AppColors.primaryColor),
+                            fillColor: MaterialStateProperty.all(
+                                AppColors.primaryColor),
                             value: AddressType.office,
-                            groupValue: addressProvider.selectedAddressType,
+                            groupValue: addressController.selectedAddressType,
                             onChanged: (AddressType? value) {
                               if (value != null) {
-                                addressProvider.setAddressType(value);
+                                addressController.setAddressType(value);
                               }
                             },
                           ),
@@ -241,14 +234,21 @@ class _CreateAddressScreenState extends State<CreateAddressScreen> {
                     ),
                   ),
                   largeHeight,
-                  CustomButton(
-                    ontap: () {
-                      if (_formKey.currentState!.validate()) {
-                        createAddressController.ontapSaveAddress(context);
-                      }
-                    },
-                    text: 'Save Address',
-                  ),
+                  Consumer<AddressController>(
+                      builder: (context, controller, child) {
+                    return CustomButton(
+                      isLoading: controller.addressAddUpdateStatus ==
+                              ButtonStatus.loading
+                          ? true
+                          : false,
+                      ontap: () {
+                        if (_formKey.currentState!.validate()) {
+                          controller.ontapSaveAddress(context, address_id);
+                        }
+                      },
+                      text: 'Save Address',
+                    );
+                  }),
                   mediumHeight
                 ],
               ),

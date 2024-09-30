@@ -10,25 +10,29 @@ String productDetailModelToJson(ProductDetailModel data) => json.encode(data.toJ
 
 class ProductDetailModel {
     String? message;
-    Product? product;
+    Data? data;
+    bool? success;
 
     ProductDetailModel({
         this.message,
-        this.product,
+        this.data,
+        this.success,
     });
 
     factory ProductDetailModel.fromJson(Map<String, dynamic> json) => ProductDetailModel(
         message: json["message"],
-        product: json["product"] == null ? null : Product.fromJson(json["product"]),
+        data: json["data"] == null ? null : Data.fromJson(json["data"]),
+        success: json["success"],
     );
 
     Map<String, dynamic> toJson() => {
         "message": message,
-        "product": product?.toJson(),
+        "data": data?.toJson(),
+        "success": success,
     };
 }
 
-class Product {
+class Data {
     int? id;
     String? name;
     int? categoryId;
@@ -46,7 +50,7 @@ class Product {
     DateTime? updatedAt;
     List<Variation>? variations;
 
-    Product({
+    Data({
         this.id,
         this.name,
         this.categoryId,
@@ -65,7 +69,7 @@ class Product {
         this.variations,
     });
 
-    factory Product.fromJson(Map<String, dynamic> json) => Product(
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
         id: json["id"],
         name: json["name"],
         categoryId: json["category_id"],

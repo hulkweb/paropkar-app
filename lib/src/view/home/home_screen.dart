@@ -12,7 +12,10 @@ import 'package:paropkar/src/bloc_provider/product/product_event.dart';
 import 'package:paropkar/src/bloc_provider/product/product_state.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
+import 'package:paropkar/src/controller/category/category_controller.dart';
+import 'package:paropkar/src/controller/favorite/favorite_controller.dart';
 import 'package:paropkar/src/controller/product/product_detail_controller.dart';
+import 'package:paropkar/src/controller/product/product_listing_controller.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
@@ -25,7 +28,6 @@ import 'package:paropkar/src/custom_widgets/carousel_widget.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/view_all_button.dart';
 import 'package:paropkar/src/custom_widgets/custom_status_bar.dart';
 import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
-import 'package:paropkar/src/view/product/product_listing_screen_new.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,11 +37,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomController = Provider.of<BottomBarListController>(context);
-    // final categoryListingController =
-    //     Provider.of<CategoryListingController>(context);
-    // final cartController = Provider.of<CartController>(context, listen: true);
-    context.read<CategoryBloc>().add(FetchCategories());
-    context.read<ProductBloc>().add(FetchProducts());
+    final categoryListingController =
+        Provider.of<CategoryListingController>(context);
+    final cartController = Provider.of<CartController>(context, listen: true);
+    final favoriteController =
+        Provider.of<FavoriteController>(context, listen: true);
     return StatusBarCustom(
       statusBarBrightnessLight: true,
       statusBarColor: AppColors.primaryColor,
@@ -227,48 +229,40 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 10),
 
                     // Categories List
-                    BlocBuilder<CategoryBloc, CategoryState>(
-                        builder: (context, state) {
-                      print('state name $state');
-                      DataStatus dataStatus = (state is CategoryLoading)
-                          ? DataStatus.loading
-                          : (state is CategorySuccess)
-                              ? DataStatus.success
-                              : DataStatus.error;
-                      print('=============');
-                      print(dataStatus);
+                    Consumer<CategoryListingController>(
+                        builder: (context, controller, state) {
                       return DataStateWidget(
-                        status: dataStatus,
-                        ontapRetry: () {
-                          context.read<CategoryBloc>().add(FetchCategories());
-                        },
+                        status: controller.categoryDataStatus,
+                        ontapRetry: () {},
                         loadingWidget: const SizedBox(),
-                        isDataEmpty: state is CategorySuccess
-                            ? ((state.categoryData.categories == null) ||
-                                (state.categoryData.categories!.isEmpty))
-                            : false,
+                        isDataEmpty:
+                            controller.categoryDataStatus == DataStatus.success
+                                ? ((controller.categoryData!.data == null) ||
+                                    (controller.categoryData!.data!.isEmpty))
+                                : false,
                         child: SizedBox(
                           height: screenWidth * .4,
                           child: ListView(
                               physics: const ScrollPhysics(),
                               scrollDirection: Axis.horizontal,
-                              children: state is CategorySuccess
-                                  ? ((state.categoryData.categories == null) ||
-                                          (state.categoryData.categories!
-                                              .isEmpty))
+                              children: controller.categoryDataStatus ==
+                                      DataStatus.success
+                                  ? ((controller.categoryData!.data == null) ||
+                                          (controller
+                                              .categoryData!.data!.isEmpty))
                                       ? [const SizedBox()]
                                       : List.generate(
-                                          state.categoryData.categories!.length,
+                                          controller.categoryData!.data!.length,
                                           (index) {
-                                          final category = state
-                                              .categoryData.categories![index];
+                                          final category = controller
+                                              .categoryData!.data![index];
                                           return Padding(
                                             padding: EdgeInsets.only(left: 10),
                                             child: CategoryItem(
                                                 ontap: () {
                                                   AppNavigation.navigationPush(
                                                       context,
-                                                      const ProductListingScreenNew());
+                                                      const ProductListingScreen());
                                                 },
                                                 name: category.name ?? '',
                                                 imagePath:
@@ -288,26 +282,22 @@ class HomeScreen extends StatelessWidget {
                     ),
 
                     // Popular Items Grid
-                    BlocBuilder<ProductBloc, ProductState>(
-                        builder: (context, state) {
-                      DataStatus dataStatus = state is ProductListingLoading
-                          ? DataStatus.loading
-                          : state is ProductListingSuccess
-                              ? DataStatus.success
-                              : DataStatus.error;
+                    Consumer<ProductListingController>(
+                        builder: (context, controller, state) {
                       return DataStateWidget(
-                        status: dataStatus,
-                        ontapRetry: () {
-                          context.read<ProductBloc>().add(FetchProducts());
-                        },
                         loadingWidget: const SizedBox(),
+                        status: controller.productDataStatus,
+                        ontapRetry: () {
+                          controller.getProducts();
+                        },
                         isOverlay: false,
                         // isDataEmpty:  (controller.productListData!.data != null) &&
-                        //         (controller.productListData!.data!.isEmpty),
-                        isDataEmpty: (state is ProductListingSuccess) &&
-                            ((state.productListData.data == null) ||
-                                state.productListData.data!.isEmpty),
-                        child: state is ProductListingSuccess
+                        //         (controller.productListData!.data!.data!.isEmpty),
+                        isDataEmpty: controller.productDataStatus ==
+                                DataStatus.success &&
+                            controller.productsData!.data == null,
+                        child: controller.productDataStatus ==
+                                DataStatus.success
                             ? GridView.count(
                                 crossAxisCount: 2,
                                 padding: EdgeInsets.all(screenWidth * .04),
@@ -316,15 +306,14 @@ class HomeScreen extends StatelessWidget {
                                 crossAxisSpacing: 7,
                                 mainAxisSpacing: 10,
                                 childAspectRatio: 0.6,
-                                children: (state.productListData.data ==
-                                            null) ||
-                                        (state.productListData.data!.isEmpty)
+                                children: controller.productsData!.data == null
                                     ? []
                                     : List.generate(
-                                        state.productListData.data!.length,
+                                        controller
+                                            .productsData!.data!.data!.length,
                                         (index) {
-                                          final product = state
-                                              .productListData.data![index];
+                                          final product = controller
+                                              .productsData!.data!.data![index];
                                           return ProductCard(
                                             imageUrl: product.image ??
                                                 '', // AppAssets.maida, // Replace with actual image URL
@@ -335,29 +324,31 @@ class HomeScreen extends StatelessWidget {
                                                 ? ""
                                                 : product.category!.name ??
                                                     '', //"Buy 3 Items, Save Extra 5%",
-                                            isFavorite: index % 2 == 0,
+                                            isFavorite:
+                                                product.isFavorite ?? false,
                                             onFavoritePressed: () {
-                                              // Handle favorite icon press
+                                              favoriteController
+                                                  .addRemoveFavorite(
+                                                      product_id:
+                                                          product.id.toString(),
+                                                      context: context);
                                             },
                                             onAddToCartPressed: () async {
-                                              context.read<CartBloc>().add(
-                                                  AddCartItem(
-                                                      productId:
-                                                          product.id.toString(),
-                                                      quantity: "1"));
+                                              cartController.addCart(
+                                                variation_id: product.variations![0].id.toString(),
+                                                  product_id:
+                                                      product.id.toString(),
+                                                  quantity: "1",
+                                                  context: context);
                                             },
                                             onProductPressed: () {
                                               context
                                                   .read<
                                                       ProductDetailController>()
-                                                  .getProductDetail(context,
-                                                      id: '${product.id ?? ''}',
-                                                      category_id:
-                                                          '${product.categoryId ?? ''}',
-                                                      subcategory_id:
-                                                          '${product.subcategoryId ?? ''}');
-                                              // same functions result
-
+                                                  .getProductDetail(
+                                                    context,
+                                                    id: '${product.id ?? ''}',
+                                                  );
                                               AppNavigation.navigationPush(
                                                   context,
                                                   ProductDetailScreenNew(
@@ -368,6 +359,8 @@ class HomeScreen extends StatelessWidget {
                                                         '${product.subcategoryId ?? ''}',
                                                   ));
                                             },
+                                            isCartAdded:
+                                                product.isCart ?? false,
                                           );
                                         },
                                       ))

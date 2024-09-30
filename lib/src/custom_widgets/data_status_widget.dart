@@ -6,6 +6,10 @@ import 'package:paropkar/src/utills/app_colors.dart';
 
 enum DataStatus { loading, error, success }
 
+enum ButtonStatus { loading,nothing }
+
+enum OverlayStatus { loading,nothing }
+
 bool isDataLoading(DataStatus status) {
   return status == DataStatus.loading;
 }

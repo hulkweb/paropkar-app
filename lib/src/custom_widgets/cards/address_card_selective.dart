@@ -7,13 +7,14 @@ class AddressCardSelective extends StatelessWidget {
   final String address;
   final bool isSelected;
   final VoidCallback onTap;
+  final VoidCallback onEdit;
 
   const AddressCardSelective({
     Key? key,
     required this.addressType,
     required this.address,
     required this.isSelected,
-    required this.onTap,
+    required this.onTap, required this.onEdit,
   }) : super(key: key);
 
   @override
@@ -72,9 +73,7 @@ class AddressCardSelective extends StatelessWidget {
                 ),
                 const Spacer(),
                 IconButton(
-                  onPressed: () {
-                    // Edit address action
-                  },
+                  onPressed:onTap,
                   icon: Icon(Icons.edit, color: Theme.of(context).hintColor),
                 ),
               ],

@@ -1,3 +1,3 @@
-abstract class CategoryEvent{}
+// abstract class CategoryEvent{}
 
-class FetchCategories extends CategoryEvent{}
+// class FetchCategories extends CategoryEvent{}

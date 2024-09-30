@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
+import 'package:paropkar/src/controller/favorite/favorite_controller.dart';
 import 'package:paropkar/src/controller/profile/profile_controller.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/custom_widgets/small_widgets.dart';
@@ -17,6 +18,7 @@ import 'package:paropkar/src/view/address/manage_address_screen.dart';
 import 'package:paropkar/src/view/favorite/favorite_listing_screen.dart';
 import 'package:paropkar/src/view/invoice/invoice_screen.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
+import 'package:paropkar/src/view/order/order_list_screen.dart';
 import 'package:paropkar/src/view/profile/edit_profile_screen.dart';
 import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:provider/provider.dart';
@@ -85,7 +87,7 @@ class ProfileScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 12),
-        child: Column(
+        child: ListView(
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
@@ -162,7 +164,16 @@ class ProfileScreen extends StatelessWidget {
                     padding: 8),
                 ListTileProfileSction(
                     ontap: () {
-                      AppNavigation.navigationPush(context, FavoriteListingScreen());
+                      AppNavigation.navigationPush(context, OrderListScreen());
+                    },
+                    imgColor: AppColors.white,
+                    image: AppAssets.orders,
+                    title: 'Orders',
+                    padding: 8),
+                ListTileProfileSction(
+                    ontap: () {
+                      context.read<FavoriteController>().getFavorites();
+                      AppNavigation.navigationPush(context, const FavoriteListingScreen());
                     },
                     imgColor: AppColors.white,
                     image: AppAssets.favorite,
@@ -180,6 +191,7 @@ class ProfileScreen extends StatelessWidget {
                                 builder: (context, controller, child) {
                               return LogoutWidget(
                                 ontapLogout: () async {
+                                  // context.read<BottomBarListController>().changeIndex(0);
                                   await profileController.logoutEvent(context);
                                 },
                                 isLoading: controller.logoutStatus ==
@@ -193,11 +205,7 @@ class ProfileScreen extends StatelessWidget {
                     padding: 8),
               ],
             ),
-            Expanded(
-              child: ListView(
-                children: const [],
-              ),
-            ),
+         
           ],
         ),
       ),

@@ -41,25 +41,27 @@ class ProductDetailScreenNew extends StatelessWidget {
       child: Scaffold(
         body: Stack(
           children: [
-            BlocBuilder<ProductBloc, ProductState>(builder: (context, state) {
+            Consumer<ProductDetailController>(
+                builder: (context, controller, state) {
               return Builder(builder: (context) {
-                DataStatus dataStatus = (state is ProductDetailLoading)
-                    ? DataStatus.loading
-                    : (state is ProductDetailSuccess)
-                        ? DataStatus.success
-                        : DataStatus.error;
                 return DataStateWidget(
-                  status: dataStatus,
+                  status: controller.productDetailDataStatus,
                   ontapRetry: () {
-                    context.read<ProductBloc>().add(FetchProductDetail(id: id));
+                    context.read<ProductDetailController>().getProductDetail(
+                        context,
+                        id: id,
+                     );
                   },
-                  isDataEmpty: state is ProductDetailSuccess
-                      ? ((state.productDetailData.product == null))
-                      : false,
-                  child: state is ProductDetailSuccess &&
-                          ((state.productDetailData.product == null))
+                  isDataEmpty: controller.productDetailDataStatus ==
+                          DataStatus.success &&
+                      (controller.productDetailData == null ||
+                          controller.productDetailData!.data == null),
+                  child: controller.productDetailDataStatus ==
+                              DataStatus.success &&
+                          (controller.productDetailData == null ||
+                              controller.productDetailData!.data == null)
                       ? const SizedBox()
-                      : state is ProductDetailSuccess
+                      : controller.productDetailDataStatus == DataStatus.success
                           ? SizedBox(
                               height: screenHeight,
                               width: screenWidth,
@@ -95,9 +97,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                               ),
                                             ),
                                             CustomNetworkImage(
-                                              imageUrl: state.productDetailData
-                                                      .product!.image ??
-                                                  '',
+                                              imageUrl: controller.productDetailData!.data!.image??'',
                                               height: screenHeight * .2,
                                               fit: BoxFit.contain,
                                             ),
@@ -119,9 +119,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Text(
-                                                state.productDetailData.product!
-                                                        .name ??
-                                                    '',
+                                                controller.productDetailData!.data!.name??'',
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .headlineMedium,
@@ -176,11 +174,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                                       ),
                                                     ),
                                                     TextSpan(
-                                                      text: state
-                                                              .productDetailData
-                                                              .product!
-                                                              .price ??
-                                                          '',
+                                                      text: controller.productDetailData!.data!.price??'',
                                                       style: Theme.of(context)
                                                           .textTheme
                                                           .titleLarge!
@@ -235,7 +229,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                                               left: 10,
                                                               right: 10),
                                                       child: Text(
-                                                        '${state.productDetailData.product!.stock ?? ''}',
+                                                       controller.productDetailData!.data!.stock.toString(),
                                                         style: Theme.of(context)
                                                             .textTheme
                                                             .titleLarge!
@@ -297,11 +291,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                                 SizedBox(
                                                   width: screenWidth * .8,
                                                   child: Text(
-                                                    state
-                                                            .productDetailData
-                                                            .product!
-                                                            .description ??
-                                                        '', //'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultricies et elit quis interdum. Aenean eleifend odio non urna blandit lobortis. Nulla commodo felis at orci mattis, at maximus ante congue.',
+                                                  controller.productDetailData!.data!.description??'', //'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultricies et elit quis interdum. Aenean eleifend odio non urna blandit lobortis. Nulla commodo felis at orci mattis, at maximus ante congue.',
                                                     style: Theme.of(context)
                                                         .textTheme
                                                         .headlineSmall!
@@ -337,7 +327,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                         ],
                                       ),
                                     ),
-                                    GridView.count(
+                                  GridView.count(
                                         crossAxisCount: 2,
                                         padding:
                                             EdgeInsets.all(screenWidth * .04),
@@ -348,7 +338,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                         mainAxisSpacing: 10,
                                         childAspectRatio: 0.7,
                                         children: List.generate(
-                                          10,
+                                          1,
                                           (index) => ProductCard(
                                             imageUrl: AppAssets
                                                 .maida, // Replace with actual image URL
@@ -363,7 +353,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                             onAddToCartPressed: () async {
                                               // Handle add to cart press
                                               AppNavigation.navigationPush(
-                                                  context, CartScreenNew());
+                                                  context, CartScreen());
                                             },
                                             onProductPressed: () {
                                               AppNavigation.navigationPush(
@@ -373,7 +363,7 @@ class ProductDetailScreenNew extends StatelessWidget {
                                                     categoryId: '',
                                                     subcategoryId: '',
                                                   ));
-                                            },
+                                            }, isCartAdded: null,
                                           ),
                                         )),
                                   ],

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/custom_widgets/custom_network_image.dart';
+import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
+
 class ProductCard extends StatelessWidget {
   final String imageUrl;
   final String productName;
   final String price;
   final String categoryName;
   final bool isFavorite;
+  final bool? isCartAdded;
   final VoidCallback onFavoritePressed;
   final VoidCallback onAddToCartPressed;
   final VoidCallback onProductPressed;
@@ -23,6 +26,7 @@ class ProductCard extends StatelessWidget {
     required this.onFavoritePressed,
     required this.onAddToCartPressed,
     required this.onProductPressed,
+    required this.isCartAdded,
   });
 
   @override
@@ -50,15 +54,12 @@ class ProductCard extends StatelessWidget {
                       height: 30,
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 10,right: 10),
-                      child: CustomNetworkImage(imageUrl: imageUrl,height: screenHeight * .12,),
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: CustomNetworkImage(
+                        imageUrl: imageUrl,
+                        height: screenHeight * .12,
+                      ),
                     )
-                    // Image.network(
-                    //   imageUrl,
-                    //   width: double.infinity,
-                    //   height: screenHeight * .1,
-                    //   fit: BoxFit.contain,
-                    // ),
                   ],
                 ),
                 Positioned(
@@ -116,25 +117,41 @@ class ProductCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         fontFamily: AppFonts.semiBold),
                   ),
-                  InkWell(
-                    onTap: onAddToCartPressed,
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: const BoxDecoration(
-                          color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(8),
-                            bottomRight: Radius.circular(10),
-                          )),
-                      child: const Center(
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
+               isCartAdded ?? false
+                      ? InkWell(
+                          onTap: onAddToCartPressed,
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: const BoxDecoration(
+                                color: AppColors.primaryColor,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(10),
+                                )),
+                            child:
+                                const Center(child: Icon(Icons.shopping_cart, color: Colors.white,)),
+                          ),
+                        )
+                      : InkWell(
+                          onTap: onAddToCartPressed,
+                          child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: const BoxDecoration(
+                                color: AppColors.primaryColor,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(8),
+                                  bottomRight: Radius.circular(10),
+                                )),
+                            child: const Center(
+                              child: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
                   // ElevatedButton(
                   //   onPressed: onAddToCartPressed,
                   //   style: ElevatedButton.styleFrom(

@@ -158,6 +158,7 @@ class OrderSuccessPopup extends StatelessWidget {
             // "Track My Order" Button
             CustomButton(
               ontap: () {
+                Navigator.pop(context);
                 // Handle Track My Order action
                 AppNavigation.navigationPush(context, OrderStatusScreen());
               },

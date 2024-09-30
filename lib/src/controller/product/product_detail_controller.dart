@@ -33,15 +33,10 @@ class ProductDetailController extends ChangeNotifier {
     notifyListeners();
   }
 
-  getProductDetail(BuildContext context,{required String id,required String category_id,required String subcategory_id}) {
+  getProductDetail(BuildContext context,{required String id,}) {
     changeDataStatus(DataStatus.loading);
-    postApi(
-      body:{
-        'id':id,
-        'category_id':category_id,
-        'subcategory_id':subcategory_id
-      },
-      url: '${AppUrl.get_single_product}',
+    getApi(
+      url: '${AppUrl.get_single_product}?product_id=$id',
       header: {'Accept': 'application/json'},
       onSuccess: (response) {
         productDetailData = ProductDetailModel.fromJson(response);

@@ -6,7 +6,6 @@ import 'package:paropkar/src/view/cart/cart_screen%20new.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/home/home_screen.dart';
 import 'package:paropkar/src/view/product/category_listing_screen.dart';
-import 'package:paropkar/src/view/product/category_listing_screen_new.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/view/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -23,22 +22,26 @@ class _BottomBarListScreenState extends State<BottomBarListScreen> {
   // List of screens for each tab
   final List<Widget> _pages = [
     HomeScreen(),
-    const CategoryListingScreenNew(),
-    CartScreenNew(),
+    const CategoryListingScreen(),
+    CartScreen(),
     const ProfileScreen(),
   ];
-
+ @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   // Bottom Navigation Bar tap handler
 
   // final bottomBarListController2 = BottomBarListController();
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<BottomBarListController>();
+  
     return Builder(builder: (context) {
       // ignore: deprecated_member_use
       return WillPopScope(
         onWillPop: () async {
-          return true;//pls comment it
           if (controller.selectedIndex == 0) {
             exit(0);
           } else {

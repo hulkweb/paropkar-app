@@ -309,14 +309,14 @@ void showDisableConfirmationDialog(BuildContext context, Function() onYesTap) {
   );
 }
 
-
-
 class LogoutWidget extends StatelessWidget {
   const LogoutWidget({
-    super.key, required this.ontapLogout, required this.isLoading,
+    super.key,
+    required this.ontapLogout,
+    required this.isLoading,
   });
-final Function() ontapLogout;
-final bool isLoading;
+  final Function() ontapLogout;
+  final bool isLoading;
   @override
   Widget build(BuildContext context) {
     return Container(
