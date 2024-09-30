@@ -10,9 +10,7 @@ class AuthRepository {
     String? otp,
     String? password,
   }) async {
-    var response = await postHttpRequest(url: AppUrl.loginMobile, fields: {
-
-    });
+    var response = await postHttpRequest(url: AppUrl.login, fields: {});
     return response['success'];
   }
 
@@ -23,7 +21,7 @@ class AuthRepository {
     var response = await postHttpRequest(url: 'remove', fields: {});
     return response['success'];
   }
-  
+
   // Remove item from cart API call
   Future<bool> register({
     required String productId,

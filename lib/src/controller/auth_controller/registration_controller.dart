@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/custom_widgets/small_widgets.dart';
 import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
 import 'package:paropkar/src/services/post_api.dart';
@@ -47,13 +48,30 @@ class RegistrationController extends ChangeNotifier {
     return null;
   }
 
-  //verifyUser
+  DataStatus _registerDataStatus = DataStatus.success;
+  DataStatus get registerDataStatus => _registerDataStatus;
+
+  // Method to update counter and notify listeners
+  void changeRegisterStatus(status) {
+    _registerDataStatus = status;
+    notifyListeners(); // Notify listeners about the change
+  }
+
+  //yUser
   register(BuildContext context) {
+    print({
+      'name': nameController.value.text,
+      'mobile': phoneController.value.text,
+      'email': emailController.value.text,
+      'password': passwordController.value.text,
+      'country_code': '+91'
+    });
+    changeRegisterStatus(DataStatus.loading);
     postApi(
       isShowMessageToast: false,
       body: {
         'name': nameController.value.text,
-        'phone': phoneController.value.text,
+        'mobile': phoneController.value.text,
         'email': emailController.value.text,
         'password': passwordController.value.text,
         'country_code': '+91'
@@ -65,9 +83,11 @@ class RegistrationController extends ChangeNotifier {
         'Content-Type': 'application/json'
       },
       onSuccess: (response) {
+        changeRegisterStatus(DataStatus.success);
         UserPreference userPreference = UserPreference();
-        userPreference
-            .saveUser(UserPrefModel(token: response['token'].toString()));
+        userPreference.saveUser(UserPrefModel(
+          data: Data(token: response['token'].toString(), id: response['id']),
+        ));
         getToken();
         showDialogBox(
           context,
@@ -75,14 +95,13 @@ class RegistrationController extends ChangeNotifier {
           title: 'Successful',
           description: response['message'].toString(),
           ontapOk: () {
-            AppNavigation.navigationPush(
-                context,
-                AppNavigation.navigationPush(
-                    context, const BottomBarListScreen()));
+            disposeTextControllers();
+            AppNavigation.navigationPush(context, BottomBarListScreen());
           },
         );
       },
       onFailed: (response) {
+        changeRegisterStatus(DataStatus.error);
         showDialogBox(
           context,
           type: 'error',
@@ -92,5 +111,12 @@ class RegistrationController extends ChangeNotifier {
       },
       onException: () {},
     );
+  }
+
+  disposeTextControllers() {
+    nameController.clear();
+    passwordController.clear();
+    emailController.clear();
+    phoneController.clear();
   }
 }

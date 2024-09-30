@@ -1,34 +1,38 @@
 // To parse this JSON data, do
 //
-//     final subCategoriesModel = subCategoriesModelFromJson(jsonString);
+//     final subCategoriesListModel = subCategoriesListModelFromJson(jsonString);
 
 import 'dart:convert';
 
-SubCategoriesListModel subCategoriesModelFromJson(String str) => SubCategoriesListModel.fromJson(json.decode(str));
+SubCategoriesListModel subCategoriesListModelFromJson(String str) => SubCategoriesListModel.fromJson(json.decode(str));
 
-String subCategoriesModelToJson(SubCategoriesListModel data) => json.encode(data.toJson());
+String subCategoriesListModelToJson(SubCategoriesListModel data) => json.encode(data.toJson());
 
 class SubCategoriesListModel {
     String? message;
-    List<Category>? categories;
+    List<Datum>? data;
+    bool? success;
 
     SubCategoriesListModel({
         this.message,
-        this.categories,
+        this.data,
+        this.success,
     });
 
     factory SubCategoriesListModel.fromJson(Map<String, dynamic> json) => SubCategoriesListModel(
         message: json["message"],
-        categories: json["categories"] == null ? [] : List<Category>.from(json["categories"]!.map((x) => Category.fromJson(x))),
+        data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+        success: json["success"],
     );
 
     Map<String, dynamic> toJson() => {
         "message": message,
-        "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x.toJson())),
+        "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
+        "success": success,
     };
 }
 
-class Category {
+class Datum {
     int? id;
     int? categoryId;
     String? name;
@@ -39,7 +43,7 @@ class Category {
     DateTime? createdAt;
     DateTime? updatedAt;
 
-    Category({
+    Datum({
         this.id,
         this.categoryId,
         this.name,
@@ -51,7 +55,7 @@ class Category {
         this.updatedAt,
     });
 
-    factory Category.fromJson(Map<String, dynamic> json) => Category(
+    factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         categoryId: json["category_id"],
         name: json["name"],

@@ -25,7 +25,7 @@ class AppAssets {
   static const String notification = 'assets/images/notification.png';
   static const String emptyData = 'assets/images/emptyData.png';
   static const String favorite = 'assets/images/favorite.png';
-  // static const String emptyData = 'assets/images/emptyData.png';
+  static const String orders = 'assets/images/orders.png';
   // static const String emptyData = 'assets/images/emptyData.png';
   // static const String emptyData = 'assets/images/emptyData.png';
   // static const String emptyData = 'assets/images/emptyData.png';

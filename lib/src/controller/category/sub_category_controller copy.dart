@@ -17,14 +17,14 @@ class SubCategoryListingController extends ChangeNotifier {
   DataStatus get subCategoryDataStatus => _subCategoryDataStatus;
   changeDataStatus(DataStatus status) {
     _subCategoryDataStatus = status;
-    notifyListeners();  
+    notifyListeners();
   }
 
   getCategories() {
     getApi(
-      url: AppUrl.category,
+      url: AppUrl.subcategory,
       header: {'Accept': 'application/json'},
-      onSuccess: (response) {
+      onSuccess: (response){
         subCategoryData = SubCategoriesListModel.fromJson(response);
         changeDataStatus(DataStatus.success);
       },

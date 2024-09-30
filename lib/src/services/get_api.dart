@@ -18,7 +18,7 @@ Future<void> getApi(
     Function()? onException,
     BuildContext? context,
     bool? isShowErrorMessageToast,
-    bool? isShowMessageToast}) async {
+    bool? isShowMessageToast = false}) async {
   try {
     //  show loading if loading
     if (loader ?? false) {

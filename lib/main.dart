@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:paropkar/src/bloc_provider/cart/cart_bloc.dart';
 import 'package:paropkar/src/bloc_provider/category/category_block.dart';
 import 'package:paropkar/src/bloc_provider/product/product_block.dart';
-import 'package:paropkar/src/controller/address/create_address_controller.dart';
-import 'package:paropkar/src/controller/address/manage_address_controller.dart';
+import 'package:paropkar/src/controller/address/address_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
+import 'package:paropkar/src/controller/auth_controller/registration_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
+import 'package:paropkar/src/controller/category/category_controller.dart';
 import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/controller/favorite/favorite_controller.dart';
 import 'package:paropkar/src/controller/notification/notification_controller.dart';
@@ -28,11 +29,11 @@ double screenHeight = 0;
 double screenWidth = 0;
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: const MyApp(),
-    ),
+  runApp(MyApp(),
+    // ChangeNotifierProvider(
+    //   create: (_) => ThemeProvider(),
+    //   child: const MyApp(),
+    // ),
   );
 }
 
@@ -52,39 +53,26 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CheckoutController()),
-        // ChangeNotifierProvider(create: (_) => LoginController()),
+        ChangeNotifierProvider(create: (_) => LoginController()),
+        ChangeNotifierProvider(create: (_) => RegistrationController()),
         ChangeNotifierProvider(create: (_) => SignUpController()),
         ChangeNotifierProvider(create: (_) => BottomBarListController()),
         ChangeNotifierProvider(create: (_) => ProductListingController()),
         ChangeNotifierProvider(create: (_) => ProductListingController()),
         ChangeNotifierProvider(create: (_) => ProductDetailController()),
-        ChangeNotifierProvider(create: (_) => ManageAddressController()),
         ChangeNotifierProvider(create: (_) => NotificationController()),
-        ChangeNotifierProvider(create: (_) => CreateAddressController()),
-        // ChangeNotifierProvider(create: (_) => CategoryListingController()),
-        // ChangeNotifierProvider(create: (_) => CartController()),
+        ChangeNotifierProvider(create: (_) => AddressController()),
+        ChangeNotifierProvider(create: (_) => CategoryListingController()),
+        ChangeNotifierProvider(create: (_) => CartController()),
         ChangeNotifierProvider(create: (_) => ProfileController()),
         ChangeNotifierProvider(create: (_) => FavoriteController()),
       ],
-      child: MultiBlocProvider(
-        providers: [
-           BlocProvider<CategoryBloc>(
-            create: (context) => CategoryBloc(CategoryRepository()),
-          ),
-           BlocProvider<ProductBloc>(
-            create: (context) => ProductBloc(ProductRepository()),
-          ),
-           BlocProvider<CartBloc>(
-            create: (context) => CartBloc(CartRepository()),
-          ),
-        ],
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: RAppTheme.lightTheme, // Apply the custom light theme
-          darkTheme: RAppTheme.lightTheme, // Apply the custom dark theme
-          themeMode: ThemeMode.system, // Use the current theme mode from provider
-          home: SplashView(controller: splashController),
-        ),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: RAppTheme.lightTheme, // Apply the custom light theme
+        darkTheme: RAppTheme.lightTheme, // Apply the custom dark theme
+        themeMode: ThemeMode.system, // Use the current theme mode from provider
+        home: SplashView(controller: splashController),
       ),
     );
   }

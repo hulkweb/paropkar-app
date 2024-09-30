@@ -17,7 +17,7 @@ Future<dynamic> getHttpRequest({
     var finalResponse = await getFinalResponse(response);
 
     // Check if the response was successful
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 200) {
       return finalResponse;
     } else {
       throw Exception('Failed to load data from $url');

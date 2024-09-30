@@ -41,7 +41,7 @@ class OrderListScreen extends StatelessWidget {
               ),
             ),
             onPress: () {
-                pop(context);
+              pop(context);
             },
           ),
         ),

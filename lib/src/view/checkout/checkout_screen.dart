@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
+import 'package:paropkar/src/controller/address/address_controller.dart';
 import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
@@ -91,35 +93,73 @@ class CheckoutScreen extends StatelessWidget {
                     ),
                     ViewAllButton(
                       onPressed: () {
+                        context.read<AddressController>().clearAllControllers();
                         AppNavigation.navigationPush(
-                            context,const CreateAddressScreen());
+                            context,
+                            CreateAddressScreen(
+                              screenType: 'create',
+                            ));
                       },
                       buttonText: 'Add new',
                     )
                   ],
                 ),
               ),
-              Consumer<CheckoutController>(
-                  builder: (context, checkoutController, child) {
-                return Column(
-                  children: List.generate(
-                      2,
-                      (index) => Padding(
-                            padding: const EdgeInsets.only(top: 14),
-                            child: AddressCardSelective(
-                              onTap: () {
-                                checkoutController.setAddress(index);
-                              },
-                              addressType:
-                                  checkoutController.addressList[index].type ??
-                                      '',
-                              address: checkoutController
-                                      .addressList[index].address ??
-                                  '',
-                              isSelected:
-                                  checkoutController.getAddressIndex() == index,
-                            ),
-                          )),
+              Consumer<AddressController>(
+                  builder: (context, addressController, child) {
+                bool isDataEmpty = addressController.addressListData == null ||
+                    addressController.addressListData!.data == null ||
+                    addressController.addressListData!.data!.isEmpty;
+                return DataStateWidget(
+                  emptyDataWidget: SizedBox(),
+                  status: addressController.addressDataStatus,
+                  ontapRetry: () {
+                    addressController.getAddressApi();
+                  },
+                  isDataEmpty: isDataEmpty,
+                  child: Column(
+                    children: isDataEmpty
+                        ? []
+                        : List.generate(
+                            addressController.addressListData!.data!.length,
+                            (index) {
+                            final address =
+                                addressController.addressListData!.data![index];
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 14),
+                              child: AddressCardSelective(
+                                onTap: () {
+                                  
+                                  // addressController.defaultAddressApi(context,addressId: address.id.toString());
+                                },
+                                addressType: address.type ?? '',
+                                address: address.address ?? '',
+                                isSelected:
+                                    address.isDefault == '1' ? true : false,
+                                onEdit: () {
+                                  addressController.clearAllControllers();
+                                  addressController.assignAddressValue(
+                                      name: address.name ?? '',
+                                      phoneNumber: address.phone ?? '',
+                                      pinCode: address.postalCode ?? '',
+                                      state: address.state ?? '',
+                                      city: address.city ?? '',
+                                      addressMain: address.address ?? '',
+                                      addressLandmark: address.address ?? '',
+                                      addressType: address.type == 'home'
+                                          ? AddressType.home
+                                          : AddressType.office);
+                                  AppNavigation.navigationPush(
+                                      context,
+                                      CreateAddressScreen(
+                                        screenType: 'edit',
+                                        address_id: address.id.toString(),
+                                      ));
+                                },
+                              ),
+                            );
+                          }),
+                  ),
                 );
               }),
               const SizedBox(height: 20),

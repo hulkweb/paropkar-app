@@ -17,6 +17,7 @@ class CustomButton extends StatelessWidget {
     this.isLowerCase,
     this.isLoading,
     this.isArrowButton,
+    this.loading,
   });
   final Color? color;
   final double? height;
@@ -28,6 +29,7 @@ class CustomButton extends StatelessWidget {
   final void Function()? ontap;
   final bool? isLowerCase;
   final bool? isLoading;
+  final Widget? loading;
   final bool? isArrowButton;
   @override
   Widget build(BuildContext context) {
@@ -48,17 +50,18 @@ class CustomButton extends StatelessWidget {
         onPressed: isArrowButton ?? false ? null : ontap,
         child: Center(
             child: isLoading ?? false
-                ? const SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CircularProgressIndicator(
-                        strokeWidth: 3,
-                        color: Colors.white,
+                ? loading ??
+                    const SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                  )
+                    )
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

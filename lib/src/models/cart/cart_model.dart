@@ -9,20 +9,24 @@ CartModel cartModelFromJson(String str) => CartModel.fromJson(json.decode(str));
 String cartModelToJson(CartModel data) => json.encode(data.toJson());
 
 class CartModel {
+    String? message;
     bool? success;
     List<Datum>? data;
 
     CartModel({
+        this.message,
         this.success,
         this.data,
     });
 
     factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
+        message: json["message"],
         success: json["success"],
         data: json["data"] == null ? [] : List<Datum>.from(json["data"]!.map((x) => Datum.fromJson(x))),
     );
 
     Map<String, dynamic> toJson() => {
+        "message": message,
         "success": success,
         "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     };
