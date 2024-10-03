@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -125,7 +126,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 color: Theme.of(context).cardColor,
                 size: 23,
               ),
-                onPress: () {
+              onPress: () {
                 AppNavigation.navigationPush(context, NotificationScreen());
               },
             ),
@@ -232,46 +233,46 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
                 const SizedBox(height: 16),
                 // Email Field
-                CustomFormRow(
-                  isObs: !profileEditController.isPasswordVisible,
-                  suffixWidget: Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
-                    child: InkWell(
-                      onTap: () {
-                        profileEditController.passwordVisibility(
-                            !profileEditController.isPasswordVisible);
-                      },
-                      child: Icon(profileEditController.isPasswordVisible
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off),
-                    ),
-                  ),
-                  keyboardType: TextInputType.visiblePassword,
-                  labelText: "Email Password",
-                  controller: profileEditController.passwordController,
-                  focusNode: profileEditController.passwordFocusNode,
-                  hintText: "Enter your passowrd",
-                  isRequired: true,
-                  onChange: (value) {
-                    profileEditController.passwordController.text = value!;
-                  },
-                  validator: (value) {
-                    return profileEditController.validatePassword(value!);
-                  },
-                ),
-                const SizedBox(height: 16),
-                // Address Field
-                CustomFormRow(
-                  validator: (value) {
-                    return profileEditController.validateAddress(value!);
-                  },
-                  keyboardType: TextInputType.streetAddress,
-                  labelText: "Address",
-                  controller: profileEditController.addressController,
-                  focusNode: profileEditController.addressFocusNode,
-                  hintText: "Enter your address",
-                  isRequired: true,
-                ),
+                // CustomFormRow(
+                //   isObs: !profileEditController.isPasswordVisible,
+                //   suffixWidget: Padding(
+                //     padding: const EdgeInsets.only(bottom: 6),
+                //     child: InkWell(
+                //       onTap: () {
+                //         profileEditController.passwordVisibility(
+                //             !profileEditController.isPasswordVisible);
+                //       },
+                //       child: Icon(profileEditController.isPasswordVisible
+                //           ? Icons.visibility_outlined
+                //           : Icons.visibility_off),
+                //     ),
+                //   ),
+                //   keyboardType: TextInputType.visiblePassword,
+                //   labelText: "Email Password",
+                //   controller: profileEditController.passwordController,
+                //   focusNode: profileEditController.passwordFocusNode,
+                //   hintText: "Enter your passowrd",
+                //   isRequired: true,
+                //   onChange: (value) {
+                //     profileEditController.passwordController.text = value!;
+                //   },
+                //   validator: (value) {
+                //     return profileEditController.validatePassword(value!);
+                //   },
+                // ),
+                // const SizedBox(height: 16),
+                // // Address Field
+                // CustomFormRow(
+                //   validator: (value) {
+                //     return profileEditController.validateAddress(value!);
+                //   },
+                //   keyboardType: TextInputType.streetAddress,
+                //   labelText: "Address",
+                //   controller: profileEditController.addressController,
+                //   focusNode: profileEditController.addressFocusNode,
+                //   hintText: "Enter your address",
+                //   isRequired: true,
+                // ),
                 const SizedBox(height: 32),
                 mediumHeight,
                 // Submit Button
@@ -284,19 +285,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ontap: () async {
                       bool isUpdated = false;
                       if (_formKey.currentState!.validate()) {
-                        isUpdated = await controller.updateUserApi(context,
-                            name:
-                                '${controller.nameController.text} ${controller.lastNameController.text}',
-                            email: controller.emailController.text,
-                            mobile: controller.phoneNumberController.text,
-                            address: controller.lastNameController.text,
-                            password: 'fhdfj',
-                            image: _imageFile?.path, onSuccess: () {
-                          Provider.of<ProfileController>(context)
-                              .getUser(context);
-                        });
-                        Provider.of<ProfileController>(context)
-                            .getUser(context);
+                        isUpdated = await controller.updateUserApi(
+                          context,
+                          name:
+                              '${controller.nameController.text} ${controller.lastNameController.text}',
+                          email: controller.emailController.text,
+                          mobile: controller.phoneNumberController.text,
+                          image: _imageFile?.path,
+                        );
+                        Timer(Duration(seconds: 3), () {  Provider.of<ProfileController>(context)
+                            .getUser(context); });
+                      
                       }
                     },
                   );

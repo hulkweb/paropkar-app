@@ -42,20 +42,21 @@ class OrderDetailNeeded {
 
 // Main Cart Screen
 class OrderDetailScreen extends StatefulWidget {
-  const OrderDetailScreen({super.key, this.orderDetail, this.orderId});
+  const OrderDetailScreen({super.key, this.orderDetail,required this.orderId});
   final List<OrderDetailNeeded?>? orderDetail;
-  final String? orderId;
-
+  final String orderId;
   @override
   State<OrderDetailScreen> createState() => _OrderDetailScreenState();
 }
 
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
-  final orderDetailController = OrderDetailController();
+
   bool isLoginWithOtp = false;
   @override
   Widget build(BuildContext context) {
+    final orderDetailController = context.read<OrderDetailController>();
     final bottomController = Provider.of<BottomBarListController>(context);
+    context.read<OrderDetailController>().orderDetail(widget.orderId);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -96,7 +97,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 color: Theme.of(context).cardColor,
                 size: 23,
               ),
-                onPress: () {
+              onPress: () {
                 AppNavigation.navigationPush(context, NotificationScreen());
               },
             ),
@@ -110,242 +111,219 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               color: Theme.of(context).canvasColor),
         ),
       ),
-      body: SingleChildScrollView(
-        child: SizedBox(
-          width: screenWidth * 1,
-          child: Padding(
-            padding:
-                const EdgeInsets.only(left: 8, top: 12, right: 8, bottom: 20),
-            child: Container(
-              // padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
-              margin: const EdgeInsets.only(left: 12, top: 12, right: 12),
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5), // Shadow color
-                    spreadRadius: 5, // Spread radius (increase size of shadow)
-                    blurRadius: 7, // Blur radius (smooth the edges of shadow)
-                    offset: const Offset(0, 3), // Position of shadow (x,y)
+      body: Consumer<OrderDetailController>(
+        builder: (context,orderDetailController,child) {
+          return SingleChildScrollView(
+            child: SizedBox(
+              width: screenWidth * 1,
+              child: Padding(
+                padding:
+                    const EdgeInsets.only(left: 8, top: 12, right: 8, bottom: 20),
+                child: Container(
+                  // padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
+                  margin: const EdgeInsets.only(left: 12, top: 12, right: 12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5), // Shadow color
+                        spreadRadius: 5, // Spread radius (increase size of shadow)
+                        blurRadius: 7, // Blur radius (smooth the edges of shadow)
+                        offset: const Offset(0, 3), // Position of shadow (x,y)
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 15, right: 15, top: 20, bottom: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, top: 20, bottom: 15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Order number',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(color: AppColors.primaryColor),
+                                ),
+                                Text(
+                                  widget.orderId ?? '#49',
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                // Login With OTP button
+                                GestureDetector(
+                                  onTap: () {
+                                    // setState(() {
+                                    //   isLoginWithOtp = true;
+                                    // });
+                                    orderDetailController
+                                        .ontapCustomerButton(context);
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 5),
+                                    decoration: BoxDecoration(
+                                      color: isLoginWithOtp
+                                          ? Colors.green
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(color: Colors.green),
+                                    ),
+                                    child: Text(
+                                      'customer',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            fontSize: 11,
+                                            color: isLoginWithOtp
+                                                ? Colors.white
+                                                : Colors.green,
+                                          ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10), // space between buttons
+          
+                                // Login With Password button
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 5),
+                                    decoration: BoxDecoration(
+                                      color: !isLoginWithOtp
+                                          ? Colors.green
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(color: Colors.green),
+                                    ),
+                                    child: Text(
+                                      'track order',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge!
+                                          .copyWith(
+                                            fontSize: 11,
+                                            color: !isLoginWithOtp
+                                                ? Colors.white
+                                                : Colors.green,
+                                          ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 1,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 13, right: 13),
+                        child: Column(
+                            children: List.generate(
+                                orderDetailController.orderDetailData?.data
+                                        ?.orderItems?.length ??
+                                    0, (index) {
+                              print('+++++++++++++++++++');
+                            print(  orderDetailController.orderDetailData?.data
+                                        ?.orderItems?.length);
+                          final orderItem = orderDetailController
+                              .orderDetailData?.data?.orderItems![index];
+                          return OrderItem(
+                            productName: orderDetailController
+                                .orderDetailData!.data!.orderNumber!,
+                            productType: orderItem?.product?.name ?? '',
+                            price: orderItem?.product?.price ?? '',
+                            quantity: orderItem?.quantity,
+                            status: '',
+                            onTap: () {
+                              // AppNavigation.navigation(
+                              //   context,
+                              // );
+                            },
+                            image: '',
+                            isNetworkImage: false,
+                          );
+                        })),
+                      ),
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 13, right: 13, top: 20),
+                        child: Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Order number',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(color: AppColors.primaryColor),
+                            Text('Order Note:',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(
+                                        fontSize: 18,
+                                        fontFamily: AppFonts.semiBold,
+                                        overflow: TextOverflow.ellipsis)),
+                            SizedBox(
+                              width: screenWidth * .04,
                             ),
-                            Text(
-                              widget.orderId ?? '#49',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            // Login With OTP button
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isLoginWithOtp = true;
-                                });
-                                orderDetailController
-                                    .ontapCustomerButton(context);
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                decoration: BoxDecoration(
-                                  color: isLoginWithOtp
-                                      ? Colors.green
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.green),
-                                ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: SizedBox(
+                                width: screenWidth * .4,
                                 child: Text(
-                                  'customer',
+                                  'ship all ordered item together on friday. i’ve emailed please check.Thanks',
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyLarge!
+                                      .bodySmall!
                                       .copyWith(
-                                        fontSize: 11,
-                                        color: isLoginWithOtp
-                                            ? Colors.white
-                                            : Colors.green,
-                                      ),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10), // space between buttons
-
-                            // Login With Password button
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isLoginWithOtp = false;
-                                });
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                decoration: BoxDecoration(
-                                  color: !isLoginWithOtp
-                                      ? Colors.green
-                                      : Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: Colors.green),
-                                ),
-                                child: Text(
-                                  'track order',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge!
-                                      .copyWith(
-                                        fontSize: 11,
-                                        color: !isLoginWithOtp
-                                            ? Colors.white
-                                            : Colors.green,
-                                      ),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
+                                          fontSize: 11,
+                                          fontFamily: AppFonts.light,
+                                          overflow: TextOverflow.ellipsis),
+                                  maxLines: 10,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  ),
-                  widget.orderDetail != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(left: 13, right: 13),
-                          child: Column(
-                              children: List.generate(
-                                  widget.orderDetail!.length,
-                                  (index) => OrderItem(
-                                        productName:
-                                            widget.orderDetail?[index]?.name ??
-                                                '',
-                                        productType: widget.orderDetail?[index]
-                                                ?.category ??
-                                            '',
-                                        price: widget.orderDetail?[index]
-                                                ?.productPrice ??
-                                            '',
-                                        quantity: widget.orderDetail?[index]
-                                                ?.quantity ??
-                                            '',
-                                        status: '',
-                                        onTap: () {
-                                          // AppNavigation.navigation(
-                                          //   context,
-                                          // );
-                                        },
-                                        image:
-                                            widget.orderDetail?[index]?.image ??
-                                                '',
-                                        isNetworkImage: true,
-                                      ))),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(left: 13, right: 13),
-                          child: Column(
-                              children: List.generate(
-                                  orderDetailController.productOrderList.length,
-                                  (index) => OrderItem(
-                                        productName: orderDetailController
-                                                .productOrderList[index].name ??
-                                            '',
-                                        productType: orderDetailController
-                                                .productOrderList[index].type ??
-                                            '',
-                                        price:
-                                            "${orderDetailController.productOrderList[index].price ?? ''}",
-                                        quantity: orderDetailController
-                                                .productOrderList[index]
-                                                .quntity ??
-                                            '',
-                                        status: '',
-                                        onTap: () {
-                                          // AppNavigation.navigation(
-                                          //   context,
-                                          // );
-                                        },
-                                        image: '',
-                                        isNetworkImage: false,
-                                      ))),
+                      ),
+                      smallHeight,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: PriceSection(
+                          /*    subTotal: orderDetailController.orderDetailData?.data?.totalAmount,
+                          deliveryCharges: orderDetailController.orderDetailData?.data?.totalAmount,
+                          discount:  orderDetailController.orderDetailData?.data?.totalAmount, */
+                          subTotal: orderDetailController
+                                  .orderDetailData?.data?.totalAmount ??
+                              '0.0',
+                          deliveryCharges: '0',
+                          discount: '0',
+                          total: orderDetailController
+                                  .orderDetailData?.data?.totalAmount ??
+                              '0.0',
                         ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 13, right: 13, top: 20),
-                    child: Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Order Note:',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium!
-                                .copyWith(
-                                    fontSize: 18,
-                                    fontFamily: AppFonts.semiBold,
-                                    overflow: TextOverflow.ellipsis)),
-                        SizedBox(
-                          width: screenWidth * .04,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: SizedBox(
-                            width: screenWidth * .4,
-                            child: Text(
-                              'ship all ordered item together on friday. i’ve emailed please check.Thanks',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(
-                                      fontSize: 11,
-                                      fontFamily: AppFonts.light,
-                                      overflow: TextOverflow.ellipsis),
-                              maxLines: 10,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 30),
+                    ],
                   ),
-                  smallHeight,
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: PriceSection(
-                      subTotal: orderDetailController.subtotal ?? 0,
-                      deliveryCharges: orderDetailController.deiiveryCages ?? 0,
-                      discount: orderDetailController.discount ?? 0,
-                      total: orderDetailController.total ?? 0,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                ],
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        }
       ),
     );
   }
@@ -353,24 +331,24 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
 
 // Custom Cart Item Widget
 class OrderItem extends StatelessWidget {
-  final String productName;
-  final String productType;
-  final String quantity;
-  final String status;
+  final String? productName;
+  final String? productType;
+  final int? quantity;
+  final String? status;
   final VoidCallback onTap;
-  final String price;
+  final String? price;
   final bool isNetworkImage;
-  final String image;
+  final String? image;
 
   const OrderItem({
     super.key,
-    required this.productName,
-    required this.productType,
-    required this.quantity,
+    this.productName,
+    this.productType,
+    this.quantity,
     required this.status,
     required this.onTap,
-    required this.price,
-    required this.image,
+    this.price,
+    this.image,
     required this.isNetworkImage,
   });
   @override
@@ -402,7 +380,7 @@ class OrderItem extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: isNetworkImage
                   ? CustomNetworkImage(
-                      imageUrl: image,
+                      imageUrl: image ?? '',
                     )
                   : Image.asset(AppAssets.maida),
             ),
@@ -418,7 +396,7 @@ class OrderItem extends StatelessWidget {
                 SizedBox(
                   width: screenWidth * .4,
                   child: Text(
-                    productName,
+                    productName ?? '',
                     style: Theme.of(context)
                         .textTheme
                         .bodyLarge!
@@ -429,7 +407,7 @@ class OrderItem extends StatelessWidget {
                 SizedBox(
                   width: screenWidth * .4,
                   child: Text(
-                    productType,
+                    productType ?? '',
                     style: Theme.of(context)
                         .textTheme
                         .bodySmall!
@@ -467,10 +445,10 @@ class OrderItem extends StatelessWidget {
 
 // Custom Checkout Section Widget
 class PriceSection extends StatelessWidget {
-  final double subTotal;
-  final double deliveryCharges;
-  final double discount;
-  final double total;
+  final String? subTotal;
+  final String? deliveryCharges;
+  final String? discount;
+  final String? total;
 
   const PriceSection({
     super.key,

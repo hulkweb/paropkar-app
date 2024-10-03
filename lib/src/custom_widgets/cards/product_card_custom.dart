@@ -76,7 +76,6 @@ class ProductCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8.0),
-
             // Product Information
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
@@ -113,11 +112,11 @@ class ProductCard extends StatelessWidget {
                   Text(
                     price,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                        color: AppColors.primaryColor,
+                        color: AppColors.black,
                         overflow: TextOverflow.ellipsis,
                         fontFamily: AppFonts.semiBold),
                   ),
-               isCartAdded ?? false
+                  isCartAdded ?? false
                       ? InkWell(
                           onTap: onAddToCartPressed,
                           child: Container(
@@ -129,8 +128,11 @@ class ProductCard extends StatelessWidget {
                                   topLeft: Radius.circular(8),
                                   bottomRight: Radius.circular(10),
                                 )),
-                            child:
-                                const Center(child: Icon(Icons.shopping_cart, color: Colors.white,)),
+                            child: const Center(
+                                child: Icon(
+                              Icons.shopping_cart,
+                              color: Colors.white,
+                            )),
                           ),
                         )
                       : InkWell(

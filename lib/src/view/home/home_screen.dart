@@ -16,6 +16,7 @@ import 'package:paropkar/src/utills/constants.dart';
 import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
+import 'package:paropkar/src/view/notification/notification_list_screen.dart';
 import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/custom_widgets/carousel_widget.dart';
@@ -104,10 +105,10 @@ class HomeScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-
                           IconButton(
                             onPressed: () {
-                              getUserId();
+                              AppNavigation.navigationPush(
+                                  context, NotificationScreen());
                             },
                             icon: Icon(
                               Icons.notifications,
@@ -126,7 +127,7 @@ class HomeScreen extends StatelessWidget {
                         child: TextField(
                           readOnly: true,
                           decoration: InputDecoration(
-                            hintText: 'Search Your Grocery',
+                            hintText: 'Search',
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide.none,
@@ -269,7 +270,10 @@ class HomeScreen extends StatelessWidget {
                                                       .getProducts();
                                                   AppNavigation.navigationPush(
                                                       context,
-                                                      const ProductListingScreen());
+                                                      ProductListingScreen(
+                                                        categoryName:
+                                                            category.name,
+                                                      ));
                                                 },
                                                 name: category.name ?? '',
                                                 imagePath:
@@ -342,8 +346,8 @@ class HomeScreen extends StatelessWidget {
                                               productListingController
                                                   .getProducts(loading: false);
                                             },
-                                            onAddToCartPressed: ()async{
-                                              if (!(product.isCart ?? false)){
+                                            onAddToCartPressed: () async {
+                                              if (!(product.isCart ?? false)) {
                                                 await cartController.addCart(
                                                     variation_id: product
                                                         .variations![0].id
@@ -355,7 +359,6 @@ class HomeScreen extends StatelessWidget {
                                                 await controller.getProducts(
                                                     loading: false);
                                               } else {
-                                               
                                                 bottomBarController
                                                     .changeIndex(2);
                                               }

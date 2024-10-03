@@ -106,15 +106,18 @@ class ProductDetailScreenNew extends StatelessWidget {
                                                 ],
                                               ),
                                             ),
-                                            CustomNetworkImage(
-                                              imageUrl: controller
-                                                      .productDetailData
-                                                      ?.data
-                                                      ?.product
-                                                      ?.image ??
-                                                  '',
-                                              height: screenHeight * .2,
-                                              fit: BoxFit.contain,
+                                            Padding(
+                                              padding:  EdgeInsets.only(left: screenWidth*.1,right: screenWidth*.1),
+                                              child: CustomNetworkImage(
+                                                imageUrl: controller
+                                                        .productDetailData
+                                                        ?.data
+                                                        ?.product
+                                                        ?.image ??
+                                                    '',
+                                                height: screenHeight * .25,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ],
                                         ),

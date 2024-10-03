@@ -10,12 +10,13 @@ import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
+import 'package:paropkar/src/view/notification/notification_list_screen.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/custom_widgets/cards/category_card_custom.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CategoryListingScreen extends StatelessWidget {
+class CategoryListingScreen extends StatelessWidget{
   const CategoryListingScreen({super.key});
   @override
   Widget build(BuildContext context) {
@@ -63,7 +64,10 @@ class CategoryListingScreen extends StatelessWidget {
                               .copyWith(color: AppColors.white)),
 
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          AppNavigation.navigationPush(
+                              context, NotificationScreen());
+                        },
                         icon: Icon(
                           Icons.notifications,
                           color: Theme.of(context).cardColor,
@@ -80,7 +84,7 @@ class CategoryListingScreen extends StatelessWidget {
             builder: (context, controller, state) {
           return DataStateWidget(
             status: controller.categoryDataStatus,
-            ontapRetry: () {
+            ontapRetry:(){
               controller.getCategories();
             },
             isDataEmpty: controller.categoryData == null ||
@@ -106,13 +110,8 @@ class CategoryListingScreen extends StatelessWidget {
                               '', // Replace with actual image URL
                           categoryText: category.name ?? '',
                           onPressed: () {
-                            context
-                                .read<ProductListingController>()
-                                .getProducts(category_id:'2'// category.id.toString()
-                                );
-                            AppNavigation.navigationPush(
-                                context, const ProductListingScreen());
-                          },
+                            context.read<ProductListingController>().getProducts(category_id: category.id.toString());
+                            AppNavigation.navigationPush(context,  ProductListingScreen(categoryName: category.name,));},
                         );
                       })),
           );

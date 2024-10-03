@@ -1,4 +1,4 @@
-import 'dart:math';
+// ignore_for_file: depend_on_referenced_packages
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +9,9 @@ import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_textstyles.dart';
 import 'package:paropkar/src/utills/dimentions.dart';
-import 'package:paropkar/src/utills/globle_func.dart';
+import 'package:paropkar/src/utills/navigation_function.dart';
+import 'package:paropkar/src/view/auth/change_password/forgot_pass_mobile_screen.dart';
 import 'package:paropkar/src/view/auth/register_screen.dart';
-import 'package:paropkar/src/view/auth/signup/signup_screen.dart';
 import 'package:paropkar/src/custom_widgets/comman_widget.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
 import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
@@ -19,13 +19,12 @@ import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-
   @override
   // ignore: library_private_types_in_public_api
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>{
   final _formKeyOtp = GlobalKey<FormState>();
   final _formKeyPass = GlobalKey<FormState>();
   final loginController = LoginController();
@@ -230,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     .passwordValidation(value);
                               },
                               onFieldSubmitted: (p0) {
-                                  if (_formKeyPass.currentState!.validate()) {
+                                if (_formKeyPass.currentState!.validate()) {
                                   loginController.login(context, type: 'email');
                                 }
                               },
@@ -252,6 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   TextButton(
                                     onPressed: () {
                                       // Forgot password functionality
+                                      AppNavigation.navigationPush(context, ForgotPasswordScreen());
                                     },
                                     child: Text(
                                       "Forgot Password?",

@@ -20,8 +20,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-class OrderController with ChangeNotifier {
 
+class OrderController with ChangeNotifier {
   // Place an order
   Future<void> placeOrder(
     BuildContext context, {
@@ -46,17 +46,17 @@ class OrderController with ChangeNotifier {
       isShowMessageToast: true,
       url: AppUrl.placeOrder,
       context: context,
-      onSuccess: (response){
+      onSuccess: (response) {
         print('++++++response+++++');
         print(response);
         showDialog(
           context: context,
           builder: (BuildContext context) => OrderSuccessPopup(
-            text: 'Your order #${response['data'].toString()} is successfully placed',
-            onTrackOrder: () {
+            text:
+                'Your order #${response['data'].toString()} is successfully placed',
+            onTrackOrder:(){
               Navigator.pop(context);
-              // context.read<OrderController>();
-              AppNavigation.navigationPush(context, const OrderDetailScreen());
+              AppNavigation.navigationPush(context,  OrderDetailScreen(orderId: response['data'].toString()));
             },
             ontapGoBack: () {
               AppNavigation.pushAndRemoveUntil(context, BottomBarListScreen());
@@ -75,41 +75,6 @@ class OrderController with ChangeNotifier {
       loader: true,
     );
   }
-
-  Future<void> placeOrderApi(BuildContext context, {
-  required String addressId,
-  required String paymentType,
-  required String paymentStatus,
-  required Map<String, String> headers,
-}) async {
-  var request = http.MultipartRequest(
-    'POST',
-    Uri.parse('https://paropkar.jetdigital.in/api/order/place'),
-  );
-
-  // Add the fields to the request
-  request.fields.addAll({
-    'address_id': addressId,
-    'payment_type': paymentType,
-    'payment_status': paymentStatus,
-  });
-
-  // Add the headers to the request
-  request.headers.addAll(headers);
-
-  // Send the request and get the response
-  http.StreamedResponse response = await request.send();
-  print('body of the order');
-   String result = await response.stream.bytesToString();
-  print(result);
-
-  // Handle the response
-  if (response.statusCode == 200) {
-    print('Order placed successfully');
-  } else {
-    print('Failed to place order: ${response.statusCode}');
-  }
-}
 
   // Update payment status
   Future<void> updatePaymentStatus(
@@ -155,14 +120,16 @@ class OrderController with ChangeNotifier {
     print('status changed of getcart $status');
     notifyListeners();
   }
+
   // Get order list
   Future<void> getOrderList(BuildContext context) async {
     await getApi(
       url: AppUrl.orders,
       context: context,
       onSuccess: (response) {
-        orders = OrderModel.fromJson(response); 
-        changeOrdersDataStatus(DataStatus.success);// Parse response into your OrderModel list
+        orders = OrderModel.fromJson(response);
+        changeOrdersDataStatus(
+            DataStatus.success); // Parse response into your OrderModel list
         notifyListeners();
       },
       onFailed: (error) {

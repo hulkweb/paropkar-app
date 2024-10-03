@@ -36,16 +36,20 @@ class ProductListingController extends ChangeNotifier {
     String min_price = '',
   }) async {
     String userId = await getUserId();
+    String url =
+        "${AppUrl.product}?category_id=$category_id&subcategory_id=$subcategory_id&search=$search&max_price=$max_price&min_price=$min_price?user_id=$userId";
     if (loading) changeDataStatus(DataStatus.loading);
-    print("${AppUrl.product}?user_id=$userId?category_id=$category_id&subcategory_id=$subcategory_id&search=$search&max_price=$max_price&min_price=$min_price");
+    print(url);
     getApi(
-      url:
-          "${AppUrl.product}?user_id=$userId?category_id=$category_id&subcategory_id=$subcategory_id&search=$search&max_price=$max_price&min_price=$min_price",
+      url: url,
       onSuccess: (response) {
         productsData = ProductListModel.fromJson(response);
         changeDataStatus(DataStatus.success);
       },
-      onFailed: (response) {},
+      onFailed: (response) {
+          productsData = ProductListModel.fromJson(response);
+        changeDataStatus(DataStatus.success);
+      },
     );
   }
 }

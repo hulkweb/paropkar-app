@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:paropkar/src/utills/app_assets.dart';
+import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/constants.dart';
 
 class CustomNetworkImage extends StatelessWidget {
@@ -33,12 +35,15 @@ class CustomNetworkImage extends StatelessWidget {
         }
         return placeholder ??
             Center(
-              child: CircularProgressIndicator(
-                value: loadingProgress.expectedTotalBytes != null
-                    ? loadingProgress.cumulativeBytesLoaded /
-                        (loadingProgress.expectedTotalBytes!)
-                    : null,
-              ),
+              child: 
+                Image.asset(AppAssets.default_image,fit: BoxFit.contain,color: AppColors.grey, width: width,
+      height: height,)
+              // CircularProgressIndicator(
+              //   value: loadingProgress!.expectedTotalBytes != null
+              //       ? loadingProgress.cumulativeBytesLoaded /
+              //           (loadingProgress.expectedTotalBytes!)
+              //       : null,
+              // ),
             );
       },
       errorBuilder:

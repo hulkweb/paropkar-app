@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
@@ -17,7 +18,8 @@ import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
 
 class ProductListingScreen extends StatelessWidget {
-  const ProductListingScreen({super.key});
+  const ProductListingScreen({super.key, this.categoryName});
+  final String? categoryName;
   @override
   Widget build(BuildContext context) {
     // final bottomController = Provider.of<BottomBarListController>(context);
@@ -61,20 +63,21 @@ class ProductListingScreen extends StatelessWidget {
                         ),
                       ),
                       ////
-                      InkWell(
-                        onTap: () {
-                          ProductListingController().getProducts();
-                        },
-                        child: Text('Pulses',
+                      SizedBox(
+                        width: 150,
+                        child: Text(categoryName ?? '',
+                            textAlign: TextAlign.center,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleLarge!
-                                .copyWith(color: AppColors.white)),
+                                .copyWith(color: AppColors.white),
+                            overflow: TextOverflow.ellipsis),
                       ),
 
                       IconButton(
                         onPressed: () {
-                          AppNavigation.navigationPush(context, NotificationScreen());
+                          AppNavigation.navigationPush(
+                              context, NotificationScreen());
                         },
                         icon: Icon(
                           Icons.notifications,
@@ -148,7 +151,7 @@ class ProductListingScreen extends StatelessWidget {
                                     bottomBarController.changeIndex(2);
                                   }
                                 },
-                                onProductPressed: (){
+                                onProductPressed: () {
                                   context
                                       .read<ProductDetailController>()
                                       .getProductDetail(

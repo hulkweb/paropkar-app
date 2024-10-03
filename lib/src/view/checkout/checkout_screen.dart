@@ -28,7 +28,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 
 class CheckoutScreen extends StatelessWidget {
-  CheckoutScreen({super.key, required this.total});
+  const CheckoutScreen({super.key, required this.total});
   final String total;
   @override
   Widget build(BuildContext context) {

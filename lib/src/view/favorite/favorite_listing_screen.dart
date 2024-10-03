@@ -7,6 +7,7 @@ import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
+import 'package:paropkar/src/view/notification/notification_list_screen.dart';
 import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 // ignore: depend_on_referenced_packages
@@ -61,7 +62,7 @@ class FavoriteListingScreen extends StatelessWidget {
                               .copyWith(color: AppColors.white)),
 
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () { AppNavigation.navigationPush(context, NotificationScreen());},
                         icon: Icon(
                           Icons.notifications,
                           color: Theme.of(context).cardColor,

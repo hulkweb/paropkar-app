@@ -27,7 +27,7 @@ class AppAssets {
   static const String favorite = 'assets/images/favorite.png';
   static const String orders = 'assets/images/orders.png';
   static const String empty_cart = 'assets/images/empty_cart.png';
-  // static const String emptyData = 'assets/images/emptyData.png';
+  static const String default_image = 'assets/images/default image.png';
   // static const String emptyData = 'assets/images/emptyData.png';
   // static const String emptyData = 'assets/images/emptyData.png';
   // static const String emptyData = 'assets/images/emptyData.png';

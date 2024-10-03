@@ -14,7 +14,7 @@ class LoginController extends ChangeNotifier {
   String _screenType = 'loginWithOtp';
   String get screenType => _screenType;
 
-  changeScreenType(String screenType) {
+  changeScreenType(String screenType){
     mobileFieldController.clear();
     passwordFieldController.clear();
     otpFieldController.clear();

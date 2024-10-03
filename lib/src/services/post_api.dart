@@ -17,8 +17,12 @@ Future<void> postApi(
     Function(dynamic)? onFailed,
     Function()? onException,
     required BuildContext context,
+    bool isStatic = false,
     bool? isShowMessageToast}) async {
   try {
+    if(isStatic){
+      onSuccess!("finallRes");return;
+    }
     //  show loading if loading
     if (loader ?? false) {
       if (kDebugMode) {
@@ -165,7 +169,11 @@ Future<void> postMultipartApi({
   required BuildContext context,
   bool? isShowMessageToast,
   bool? isShowErrorMessageToast,
+  bool isStatic =false,
 }) async {
+  if(isStatic){
+    onSuccess!("finallRes") ?? () {};return;
+  }
   try {
     //  show loading if loading
     if (loader ?? false) {

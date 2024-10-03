@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:paropkar/src/bloc_provider/cart/cart_bloc.dart';
-import 'package:paropkar/src/bloc_provider/category/category_block.dart';
-import 'package:paropkar/src/bloc_provider/product/product_block.dart';
 import 'package:paropkar/src/controller/address/address_controller.dart';
+import 'package:paropkar/src/controller/auth_controller/forgot_password_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/login_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/registration_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
@@ -13,30 +11,21 @@ import 'package:paropkar/src/controller/checkout/checkout_controller.dart';
 import 'package:paropkar/src/controller/favorite/favorite_controller.dart';
 import 'package:paropkar/src/controller/notification/notification_controller.dart';
 import 'package:paropkar/src/controller/order/order_controller.dart';
+import 'package:paropkar/src/controller/order/order_detail_controller.dart';
 import 'package:paropkar/src/controller/product/product_detail_controller.dart';
 import 'package:paropkar/src/controller/product/product_listing_controller.dart';
 import 'package:paropkar/src/controller/profile/profile_controller.dart';
 import 'package:paropkar/src/controller/profile/profile_edit_controller.dart';
 import 'package:paropkar/src/controller/splash_controller.dart';
-import 'package:paropkar/src/controller/theme_controller.dart';
 import 'package:paropkar/src/models/splash_model.dart';
-import 'package:paropkar/src/repositories/Cart_repository.dart';
-import 'package:paropkar/src/repositories/category_repository.dart';
-import 'package:paropkar/src/repositories/product_repository.dart';
 import 'package:paropkar/src/utills/theme.dart';
 import 'package:paropkar/src/view/splach_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 double screenHeight = 0;
 double screenWidth = 0;
 
 void main() {
-  runApp(MyApp(),
-    // ChangeNotifierProvider(
-    //   create: (_) => ThemeProvider(),
-    //   child: const MyApp(),
-    // ),
-  );
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -70,6 +59,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FavoriteController()),
         ChangeNotifierProvider(create: (_) => OrderController()),
         ChangeNotifierProvider(create: (_) => ProfileEditController()),
+        ChangeNotifierProvider(create: (_) => ForgotPasswordController()),
+        ChangeNotifierProvider(create: (_) => OrderDetailController()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

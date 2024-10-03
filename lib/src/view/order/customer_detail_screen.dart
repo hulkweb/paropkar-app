@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
-import 'package:paropkar/src/controller/order/customer_detail_controller.dart';
+import 'package:paropkar/src/controller/order/order_detail_controller.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
@@ -14,6 +14,7 @@ import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
 import 'package:paropkar/src/view/order/customer_detail_screen.dart';
 import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
+import 'package:provider/provider.dart';
 
 // Colors for the theme
 const primaryColor =
@@ -30,10 +31,10 @@ class CustomerDetailScreen extends StatefulWidget {
 }
 
 class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
-  final orderDetailController = CustomerDetailController();
   bool isLoginWithOtp = false;
   @override
   Widget build(BuildContext context) {
+    final orderDetailController = context.read<OrderDetailController>();
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -54,7 +55,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
               ),
             ),
             onPress: () {
-                pop(context);
+              pop(context);
             },
           ),
         ),
@@ -68,7 +69,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
                 color: Theme.of(context).cardColor,
                 size: 23,
               ),
-               onPress: () {
+              onPress: () {
                 AppNavigation.navigationPush(context, NotificationScreen());
               },
             ),
@@ -105,7 +106,34 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
               ),
               child: Column(
                 children: [
-                  _buildCustomerInfo(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: screenWidth * .05,
+                        right: screenWidth * .05,
+                        top: screenWidth * .05),
+                    child: Builder(builder: (context) {
+                      final customer =
+                          orderDetailController.orderDetailData?.data?.user;
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Customer Information',
+                              style: Theme.of(context).textTheme.headline6),
+                          const SizedBox(height: 16.0),
+                          _buildDetailItem('Name', customer?.name),
+                          _buildDetailItem('Mobile', customer?.mobile),
+                          _buildDetailItem('Email', customer?.email),
+                          _buildDetailItem('Area', customer?.address),
+                          // _buildDetailItem('City', customer?.),
+                          // _buildDetailItem('Landmark', 'Ratnagiri'),
+                          // _buildDetailItem('Pincode', '452349'),
+                          // _buildDetailItem('Payment', 'Online'),
+                          _buildDetailItem('Status', customer?.status),
+                          // ... add other customer details here
+                        ],
+                      );
+                    }),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 8, top: 12, right: 8, bottom: 20),
@@ -200,34 +228,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
     );
   }
 
-  Widget _buildCustomerInfo() {
-    return Padding(
-      padding: EdgeInsets.only(
-          left: screenWidth * .05,
-          right: screenWidth * .05,
-          top: screenWidth * .05),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Customer Information',
-              style: Theme.of(context).textTheme.headline6),
-          const SizedBox(height: 16.0),
-          _buildDetailItem('Name', 'Vicky'),
-          _buildDetailItem('Mobile', '456789876'),
-          _buildDetailItem('Email', 'email@gmail.com'),
-          _buildDetailItem('Area', 'Pushpa vihar'),
-          _buildDetailItem('City', 'Bhopal'),
-          _buildDetailItem('Landmark', 'Ratnagiri'),
-          _buildDetailItem('Pincode', '452349'),
-          _buildDetailItem('Payment', 'Online'),
-          _buildDetailItem('Status', 'Paid'),
-          // ... add other customer details here
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDetailItem(String label, String value) {
+  Widget _buildDetailItem(String label, String? value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(
@@ -235,7 +236,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
           Text(label, style: Theme.of(context).textTheme.bodyText1),
           const SizedBox(width: 16.0),
           Text(
-            value,
+            value ?? "",
             style: Theme.of(context)
                 .textTheme
                 .bodyText2!

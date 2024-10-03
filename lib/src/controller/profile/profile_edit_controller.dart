@@ -105,8 +105,7 @@ class ProfileEditController with ChangeNotifier {
   DataStatus _userUpdateStaus = DataStatus.error;
   DataStatus get updateStausStatus => _userUpdateStaus;
 
-
-  changeUpdateUserStatus(DataStatus status) async{
+  changeUpdateUserStatus(DataStatus status) async {
     print('change statas of logout $status');
     _userUpdateStaus = status;
     notifyListeners();
@@ -117,9 +116,7 @@ class ProfileEditController with ChangeNotifier {
     required String name,
     required String email,
     required String mobile,
-    String? image, // Optional parameter
-    required String address,
-    required String password,required VoidCallback onSuccess
+    String? image, // Optional parameterrequired VoidCallback onSuccess
   }) async {
     if (DataStatus.loading == _userUpdateStaus) {
       return false;
@@ -133,24 +130,21 @@ class ProfileEditController with ChangeNotifier {
         isShowMessageToast: true,
         body: {
           'name': name,
-          'email': email,
-          'mobile': mobile,
-          'image': image ??
-              '', // If the image is null, it defaults to an empty string
-          'address': address,
-          'password': password,
         },
         onSuccess: (response) {
+          print(response);
           changeUpdateUserStatus(DataStatus.success);
-          Navigator.pop(context);
-           return true;
+          // Navigator.pop(context);
+          return true;
         },
         onFailed: (p0) {
-          changeUpdateUserStatus(DataStatus.error); return false;
+          changeUpdateUserStatus(DataStatus.error);
+          return false;
         },
         url: AppUrl.update_profile,
         onException: () {
-          changeUpdateUserStatus(DataStatus.error); return false;
+          changeUpdateUserStatus(DataStatus.error);
+          return false;
         },
         context: context,
         files: file);

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/order/order_controller.dart';
+import 'package:paropkar/src/controller/order/order_detail_controller.dart';
 import 'package:paropkar/src/custom_widgets/custom_network_image.dart';
 import 'package:paropkar/src/custom_widgets/data_state_widget.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
@@ -106,7 +107,7 @@ class OrderListScreen extends StatelessWidget {
                                   quantity: 1,
                                   status: order.status??'',
                                   onTap: () {
-                                    AppNavigation.navigationPush(context,  OrderDetailScreen(orderDetail: List.generate(order.orderItems!.length, (index) => OrderDetailNeeded(image:order.orderItems?[0].product?.image??'',name: order.orderItems?[0].product?.name??'',category: 'Category',productPrice: order.orderItems?[0].price,quantity: order.orderItems?[0].quantity.toString(), )),));
+                                    AppNavigation.navigationPush(context,  OrderDetailScreen(orderDetail: List.generate(order.orderItems!.length, (index) => OrderDetailNeeded(image:order.orderItems?[0].product?.image??'',name: order.orderItems?[0].product?.name??'',category: 'Category',productPrice: order.orderItems?[0].price,quantity: order.orderItems?[0].quantity.toString(), )), orderId: order.id.toString(),));
                                   },
                                   );})),
                   );
