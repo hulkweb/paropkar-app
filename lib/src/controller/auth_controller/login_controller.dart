@@ -142,11 +142,13 @@ class LoginController extends ChangeNotifier {
         ? {
             'mobile': mobileFieldController.value.text,
             'type': 'mobile',
+            'user_type':'user'
           }
         : {
             'email': emailFieldController.value.text,
             'password': passwordFieldController.value.text,
             'type': 'email',
+            'user_type':'user'
           };
     postApi(
       isShowMessageToast: false,

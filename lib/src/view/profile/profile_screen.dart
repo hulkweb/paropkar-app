@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/address/manage_address_screen.dart';
+import 'package:paropkar/src/view/auth/change_password/forgot_pass_mobile_screen.dart';
 import 'package:paropkar/src/view/favorite/favorite_listing_screen.dart';
 import 'package:paropkar/src/view/invoice/invoice_screen.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
@@ -43,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
     final profileController = Provider.of<ProfileController>(context);
     final orderController = Provider.of<OrderController>(context);
     final addressController = context.read<AddressController>();
-    if (profileController.userData == null){
+    if (profileController.userData == null) {
       profileController.getUser(context);
     }
     return Scaffold(
@@ -112,18 +115,10 @@ class ProfileScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: AppColors.primaryColor),
                         shape: BoxShape.circle,
-
-                        // image:  DecorationImage(
-                        //     image: NetworkImage(
-                        //       controller.userData?.data?.name??'',
-                        //     ),
-                        //     fit: BoxFit.cover)
                       ),
                       child: CustomNetworkImage(
                         imageUrl: controller.userData?.data?.image ?? '',
                         errorWidget: const SizedBox(
-                          // width: width,
-                          // height: height,
                           child: Center(
                             child: Icon(Icons.person,
                                 size: 50, color: AppColors.primaryColor),
@@ -167,13 +162,16 @@ class ProfileScreen extends StatelessWidget {
                   padding: 8,
                 ),
                 ListTileProfileSction(
-                    ontap: () {},
+                    ontap: () {
+                      AppNavigation.navigationPush(
+                          context, ForgotPasswordScreen());
+                    },
                     image: AppAssets.changePassword,
                     title: 'Change password',
                     padding: 8),
                 ListTileProfileSction(
                     ontap: () {
-                       addressController.getAddressApi(context);
+                      addressController.getAddressApi(context);
                       AppNavigation.navigationPush(
                           context, ManageAddressScreen());
                     },

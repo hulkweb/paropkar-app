@@ -20,7 +20,7 @@ class ForgotPasswordController extends ChangeNotifier {
     return null;
   }
 
-  DataStatus _sentOtpStatus = DataStatus.loading;
+  DataStatus _sentOtpStatus = DataStatus.success;
   DataStatus get sendOtpStatus => _sentOtpStatus;
 
   changeSendOtpStatus(DataStatus status) {
@@ -29,17 +29,16 @@ class ForgotPasswordController extends ChangeNotifier {
   }
 
   sendOtp(BuildContext context) {
+    if(_sentOtpStatus==DataStatus.loading)return;
     changeSendOtpStatus(DataStatus.loading);
     Map<String, String> bodyField = {'mobile': mobileController.text};
     postApi(
-      isStatic: true,
       isShowMessageToast: false,
       body: bodyField,
       header: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
       },
-      url: AppUrl.forgot_password_temp,
+      url: AppUrl.change_password,
       context: context,
       onSuccess: (response) {
         changeSendOtpStatus(DataStatus.success);
@@ -47,14 +46,15 @@ class ForgotPasswordController extends ChangeNotifier {
           context,
           type: 'success',
           title: 'Successful',
-          description:
-              'successfull sent otp' /* response['message'].toString() */,
+          description: response['message'].toString() +
+              '\n${response['data'].toString()}' /* response['message'].toString() */,
           ontapOk: () {
             Navigator.pop(context);
             AppNavigation.navigationPush(
                 context,
                 NewPasswordScreen(
-                    otp: '1234' /* response['data']['otp'].toString(), */));
+                    otp: response['data']
+                        .toString() /* response['data']['otp'].toString(), */));
           },
         );
       },
@@ -70,11 +70,13 @@ class ForgotPasswordController extends ChangeNotifier {
           },
         );
       },
-      onException: () {},
+      onException: () {
+        changeSendOtpStatus(DataStatus.error);
+      },
     );
   }
 
-  DataStatus _changePasswordStatus = DataStatus.loading;
+  DataStatus _changePasswordStatus = DataStatus.success;
   DataStatus get changePasswordStatus => _changePasswordStatus;
 
   final TextEditingController newPasswordController = TextEditingController();
@@ -119,26 +121,28 @@ class ForgotPasswordController extends ChangeNotifier {
     changeChangePasswordStatus(DataStatus.loading);
     Map<String, String> bodyField = {
       'mobile': mobileController.text,
+      'password': newPasswordController.text,
       'otp': otpController.text,
-      'new_password': newPasswordController.text
     };
     postApi(
-      isStatic: true,
+      isStatic: false,
       isShowMessageToast: false,
       body: bodyField,
       header: {'Accept': 'application/json'},
-      url: AppUrl.forgot_password_temp,
+      url: AppUrl.reset_password,
       context: context,
       onSuccess: (response) {
+        desposeTextControllers();
         changeChangePasswordStatus(DataStatus.success);
         showDialogBox(
           context,
           type: 'success',
           title: 'Successful',
-          description: 'Succefully Changed the password' /* response['message'].toString() */,
+          description:
+              'Succefully Changed the password' /* response['message'].toString() */,
           ontapOk: () {
             Navigator.pop(context);
-            AppNavigation.pushAndRemoveUntil(context,const LoginScreen());
+            AppNavigation.pushAndRemoveUntil(context, const LoginScreen());
           },
         );
       },
@@ -156,5 +160,12 @@ class ForgotPasswordController extends ChangeNotifier {
       },
       onException: () {},
     );
+  }
+
+  desposeTextControllers() {
+    mobileController.clear();
+    newPasswordController.clear();
+    confirmPasswordController.clear();
+    otpController.clear();
   }
 }

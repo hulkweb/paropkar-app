@@ -18,8 +18,9 @@ import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
 
 class ProductListingScreen extends StatelessWidget {
-  const ProductListingScreen({super.key, this.categoryName});
+   const ProductListingScreen({super.key, this.categoryName, this.category_id});
   final String? categoryName;
+  final String? category_id;
   @override
   Widget build(BuildContext context) {
     // final bottomController = Provider.of<BottomBarListController>(context);
@@ -144,6 +145,7 @@ class ProductListingScreen extends StatelessWidget {
                                         quantity: "1",
                                         context: context);
                                     await controller.getProducts(
+                                      category_id: category_id??'',
                                         loading: false);
                                   } else {
                                     AppNavigation.pushAndRemoveUntil(

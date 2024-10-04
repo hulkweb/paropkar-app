@@ -9,13 +9,11 @@ import 'package:paropkar/src/controller/favorite/favorite_controller.dart';
 import 'package:paropkar/src/controller/product/product_detail_controller.dart';
 import 'package:paropkar/src/controller/product/product_listing_controller.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
-import 'package:paropkar/src/user_preference/user_pref/user_preference.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/constants.dart';
 import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
-import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
 import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
@@ -23,6 +21,7 @@ import 'package:paropkar/src/custom_widgets/carousel_widget.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/view_all_button.dart';
 import 'package:paropkar/src/custom_widgets/custom_status_bar.dart';
 import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
+import 'package:paropkar/src/view/product/search_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -31,8 +30,6 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomController = Provider.of<BottomBarListController>(context);
-    final categoryListingController =
-        Provider.of<CategoryListingController>(context);
     final cartController = Provider.of<CartController>(context, listen: true);
     final productListingController =
         Provider.of<ProductListingController>(context, listen: true);
@@ -61,18 +58,7 @@ class HomeScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // IconButton(
-                          //   onPressed: () {},
-                          //   icon: Padding(
-                          //     padding: const EdgeInsets.only(left: 5),
-                          //     child: Icon(
-                          //       Icons.arrow_back_ios,
-                          //       color: Theme.of(context).cardColor,
-                          //     ),
-                          //   ),
-                          // ),
                           smallWidth,
-                          ////
                           SizedBox(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -156,6 +142,10 @@ class HomeScreen extends StatelessWidget {
                             filled: true,
                             fillColor: Colors.grey[200],
                           ),
+                          onTap: ()async {
+                             await context.read<ProductListingController>().getProducts(loading: false);
+                            AppNavigation.navigationPush(context, const ProductSearchScreen());
+                          },
                         ),
                       ),
                     ),

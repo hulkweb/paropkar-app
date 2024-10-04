@@ -5,7 +5,6 @@ import 'package:paropkar/src/models/cart/cart_model.dart';
 import 'package:paropkar/src/models/cart/cart_summary_model.dart';
 import 'package:paropkar/src/services/get_api.dart';
 import 'package:paropkar/src/services/post_api.dart';
-import 'package:paropkar/src/user_preference/user_pref/user_preference.dart';
 import 'package:paropkar/src/utills/constants.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/checkout/checkout_screen.dart';
@@ -30,7 +29,7 @@ class CartController extends ChangeNotifier {
       print('========calling getCart=========');
     }
     getApi(
-      url: AppUrl.carts,
+      url: AppUrl.carts+'e',
       onSuccess: (response) {
         getCartSummary();
         carts = CartModel.fromJson(response);
@@ -41,11 +40,10 @@ class CartController extends ChangeNotifier {
         notifyListeners();
       },
       onFailed: (response) {
-        carts = CartModel.fromJson(response);
         changeCartsDataStatus(DataStatus.success);
       },
       onException: () {
-        changeCartsDataStatus(DataStatus.error);
+        // changeCartsDataStatus(DataStatus.error);
       },
     );
   }

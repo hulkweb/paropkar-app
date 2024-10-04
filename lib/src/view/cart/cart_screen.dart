@@ -35,6 +35,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     Future.microtask(() {
+      print('getting cart');
       Provider.of<CartController>(context, listen: false).getCarts();
     });
     super.initState();
@@ -98,7 +99,7 @@ class _CartScreenState extends State<CartScreen> {
             controller.carts!.data!.isEmpty;
         return DataStateWidget(
           isOverlay: controller.addCartDataStatus == DataStatus.loading,
-          ontapRetry: () {
+          ontapRetry:(){
             controller.getCarts();
           },
           status: controller.cartsDataStatus,
@@ -443,8 +444,8 @@ class _CartItemState extends State<CartItem> {
                       width: screenWidth * .4,
                       child: Text(
                         widget.title,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                            overflow: TextOverflow.ellipsis,),maxLines: 2,
                       ),
                     ),
                     SizedBox(

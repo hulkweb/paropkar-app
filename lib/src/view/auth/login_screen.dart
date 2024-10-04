@@ -250,6 +250,7 @@ class _LoginScreenState extends State<LoginScreen>{
                                 children: [
                                   TextButton(
                                     onPressed: () {
+                                      loginController.disposeTextControllers();
                                       // Forgot password functionality
                                       AppNavigation.navigationPush(context, ForgotPasswordScreen());
                                     },

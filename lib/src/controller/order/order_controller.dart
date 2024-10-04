@@ -54,9 +54,10 @@ class OrderController with ChangeNotifier {
           builder: (BuildContext context) => OrderSuccessPopup(
             text:
                 'Your order #${response['data'].toString()} is successfully placed',
-            onTrackOrder:(){
+            onTrackOrder: () {
               Navigator.pop(context);
-              AppNavigation.navigationPush(context,  OrderDetailScreen(orderId: response['data'].toString()));
+              AppNavigation.navigationPush(context,
+                  OrderDetailScreen(orderId: response['data'].toString()));
             },
             ontapGoBack: () {
               AppNavigation.pushAndRemoveUntil(context, BottomBarListScreen());

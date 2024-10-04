@@ -6,6 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/auth_controller/forgot_password_controller.dart';
 import 'package:paropkar/src/controller/auth_controller/signup_controller.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/dimentions.dart';
 import 'package:paropkar/src/custom_widgets/comman_widget.dart';
@@ -22,7 +23,7 @@ class ForgotPasswordScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final forgotPasswordController = context.read<ForgotPasswordController>();
     return CommanWidget(
-      title: 'Forgot Password?',
+      title: 'Change Password',
       widget: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -52,13 +53,18 @@ class ForgotPasswordScreen extends StatelessWidget {
                 SizedBox(
                   height: screenHeight * .2,
                 ),
-                CustomButton(
-                  ontap: () {
-                    if (_formKey.currentState!.validate()) {
-                      forgotPasswordController.sendOtp(context);
-                    }
-                  },
-                  text: 'Send Otp',
+                Consumer<ForgotPasswordController>(
+                  builder: (context,forgotPasswordController,child) {
+                    return CustomButton(
+                      isLoading: forgotPasswordController.sendOtpStatus == DataStatus.loading,
+                      ontap: () {
+                        if (_formKey.currentState!.validate()) {
+                          forgotPasswordController.sendOtp(context);
+                        }
+                      },
+                      text: 'Send Otp',
+                    );
+                  }
                 ),
               ],
             ),

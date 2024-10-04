@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/auth_controller/forgot_password_controller.dart';
+import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/custom_widgets/small_widgets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/dimentions.dart';
@@ -93,6 +94,7 @@ class NewPasswordScreen extends StatelessWidget {
                       height: screenHeight * .1,
                     ),
                     CustomButton(
+                      isLoading: forgotPasswordController.changePasswordStatus == DataStatus.loading,
                       ontap: () {
                         if (_formKey.currentState!.validate()) {
                           if (forgotPasswordController

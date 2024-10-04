@@ -111,7 +111,7 @@ class CategoryListingScreen extends StatelessWidget{
                           categoryText: category.name ?? '',
                           onPressed: () {
                             context.read<ProductListingController>().getProducts(category_id: category.id.toString());
-                            AppNavigation.navigationPush(context,  ProductListingScreen(categoryName: category.name,));},
+                            AppNavigation.navigationPush(context,  ProductListingScreen(categoryName: category.name,category_id: category.id.toString(),));},
                         );
                       })),
           );
