@@ -53,3 +53,23 @@ class ProductListingController extends ChangeNotifier {
     );
   }
 }
+
+
+
+class VariationModel {
+  final String imageUrl;
+  final String name;
+  final String color;
+  final int quantityFrom;
+  final int quantityTo;
+  final String variationId;
+
+  VariationModel({
+    required this.imageUrl,
+    required this.name,
+    required this.color,
+    required this.quantityFrom,
+    required this.quantityTo,
+    required this.variationId,
+  });
+}

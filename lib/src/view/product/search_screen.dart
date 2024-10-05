@@ -195,7 +195,7 @@ class ProductSearchScreen extends StatelessWidget {
                                               );
                                           AppNavigation.navigationPush(
                                               context,
-                                              ProductDetailScreenNew(
+                                              ProductDetailScreen(
                                                 id: '${product.id ?? ''}',
                                                 categoryId:
                                                     '${product.categoryId ?? ''}',

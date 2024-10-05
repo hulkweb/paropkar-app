@@ -30,15 +30,15 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bottomController = Provider.of<BottomBarListController>(context);
-    final cartController = Provider.of<CartController>(context, listen: true);
+    final cartController = Provider.of<CartController>(context, listen: false);
     final productListingController =
-        Provider.of<ProductListingController>(context, listen: true);
+        Provider.of<ProductListingController>(context, listen: false);
     final favoriteController =
-        Provider.of<FavoriteController>(context, listen: true);
+        Provider.of<FavoriteController>(context, listen: false);
     if (productListingController.productsData == null) {
       productListingController.getProducts();
     }
-    Provider.of<FavoriteController>(context, listen: true);
+    Provider.of<FavoriteController>(context, listen: false);
     final bottomBarController = Provider.of<BottomBarListController>(context);
     return StatusBarCustom(
       statusBarBrightnessLight: true,
@@ -363,7 +363,7 @@ class HomeScreen extends StatelessWidget {
                                                   );
                                               AppNavigation.navigationPush(
                                                   context,
-                                                  ProductDetailScreenNew(
+                                                  ProductDetailScreen(
                                                     id: '${product.id ?? ''}',
                                                     categoryId:
                                                         '${product.categoryId ?? ''}',

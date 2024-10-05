@@ -1,8 +1,7 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, unnecessary_import, depend_on_referenced_packages, unused_local_variable, use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/bloc_provider/product/product_block.dart';
 import 'package:paropkar/src/bloc_provider/product/product_event.dart';
@@ -14,6 +13,7 @@ import 'package:paropkar/src/controller/product/product_detail_controller.dart';
 import 'package:paropkar/src/custom_widgets/custom_buttons/custom_button.dart';
 import 'package:paropkar/src/custom_widgets/custom_network_image.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
+import 'package:paropkar/src/custom_widgets/small_widgets.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 import 'package:paropkar/src/utills/app_fonts.dart';
@@ -24,6 +24,7 @@ import 'package:paropkar/src/view/app_bottom_navigation_bar.dart';
 import 'package:paropkar/src/view/cart/cart_screen%20new.dart';
 import 'package:paropkar/src/view/cart/cart_screen.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
+import 'package:paropkar/src/view/product/product_detail_screen.dart';
 import 'package:paropkar/src/view/product/product_listing_screen.dart';
 import 'package:paropkar/src/custom_widgets/carousel_widget.dart';
 import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
@@ -31,8 +32,8 @@ import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductDetailScreenNew extends StatelessWidget {
-  ProductDetailScreenNew(
+class ProductDetailScreen extends StatelessWidget {
+  const ProductDetailScreen(
       {super.key,
       required this.id,
       required this.categoryId,
@@ -40,564 +41,531 @@ class ProductDetailScreenNew extends StatelessWidget {
   final String id;
   final String categoryId;
   final String subcategoryId;
-  final productDetailController = ProductDetailController();
+
   @override
   Widget build(BuildContext context) {
-    final cartController = Provider.of<CartController>(context, listen: true);
-    final favoriteController =
-        Provider.of<FavoriteController>(context, listen: true);
+    final productDetailController = context.read<ProductDetailController>();
+    final favoriteController = Provider.of<FavoriteController>(context);
+    final cartController = Provider.of<CartController>(context);
     final bottomBarController = Provider.of<BottomBarListController>(context);
     return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            Consumer<ProductDetailController>(
-                builder: (context, controller, state) {
-              return Builder(builder: (context) {
-                return DataStateWidget(
-                  status: controller.productDetailDataStatus,
-                  ontapRetry: () {
-                    context.read<ProductDetailController>().getProductDetail(
-                          context,
-                          id: id,
-                        );
-                  },
-                  isDataEmpty: controller.productDetailDataStatus ==
-                          DataStatus.success &&
-                      (controller.productDetailData == null ||
-                          controller.productDetailData!.data == null),
-                  child: controller.productDetailDataStatus ==
-                              DataStatus.success &&
-                          (controller.productDetailData == null ||
-                              controller.productDetailData!.data == null)
-                      ? const SizedBox()
-                      : controller.productDetailDataStatus == DataStatus.success
-                          ? SizedBox(
-                              height: screenHeight,
-                              width: screenWidth,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: screenHeight * .4,
-                                      width: screenWidth,
-                                      color: AppColors.primaryColor
-                                          .withOpacity(.1),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 40),
-                                        child: ListView(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8, bottom: 20),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    'Details',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineMedium!
-                                                        .copyWith(
-                                                            color: AppColors
-                                                                .primaryColor),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:  EdgeInsets.only(left: screenWidth*.1,right: screenWidth*.1),
-                                              child: CustomNetworkImage(
-                                                imageUrl: controller
-                                                        .productDetailData
-                                                        ?.data
-                                                        ?.product
-                                                        ?.image ??
-                                                    '',
-                                                height: screenHeight * .25,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: screenWidth * .05,
-                                          right: screenWidth * .05),
-                                      child: Column(
-                                        children: [
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                controller.productDetailData
-                                                        ?.data?.product?.name ??
-                                                    '',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineMedium,
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Row(
-                                                children: List.generate(
-                                                    5,
-                                                    (index) => const Icon(
-                                                          Icons.star,
-                                                          color: AppColors
-                                                              .primaryColor,
-                                                        )),
-                                              ),
-                                              Text(
-                                                "Buy 10kg, save extra 5% local",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall!
-                                                    .copyWith(
-                                                        fontFamily:
-                                                            AppFonts.light,
-                                                        fontSize: 14),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    const TextSpan(
-                                                      text: '₹ ',
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.green,
-                                                      ),
-                                                    ),
-                                                    TextSpan(
-                                                      text: controller
-                                                              .productDetailData
-                                                              ?.data
-                                                              ?.product
-                                                              ?.price ??
-                                                          '',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .titleLarge!
-                                                          .copyWith(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              fontFamily:
-                                                                  AppFonts
-                                                                      .semiBold,
-                                                              fontSize: 20),
-                                                    ),
-                                                    const TextSpan(
-                                                      text: '/kg',
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                        color: Colors.grey,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              if (controller.productDetailData
-                                                      ?.data?.product?.isCart !=
-                                                  null)
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 0),
-                                                  child: Consumer<
-                                                          ProductDetailController>(
-                                                      builder: (context,
-                                                          controller, child) {
-                                                    print(
-                                                        'condition ${(controller.productDetailData!.data!.product!.isCart!)}');
-                                                    return !(controller
-                                                                .productDetailData
-                                                                ?.data
-                                                                ?.product
-                                                                ?.isCart ??
-                                                            false)
-                                                        ? CustomButton(
-                                                            loading:
-                                                                const SizedBox(
-                                                              height: 30,
-                                                              width: 30,
-                                                              child: CupertinoActivityIndicator(
-                                                                  color:
-                                                                      AppColors
-                                                                          .white,
-                                                                  radius: 10.0,
-                                                                  animating:
-                                                                      true),
-                                                            ),
-                                                            isLoading: cartController
-                                                                    .addCartDataStatus ==
-                                                                DataStatus
-                                                                    .loading,
-                                                            width: screenWidth *
-                                                                .3,
-                                                            height:
-                                                                screenHeight *
-                                                                    .05,
-                                                            text: 'Add to cart',
-                                                            ontap: () async {
-                                                              await cartController.addCart(
-                                                                  product_id: controller
-                                                                      .productDetailData!
-                                                                      .data!
-                                                                      .product!
-                                                                      .id
-                                                                      .toString(),
-                                                                  quantity: '1',
-                                                                  variation_id: controller
-                                                                      .productDetailData!
-                                                                      .data!
-                                                                      .product!
-                                                                      .variations![
-                                                                          0]
-                                                                      .id
-                                                                      .toString(),
-                                                                  context:
-                                                                      context);
-                                                              await controller
-                                                                  .getProductDetail(
-                                                                      context,
-                                                                      id: id);
-                                                            },
-                                                          )
-                                                        : Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .end,
-                                                                children: [
-                                                                  CustomIconImage(
-                                                                    elevation:
-                                                                        1,
-                                                                    spreadRadius:
-                                                                        0,
-                                                                    borderRadius:
-                                                                        3,
-                                                                    backgroundColor:
-                                                                        AppColors
-                                                                            .grey,
-                                                                    icon:
-                                                                        const Icon(
-                                                                      Icons
-                                                                          .remove,
-                                                                      color: AppColors
-                                                                          .primaryColor,
-                                                                    ),
-                                                                    onPress:
-                                                                        () {
-                                                                      productDetailController
-                                                                          .ontapProductIncrease();
-                                                                    },
-                                                                  ),
-                                                                  Builder(
-                                                                    builder:
-                                                                      (context) {
-                                                                    return Padding(
-                                                                      padding: const EdgeInsets
-                                                                          .only(
-                                                                          left:
-                                                                              10,
-                                                                          right:
-                                                                              10),
-                                                                      child:
-                                                                          Text(
-                                                                        '1',
-                                                                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                                                            color:
-                                                                                AppColors.primaryColor,
-                                                                            overflow: TextOverflow.ellipsis,
-                                                                            fontFamily: AppFonts.semiBold,
-                                                                            fontSize: 20),
-                                                                      ),
-                                                                    );
-                                                                  }),
-                                                                  CustomIconImage(
-                                                                    spreadRadius:
-                                                                        0,
-                                                                    borderRadius:
-                                                                        0,
-                                                                    backgroundColor:
-                                                                        AppColors
-                                                                            .primaryColor,
-                                                                    icon: Icon(
-                                                                      Icons.add,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .cardColor,
-                                                                    ),
-                                                                    onPress:
-                                                                        () {},
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                              mediumHeight,
-                                                              CustomButton(
-                                                                width:
-                                                                    screenWidth *
-                                                                        .25,
-                                                                height:
-                                                                    screenHeight *
-                                                                        .04,
-                                                                text:
-                                                                    'View to cart',
-                                                                textAppTextStyles: Theme.of(
-                                                                        context)
-                                                                    .textTheme
-                                                                    .labelSmall!
-                                                                    .copyWith(
-                                                                        color: AppColors
-                                                                            .white),
-                                                                ontap:
-                                                                    () async {
-                                                                  AppNavigation
-                                                                      .pushAndRemoveUntil(
-                                                                          context,
-                                                                          const BottomBarListScreen());
-                                                                  bottomBarController
-                                                                      .changeIndex(
-                                                                          2);
-                                                                },
-                                                              ),
-                                                            ],
-                                                          );
-                                                  }),
-                                                ),
-                                            ],
-                                          ),
-                                          const SizedBox(
-                                            height: 20,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Product Details',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineSmall!
-                                                    .copyWith(
-                                                        fontSize: 20,
-                                                        fontFamily:
-                                                            AppFonts.semiBold),
-                                              ),
-                                            ],
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 10, bottom: 20),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  width: screenWidth * .8,
-                                                  child: Text(
-                                                    controller
-                                                            .productDetailData!
-                                                            .data
-                                                            ?.product
-                                                            ?.description ??
-                                                        '', //'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ultricies et elit quis interdum. Aenean eleifend odio non urna blandit lobortis. Nulla commodo felis at orci mattis, at maximus ante congue.',
-                                                    style: Theme.of(context)
-                                                        .textTheme
-                                                        .headlineSmall!
-                                                        .copyWith(
-                                                          fontSize: 13,
-                                                          fontFamily:
-                                                              AppFonts.regular,
-                                                          color: AppColors
-                                                              .primaryColor,
-                                                        ),
-                                                    maxLines: 10,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Related Products',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineSmall!
-                                                    .copyWith(
-                                                        fontSize: 20,
-                                                        fontFamily:
-                                                            AppFonts.semiBold),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    GridView.count(
-                                        crossAxisCount: 2,
-                                        padding:
-                                            EdgeInsets.all(screenWidth * .04),
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        crossAxisSpacing: 7,
-                                        mainAxisSpacing: 10,
-                                        childAspectRatio: 0.7,
-                                        children: List.generate(
-                                          controller.productDetailData!.data!
-                                                  .relatedProducts?.length ??
-                                              0,
-                                          (index) {
-                                            final product = controller
-                                                .productDetailData
-                                                ?.data
-                                                ?.relatedProducts?[index];
-                                            return ProductCard(
-                                              imageUrl: product!.image ??
-                                                  '', // AppAssets.maida, // Replace with actual image URL
-                                              productName: product.name ?? '',
-                                              price: "₹${product.price ?? ''}",
-                                              categoryName:
-                                                  'cat', //"Buy 3 Items, Save Extra 5%",
-                                              isFavorite:
-                                                  product.isFavorite ?? false,
-                                              onFavoritePressed: () async {
-                                                await favoriteController
-                                                    .addRemoveFavorite(
-                                                        product_id: product.id
-                                                            .toString(),
-                                                        context: context);
-                                                controller.getProductDetail(
-                                                    context,
-                                                    id: id);
-                                              },
-                                              onAddToCartPressed: () async {
-                                                if (!(product.isCart ??
-                                                    false)) {
-                                                  await cartController.addCart(
-                                                      variation_id: product
-                                                          .variations![0].id
-                                                          .toString(),
-                                                      product_id:
-                                                          product.id.toString(),
-                                                      quantity: "1",
-                                                      context: context);
-                                                  await controller
-                                                      .getProductDetail(context,
-                                                          loading: false,
-                                                          id: id);
-                                                } else {
-                                                  AppNavigation
-                                                      .pushAndRemoveUntil(
-                                                          context,
-                                                          BottomBarListScreen());
-                                                  bottomBarController
-                                                      .changeIndex(2);
-                                                }
-                                              },
-                                              onProductPressed: () {
-                                                context
-                                                    .read<
-                                                        ProductDetailController>()
-                                                    .getProductDetail(
-                                                      context,
-                                                      id: '${product.id ?? ''}',
-                                                      loading: false,
-                                                    );
-                                                AppNavigation.navigationPush(
-                                                    context,
-                                                    ProductDetailScreenNew(
-                                                      id: '${product.id ?? ''}',
-                                                      categoryId:
-                                                          '${product.categoryId ?? ''}',
-                                                      subcategoryId:
-                                                          '${product.subcategoryId ?? ''}',
-                                                    ));
-                                              },
-                                              isCartAdded:
-                                                  product.isCart ?? false,
-                                            );
-                                          },
-                                        )),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : null,
-                );
-              });
-            }),
-            Positioned(
-              top: 40,
-              left: 30,
-              child: CustomIconImage(
-                icon: const Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                onPress: () {
-                  pop(context);
-                },
+        child: Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 8),
+          child: CustomIconImage(
+            backgroundColor: AppColors.primaryColor.withOpacity(.7),
+            size: 20,
+            icon: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Icon(
+                Icons.arrow_back_ios,
+                color: Theme.of(context).cardColor,
+                size: 23,
               ),
             ),
-            Positioned(
-              top: 40,
-              right: 30,
-              child: Consumer<ProductDetailController>(
-                  builder: (context, controller, child) {
-                return CustomIconImage(
-                  icon: const Icon(
-                    Icons.notifications,
-                    color: AppColors.primaryColor,
-                    size: 23,
+            onPress: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: CustomIconImage(
+              backgroundColor: AppColors.primaryColor.withOpacity(.7),
+              icon: Icon(
+                Icons.notifications_outlined,
+                color: Theme.of(context).cardColor,
+                size: 23,
+              ),
+              onPress: () {
+                AppNavigation.navigationPush(context, NotificationScreen());
+              },
+            ),
+          ),
+        ],
+        title: Text(
+          'Detail',
+          style: Theme.of(context).textTheme.displaySmall!.copyWith(
+              fontSize: 20,
+              fontFamily: AppFonts.semiBold,
+              color: Theme.of(context).canvasColor),
+        ),
+      ),
+      body: ListView(
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: screenWidth,
+            height: screenHeight * .04,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              smallWidth,
+              CustomNetworkImage(
+                imageUrl: productDetailController
+                        .productDetailData?.data?.product?.image ??
+                    '',
+                height: screenWidth * .27,
+                width: screenWidth * .27,
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Expanded(
+                child: SizedBox(
+                  width: screenWidth * .6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        productDetailController
+                                .productDetailData?.data?.product?.name ??
+                            '',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(
+                                fontSize: 22, fontFamily: AppFonts.medium),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      smallHeight,
+                      Builder(builder: (context) {
+                        String priceText = '';
+                        double price = double.parse(productDetailController
+                                .productDetailData?.data?.product?.price ??
+                            '0.0');
+                        double discountValue = double.parse(
+                            productDetailController.productDetailData?.data
+                                    ?.product?.discountValue ??
+                                '0.0');
+                        String discountPrice = '';
+                        String discountType = productDetailController
+                                .productDetailData
+                                ?.data
+                                ?.product
+                                ?.discountType ??
+                            '';
+                        if ((discountType) == 'percentage') {
+                          discountPrice =
+                              ((price * discountValue) / 100).toString();
+                        } else {
+                          discountPrice = discountValue.toString();
+                        }
+                        String finalPrice =
+                            (price - double.parse(discountPrice)).toString();
+                        return RichText(
+                          text: TextSpan(
+                              text: '₹${finalPrice}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(
+                                      fontSize: 20,
+                                      fontFamily: AppFonts.medium),
+                              children: [
+                                TextSpan(
+                                  text:
+                                      ' MRP:₹${productDetailController.productDetailData?.data?.product?.price ?? ''}',
+                                  style: const TextStyle(
+                                    color: AppColors.grey,
+                                  ),
+                                ),
+                              ]),
+                        );
+                      }),
+                      smallHeight,
+                      Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: AppColors.primaryColor,
+                                width: 1,
+                              ),
+                              borderRadius: BorderRadius.circular(6)),
+                          child: Builder(builder: (context) {
+                            String priceText = '';
+                            double price = double.parse(productDetailController
+                                    .productDetailData?.data?.product?.price ??
+                                '0.0');
+                            double discountValue = double.parse(
+                                productDetailController.productDetailData?.data
+                                        ?.product?.discountValue ??
+                                    '0.0');
+                            String discountPrice = '';
+                            String discountType = productDetailController
+                                    .productDetailData
+                                    ?.data
+                                    ?.product
+                                    ?.discountType ??
+                                '';
+                            if ((discountType) == 'percentage') {
+                              discountPrice =
+                                  ((price * discountValue) / 100).toString();
+                            } else {
+                              discountPrice = discountValue.toString();
+                            }
+                            return Text(
+                              ((discountType) == 'percentage')
+                                  // ignore: unnecessary_brace_in_string_interps
+                                  ? 'Margin:₹${discountPrice} off | ${discountValue}%'
+                                  : 'Margin:₹${discountPrice} off',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge!
+                                  .copyWith(
+                                    color: AppColors.primaryColor,
+                                  ),
+                            );
+                          })),
+                    ],
                   ),
-                  onPress: () {
-                    AppNavigation.navigationPush(context, NotificationScreen());
-                  },
+                ),
+              ),
+              smallWidth
+            ],
+          ),
+          mediumHeight,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(
+                width: 20,
+              ),
+              Text(
+                '1 Offer',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: AppColors.primaryColor, fontSize: 20),
+                textAlign: TextAlign.start,
+              ),
+            ],
+          ),
+          smallHeight,
+          Padding(
+            padding: EdgeInsets.only(left: screenWidth * .05),
+            child: Row(
+              children: [
+                const DataBox(
+                  quntity: 'Quantity',
+                  price: '	Price in ₹',
+                  margin: 'Margin in %',
+                  isSelected: false,
+                ),
+                smallWidth,
+                Consumer<ProductDetailController>(
+                    builder: (context, controller, child) {
+                  return Expanded(
+                    child: SizedBox(
+                      width: screenWidth * .7,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 6, right: 6),
+                          child: Builder(builder: (context) {
+                            return Row(
+                              children: List.generate(
+                                controller.productDetailData?.data?.product
+                                        ?.variations?.length ??
+                                    0,
+                                (index) => InkWell(
+                                  onTap: () {
+                                    controller.changeVariationId((controller
+                                                .productDetailData
+                                                ?.data
+                                                ?.product
+                                                ?.variations?[index]
+                                                .id ??
+                                            0)
+                                        .toString());
+                                  },
+                                  child: DataBox(
+                                      quntity: '1-3',
+                                      price:
+                                          '₹${controller.productDetailData?.data?.product?.variations?[index].price ?? ''}',
+                                      margin: '25.01%',
+                                      // ignore: unnecessary_string_interpolations
+                                      isSelected: controller
+                                              .selectedVariationId ==
+                                          '${controller.productDetailData?.data?.product?.variations?[index].id ?? ''}'),
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                    ),
+                  );
+                })
+              ],
+            ),
+          ),
+          mediumHeight,
+          Selector<ProductDetailController, int>(
+              selector: (context, controller) => controller.quantity,
+              builder: (context, quantity, child) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                      left: screenWidth * .05, right: screenWidth * .05),
+                  child: Builder(builder: (context) {
+                    const color = AppColors.grey;
+                    return Container(
+                      height: 50,
+                      width: screenWidth * .8,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: color,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white),
+                      // padding: EdgeInsets.only(left: 40, right: 40),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () {
+                                      if (productDetailController.quantity > 1)
+                                        productDetailController
+                                            .decrimentQuantity();
+                                    },
+                                    icon: const Icon(Icons.remove)),
+                              ),
+                              Container(height: 50, width: 2, color: color),
+                            ],
+                          ),
+                          Text(
+                            '${productDetailController.quantity}',
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          Row(
+                            children: [
+                              Container(height: 50, width: 2, color: color),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: IconButton(
+                                    padding: EdgeInsets.zero,
+                                    onPressed: () {
+                                      if (productDetailController.quantity <
+                                          100)
+                                        productDetailController
+                                            .incrimentQuantity();
+                                    },
+                                    icon: const Icon(Icons.add)),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
                 );
               }),
-            )
+          smallHeight,
+          Consumer<ProductDetailController>(
+              builder: (context, productDetailController, child) {
+            return Padding(
+              padding: EdgeInsets.only(
+                  left: screenWidth * .05, right: screenWidth * .05),
+              child: CustomButton(
+                loading: const SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: CupertinoActivityIndicator(
+                      color: AppColors.white, radius: 10.0, animating: true),
+                ),
+                isLoading: productDetailController.productDetailDataStatus ==
+                    DataStatus.loading,
+                width: screenWidth * .8,
+                height: screenHeight * .07,
+                text: !(productDetailController
+                            .productDetailData?.data?.product?.isCart ??
+                        false)
+                    ? 'Add to cart'
+                    : 'View to Cart',
+                ontap: () async {
+                  if (!(productDetailController
+                          .productDetailData?.data?.product?.isCart ??
+                      false)) {
+                    if (productDetailController.selectedVariationId.isEmpty) {
+                      showToast(message: 'Select atleast 1 variation id');
+                      return;
+                    } else {
+                      await cartController.addCart(
+                          product_id: productDetailController
+                              .productDetailData!.data!.product!.id
+                              .toString(),
+                          quantity: productDetailController.quantity.toString(),
+                          variation_id:
+                              productDetailController.selectedVariationId,
+                          context: context);
+                      await productDetailController.getProductDetail(context,
+                          id: id);
+                    }
+                  } else {
+                    AppNavigation.pushAndRemoveUntil(
+                        context, BottomBarListScreen());
+                    bottomBarController.changeIndex(2);
+                  }
+                },
+              ),
+            );
+          }),
+          largeHeight,
+          const Divider(
+            color: AppColors.grey,
+          ),
+          largeHeight,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              mediumWidth,
+              Text(
+                'Related Products',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineSmall!
+                    .copyWith(fontSize: 20, fontFamily: AppFonts.semiBold),
+              ),
+            ],
+          ),
+          Consumer<ProductDetailController>(
+              builder: (context, productDetailController, child) {
+            return GridView.count(
+                crossAxisCount: 2,
+                padding: EdgeInsets.all(screenWidth * .04),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisSpacing: 7,
+                mainAxisSpacing: 10,
+                childAspectRatio: 0.7,
+                children: List.generate(
+                  productDetailController
+                          .productDetailData?.data?.relatedProducts?.length ??
+                      0,
+                  (index) {
+                    print(productDetailController
+                        .productDetailData?.data?.relatedProducts?.length);
+                    final product = productDetailController
+                        .productDetailData?.data?.relatedProducts?[index];
+                    return ProductCard(
+                      imageUrl: product?.image ??
+                          '', // AppAssets.maida, // Replace with actual image URL
+                      productName: product?.name ?? '',
+                      price: "₹${product?.price ?? ''}",
+                      categoryName: 'cat', //"Buy 3 Items, Save Extra 5%",
+                      isFavorite: product?.isFavorite ?? false,
+                      onFavoritePressed: () async {
+                        await favoriteController.addRemoveFavorite(
+                            product_id: "${product?.id ?? 0}",
+                            context: context);
+                        productDetailController.getProductDetail(context,
+                            id: id);
+                      },
+                      onAddToCartPressed: () async {
+                        if (!(product?.isCart ?? false)) {
+                          await cartController.addCart(
+                              variation_id: "${product?.variations?[0].id}",
+                              product_id: "${product?.id ?? 0}",
+                              quantity: "1",
+                              context: context);
+                          await productDetailController.getProductDetail(
+                              context,
+                              loading: false,
+                              id: id);
+                        } else {
+                          AppNavigation.pushAndRemoveUntil(
+                              context, BottomBarListScreen());
+                          bottomBarController.changeIndex(2);
+                        }
+                      },
+                      onProductPressed: () {
+                        context
+                            .read<ProductDetailController>()
+                            .getProductDetail(
+                              context,
+                              id: '${product?.id ?? ''}',
+                              loading: false,
+                            );
+                        AppNavigation.navigationPush(
+                            context,
+                            ProductDetailScreen(
+                              id: '${product?.id ?? ''}',
+                              categoryId: '${product?.categoryId ?? ''}',
+                              subcategoryId: '${product?.subcategoryId ?? ''}',
+                            ));
+                      },
+                      isCartAdded: product?.isCart ?? false,
+                    );
+                  },
+                ));
+          }),
+        ],
+      ),
+    ));
+  }
+}
+
+class DataBox extends StatelessWidget {
+  const DataBox(
+      {super.key,
+      required this.quntity,
+      required this.price,
+      required this.margin,
+      this.quantityTextStyle,
+      this.marginTextStyle,
+      this.priceTextStyle,
+      required this.isSelected});
+  final String quntity;
+  final String price;
+  final String margin;
+  final TextStyle? quantityTextStyle;
+  final TextStyle? marginTextStyle;
+  final TextStyle? priceTextStyle;
+  final bool isSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: isSelected ? AppColors.accentColor : AppColors.white,
+          border: Border.all(color: AppColors.black)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              quntity,
+              style: quantityTextStyle ??
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(),
+              textAlign: TextAlign.start,
+            ),
+            smallHeight,
+            Text(
+              price,
+              style: marginTextStyle ??
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(),
+              textAlign: TextAlign.start,
+            ),
+            smallHeight,
+            Text(
+              margin,
+              style: priceTextStyle ??
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(),
+              textAlign: TextAlign.start,
+            ),
           ],
         ),
       ),

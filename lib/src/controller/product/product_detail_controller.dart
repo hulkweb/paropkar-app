@@ -22,6 +22,34 @@ class ProductDetailController extends ChangeNotifier {
     notifyListeners();
   }
 
+  String _selectedVariationId = '';
+  String get selectedVariationId => _selectedVariationId;
+
+  changeVariationId(String variationId) {
+    _selectedVariationId = variationId;
+    notifyListeners();
+  }
+
+  int _quantity = 0;
+  int get quantity => _quantity;
+
+  changeQuantity(int value) {
+    _quantity = value;
+    notifyListeners();
+  }
+
+  
+  decrimentQuantity() {
+    _quantity--;
+    notifyListeners();
+  }
+
+  
+  incrimentQuantity() {
+    _quantity++;
+    notifyListeners();
+  }
+
   ProductDetailModel? productDetailData;
   DataStatus _productDetailDataStatus = DataStatus.loading;
   DataStatus get productDetailDataStatus => _productDetailDataStatus;
@@ -31,15 +59,13 @@ class ProductDetailController extends ChangeNotifier {
     notifyListeners();
   }
 
-  getProductDetail(
-    BuildContext context, {
-    required String id,bool loading = true
-  }) {
+  getProductDetail(BuildContext context,
+      {required String id, bool loading = true}) {
     // if(loading){
     //   changeDataStatus(DataStatus.loading);
     // }
     print('product detail call');
-    for(int i=0;i<10;i++){
+    for (int i = 0; i < 10; i++) {
       print('\n');
       print('hello');
     }

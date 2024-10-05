@@ -29,7 +29,7 @@ class CartController extends ChangeNotifier {
       print('========calling getCart=========');
     }
     getApi(
-      url: AppUrl.carts+'e',
+      url: AppUrl.carts,
       onSuccess: (response) {
         getCartSummary();
         carts = CartModel.fromJson(response);

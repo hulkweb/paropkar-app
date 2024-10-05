@@ -18,7 +18,7 @@ class FavoriteListingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final favoriteController = Provider.of<FavoriteController>(context);
-   
+
     return Scaffold(
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
@@ -62,7 +62,10 @@ class FavoriteListingScreen extends StatelessWidget {
                               .copyWith(color: AppColors.white)),
 
                       IconButton(
-                        onPressed: () { AppNavigation.navigationPush(context, NotificationScreen());},
+                        onPressed: () {
+                          AppNavigation.navigationPush(
+                              context, NotificationScreen());
+                        },
                         icon: Icon(
                           Icons.notifications,
                           color: Theme.of(context).cardColor,
@@ -79,7 +82,10 @@ class FavoriteListingScreen extends StatelessWidget {
             Consumer<FavoriteController>(builder: (context, controller, child) {
           // print(controller.productDataStatus);
           return DataStateWidget(
-              status: controller.favoritesDataStatus==DataStatus.error && (controller.favorites!.data !=null)?DataStatus.success:controller.favoritesDataStatus ,
+              status: controller.favoritesDataStatus == DataStatus.error &&
+                      (controller.favorites!.data != null)
+                  ? DataStatus.success
+                  : controller.favoritesDataStatus,
               ontapRetry: () {
                 controller.changeFavoritesDataStatus(DataStatus.loading);
                 controller.getFavorites();
@@ -91,7 +97,8 @@ class FavoriteListingScreen extends StatelessWidget {
               // isDataEmpty:  (controller.favorites!.data != null) &&
               //         (controller.favorites!.data!.isEmpty),
               isDataEmpty: (controller.favorites == null) ||
-                  (controller.favorites!.data == null && controller.favorites!.success == false) ||
+                  (controller.favorites!.data == null &&
+                      controller.favorites!.success == false) ||
                   (controller.favorites!.data!.isEmpty),
               child: GridView.count(
                 crossAxisCount: 2,
@@ -115,7 +122,7 @@ class FavoriteListingScreen extends StatelessWidget {
                           price: "₹${favorite.product!.price ?? ''}",
                           categoryName: '',
                           isFavorite: true,
-                          onFavoritePressed: ()async {
+                          onFavoritePressed: () async {
                             controller.addRemoveFavorite(
                                 product_id: favorite.product!.id.toString(),
                                 context: context);
@@ -137,14 +144,15 @@ class FavoriteListingScreen extends StatelessWidget {
                                 );
                             AppNavigation.navigationPush(
                                 context,
-                                ProductDetailScreenNew(
+                                ProductDetailScreen(
                                   id: '${favorite.product!.id ?? ''}',
                                   categoryId:
                                       '${favorite.product!.categoryId ?? ''}',
                                   subcategoryId:
                                       '${favorite.product!.subcategoryId ?? ''}',
                                 ));
-                          }, isCartAdded: null,
+                          },
+                          isCartAdded: null,
                         );
                       }),
               ));
