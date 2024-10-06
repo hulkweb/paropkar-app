@@ -71,8 +71,10 @@ class PaymentCard extends StatelessWidget {
                       width: screenWidth * .5,
                       child: Text(
                         title,
-                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                            fontSize: 16, fontFamily: AppFonts.semiBold),
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(fontFamily: AppFonts.semiBold),
                       ),
                     ),
                   ],
@@ -102,7 +104,6 @@ class ContinueButton extends StatelessWidget {
           ),
           onPressed: () {
             // Continue button logic
-          
           },
           child: const Text('Continue', style: TextStyle(fontSize: 18)),
         ),
@@ -111,8 +112,12 @@ class ContinueButton extends StatelessWidget {
   }
 }
 
-class OrderSuccessPopup extends StatelessWidget{
-  const OrderSuccessPopup({super.key, required this.text, required this.onTrackOrder,required this.ontapGoBack});
+class OrderSuccessPopup extends StatelessWidget {
+  const OrderSuccessPopup(
+      {super.key,
+      required this.text,
+      required this.onTrackOrder,
+      required this.ontapGoBack});
   final String text;
   final VoidCallback onTrackOrder;
   final VoidCallback ontapGoBack;
@@ -141,9 +146,7 @@ class OrderSuccessPopup extends StatelessWidget{
             // Order Success Text
             Text(
               'Order Successful',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontSize: 24,
-                  ),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(),
             ),
             const SizedBox(height: 20),
             Padding(
@@ -163,7 +166,7 @@ class OrderSuccessPopup extends StatelessWidget{
               ontap: onTrackOrder,
               width: screenWidth * .6,
               height: 40,
-              text: 'Track My Order',
+              buttonText: 'Track My Order',
             ),
             const SizedBox(
               height: 30,

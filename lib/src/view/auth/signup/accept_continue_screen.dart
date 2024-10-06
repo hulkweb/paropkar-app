@@ -12,7 +12,6 @@ import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
 import 'package:paropkar/src/custom_widgets/otp_custom.dart';
 
 class AcceptContinueScreen extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
     return CommanWidget(
@@ -50,14 +49,14 @@ class AcceptContinueScreen extends StatelessWidget {
               SizedBox(
                 height: screenHeight * .2,
               ),
-               CustomButton(
+              CustomButton(
                 ontap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => EnterNameScreen()),
                   );
                 },
-                text: 'Accept And Continue',
+                buttonText: 'Accept And Continue',
               ),
             ],
           ),

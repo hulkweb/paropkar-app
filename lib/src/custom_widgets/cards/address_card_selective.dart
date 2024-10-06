@@ -67,7 +67,7 @@ class AddressCardSelective extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall!
-                              .copyWith(fontSize: 14,color: AppColors.black.withOpacity(.5)),
+                              .copyWith(color: AppColors.black.withOpacity(.5)),
                         ),
                       ),
                        SizedBox(
@@ -77,7 +77,7 @@ class AddressCardSelective extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .titleSmall!
-                              .copyWith(fontSize: 14,color: AppColors.black.withOpacity(.5)),
+                              .copyWith(color: AppColors.black.withOpacity(.5)),
                         ),
                       ),
                     ],

@@ -98,7 +98,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           registrationController.register(context);
                         }
                       },
-                      text: 'Verify'),
+                      buttonText: 'Verify'),
                   smallHeight
                 ],
               ),

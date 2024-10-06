@@ -85,7 +85,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                   height: 50,
                 ),
                 CustomButton(
-                  text: 'Verify Continue',
+                  buttonText: 'Verify Continue',
                   ontap: () {
                     if (_formKey.currentState!.validate()) {
                       signupController.verifyOtp(context);

@@ -104,8 +104,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         ],
         title: Text(
           'Order Details',
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 20,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),
@@ -184,9 +183,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     'customer',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyLarge!
+                                        .titleLarge!
                                         .copyWith(
-                                          fontSize: 11,
                                           color: isLoginWithOtp
                                               ? Colors.white
                                               : Colors.green,
@@ -216,9 +214,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     'track order',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .bodyLarge!
+                                        .titleLarge!
                                         .copyWith(
-                                          fontSize: 11,
                                           color: !isLoginWithOtp
                                               ? Colors.white
                                               : Colors.green,
@@ -274,7 +271,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                   .textTheme
                                   .bodyMedium!
                                   .copyWith(
-                                      fontSize: 18,
                                       fontFamily: AppFonts.semiBold,
                                       overflow: TextOverflow.ellipsis)),
                           SizedBox(
@@ -290,7 +286,6 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     .textTheme
                                     .bodySmall!
                                     .copyWith(
-                                        fontSize: 11,
                                         fontFamily: AppFonts.light,
                                         overflow: TextOverflow.ellipsis),
                                 maxLines: 10,
@@ -399,8 +394,8 @@ class OrderItem extends StatelessWidget {
                     productName ?? '',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyLarge!
-                        .copyWith(fontSize: 14),
+                        .titleLarge!
+                        .copyWith(),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -434,7 +429,6 @@ class OrderItem extends StatelessWidget {
           Text('₹ $price',
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: AppColors.primaryColor,
-                  fontSize: 18,
                   fontFamily: AppFonts.semiBold,
                   overflow: TextOverflow.ellipsis)),
         ],
@@ -484,7 +478,7 @@ class PriceSection extends StatelessWidget {
                       .textTheme
                       .bodySmall!
                       .copyWith(color: AppColors.primaryColor)),
-              Text('₹ $subTotal', style: Theme.of(context).textTheme.bodyLarge),
+              Text('₹ $subTotal', style: Theme.of(context).textTheme.titleLarge),
             ],
           ),
           Row(
@@ -495,7 +489,7 @@ class PriceSection extends StatelessWidget {
                         color: AppColors.primaryColor,
                       )),
               Text('₹ $deliveryCharges',
-                  style: Theme.of(context).textTheme.bodyLarge),
+                  style: Theme.of(context).textTheme.titleLarge),
             ],
           ),
           Row(
@@ -506,7 +500,7 @@ class PriceSection extends StatelessWidget {
                         color: Colors.red,
                       )),
               Text('- ₹ $discount',
-                  style: Theme.of(context).textTheme.bodyLarge),
+                  style: Theme.of(context).textTheme.titleLarge),
             ],
           ),
           Divider(),
@@ -517,7 +511,7 @@ class PriceSection extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!
-                      .copyWith(color: AppColors.primaryColor, fontSize: 18)),
+                      .copyWith(color: AppColors.primaryColor,)),
               Text('₹ $total', style: Theme.of(context).textTheme.titleLarge!),
             ],
           ),

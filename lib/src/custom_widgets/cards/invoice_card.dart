@@ -63,7 +63,6 @@ class InvoiceCard extends StatelessWidget {
                                 .textTheme
                                 .labelSmall!
                                 .copyWith(
-                                    fontSize: 14,
                                     color: AppColors.primaryColor,
                                     fontFamily: AppFonts.medium),
                           ),
@@ -73,7 +72,7 @@ class InvoiceCard extends StatelessWidget {
                           style: Theme.of(context)
                               .textTheme
                               .labelSmall!
-                              .copyWith(    fontSize: 14,),
+                              .copyWith( ),
                         ),
                       ],
                     ),

@@ -11,7 +11,7 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.textAppTextStyles,
     this.borderRadius,
-    required this.text,
+    required this.buttonText,
     this.border,
     this.ontap,
     this.isLowerCase,
@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final TextStyle? textAppTextStyles;
   final double? borderRadius;
-  final String text;
+  final String buttonText;
   final BoxBorder? border;
   final void Function()? ontap;
   final bool? isLowerCase;
@@ -39,7 +39,8 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         style: ButtonStyle(
             padding: const MaterialStatePropertyAll(EdgeInsets.zero),
-            backgroundColor: MaterialStateProperty.all(color?? AppColors.primaryColor),
+            backgroundColor:
+                MaterialStateProperty.all(color ?? AppColors.primaryColor),
             overlayColor:
                 MaterialStatePropertyAll(AppColors.black.withOpacity(.1)),
             shape: MaterialStatePropertyAll(
@@ -73,7 +74,7 @@ class CustomButton extends StatelessWidget {
                       SizedBox(
                         width: width ?? screenWidth * .8,
                         child: Text(
-                          isLowerCase != null ? text : text,
+                          isLowerCase != null ? buttonText : buttonText,
                           style: textAppTextStyles ?? AppTextStyles.normalWhite,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,

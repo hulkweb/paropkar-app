@@ -24,7 +24,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>{
+class _LoginScreenState extends State<LoginScreen> {
   final _formKeyOtp = GlobalKey<FormState>();
   final _formKeyPass = GlobalKey<FormState>();
   final loginController = LoginController();
@@ -66,7 +66,6 @@ class _LoginScreenState extends State<LoginScreen>{
                               .textTheme
                               .bodyLarge!
                               .copyWith(
-                                fontSize: 13,
                                 color:
                                     loginController.screenType == 'loginWithOtp'
                                         ? Colors.white
@@ -100,7 +99,6 @@ class _LoginScreenState extends State<LoginScreen>{
                             'Login With Email',
                             style:
                                 Theme.of(context).textTheme.bodyLarge!.copyWith(
-                                      fontSize: 13,
                                       color: !(loginController.screenType ==
                                               'loginWithOtp')
                                           ? Colors.white
@@ -153,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen>{
                                         radius: 10.0,
                                         animating: true),
                                   ),
-                                  text: 'verify',
+                                  buttonText: 'verify',
                                   height: 40,
                                   width: 70,
                                   borderRadius: 39,
@@ -194,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen>{
                                   loginController.verifyMobile(context);
                                 }
                               },
-                              text: 'Login',
+                              buttonText: 'Login',
                             ),
                           ],
                         ),
@@ -252,7 +250,8 @@ class _LoginScreenState extends State<LoginScreen>{
                                     onPressed: () {
                                       loginController.disposeTextControllers();
                                       // Forgot password functionality
-                                      AppNavigation.navigationPush(context, ForgotPasswordScreen());
+                                      AppNavigation.navigationPush(
+                                          context, ForgotPasswordScreen());
                                     },
                                     child: Text(
                                       "Forgot Password?",
@@ -271,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen>{
                                   loginController.login(context, type: 'email');
                                 }
                               },
-                              text: 'Login',
+                              buttonText: 'Login',
                             ),
                           ],
                         ),

@@ -34,10 +34,11 @@ class ProductListingController extends ChangeNotifier {
     String search = '',
     String max_price = '',
     String min_price = '',
+    String  isPopular = '0',
   }) async {
     String userId = await getUserId();
     String url =
-        "${AppUrl.product}?category_id=$category_id&subcategory_id=$subcategory_id&search=$search&max_price=$max_price&min_price=$min_price?user_id=$userId";
+        "${AppUrl.product}?category_id=$category_id&subcategory_id=$subcategory_id&search=$search&max_price=$max_price&min_price=$min_price?popular=$isPopular?user_id=$userId";
     if (loading) changeDataStatus(DataStatus.loading);
     print(url);
     getApi(

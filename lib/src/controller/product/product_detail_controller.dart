@@ -61,9 +61,10 @@ class ProductDetailController extends ChangeNotifier {
 
   getProductDetail(BuildContext context,
       {required String id, bool loading = true}) {
-    // if(loading){
-    //   changeDataStatus(DataStatus.loading);
-    // }
+    if(loading){
+      changeDataStatus(DataStatus.loading);
+    }
+    
     print('product detail call');
     for (int i = 0; i < 10; i++) {
       print('\n');

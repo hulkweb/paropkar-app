@@ -54,7 +54,7 @@ class _EnterNameScreenState extends State<EnterNameScreen> {
                   controller: signupController.nameController,
                   hintText: "Full Name",
                   validator: (value) {
-                   return signupController.nameValidation(value);
+                    return signupController.nameValidation(value);
                   },
                 ),
                 SizedBox(
@@ -66,7 +66,7 @@ class _EnterNameScreenState extends State<EnterNameScreen> {
                       signupController.ontapNameContinueButton(context);
                     }
                   },
-                  text: 'Continue',
+                  buttonText: 'Continue',
                 ),
               ],
             ),

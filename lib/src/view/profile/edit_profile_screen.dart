@@ -134,8 +134,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ],
         title: Text(
           'Edit Profile',
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 20,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),
@@ -281,7 +280,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   return CustomButton(
                     isLoading:
                         controller.updateStausStatus == DataStatus.loading,
-                    text: 'Save',
+                    buttonText: 'Save',
                     ontap: () async {
                       bool isUpdated = false;
                       if (_formKey.currentState!.validate()) {
@@ -293,9 +292,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           mobile: controller.phoneNumberController.text,
                           image: _imageFile?.path,
                         );
-                        Timer(Duration(seconds: 3), () {  Provider.of<ProfileController>(context)
-                            .getUser(context); });
-                      
+                        try {
+                          profileController
+                              .getUser(context);
+                        } catch (e) {
+                          print('getting error');
+                          print(e);
+                        }
+
+                        Navigator.pop(context);
                       }
                     },
                   );

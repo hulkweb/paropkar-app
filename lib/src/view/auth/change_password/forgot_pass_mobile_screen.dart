@@ -40,7 +40,6 @@ class ForgotPasswordScreen extends StatelessWidget {
 
                 largeHeight,
                 CustomTextFormWidget(
-                  
                   maxLength: 10,
                   keyboardType: TextInputType.number,
                   fillColor: AppColors.white,
@@ -54,18 +53,18 @@ class ForgotPasswordScreen extends StatelessWidget {
                   height: screenHeight * .2,
                 ),
                 Consumer<ForgotPasswordController>(
-                  builder: (context,forgotPasswordController,child) {
-                    return CustomButton(
-                      isLoading: forgotPasswordController.sendOtpStatus == DataStatus.loading,
-                      ontap: () {
-                        if (_formKey.currentState!.validate()) {
-                          forgotPasswordController.sendOtp(context);
-                        }
-                      },
-                      text: 'Send Otp',
-                    );
-                  }
-                ),
+                    builder: (context, forgotPasswordController, child) {
+                  return CustomButton(
+                    isLoading: forgotPasswordController.sendOtpStatus ==
+                        DataStatus.loading,
+                    ontap: () {
+                      if (_formKey.currentState!.validate()) {
+                        forgotPasswordController.sendOtp(context);
+                      }
+                    },
+                    buttonText: 'Send Otp',
+                  );
+                }),
               ],
             ),
           ),

@@ -5,8 +5,6 @@ import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/utills/app_assets.dart';
 import 'package:paropkar/src/utills/app_colors.dart';
 
-
-
 class DataStateWidgetNew extends StatelessWidget {
   final DataStatus status;
   final Widget? loadingWidget;
@@ -33,7 +31,8 @@ class DataStateWidgetNew extends StatelessWidget {
     this.errorWidth,
     required this.ontapRetry,
     required this.isDataEmpty,
-    this.emptyDataWidget, this.isOverlay,
+    this.emptyDataWidget,
+    this.isOverlay,
   });
 
   @override
@@ -57,7 +56,7 @@ class DataStateWidgetNew extends StatelessWidget {
           child: Center(
             child: errorWidget ??
                 CustomButton(
-                  text: "Retry",
+                  buttonText: "Retry",
                   ontap: ontapRetry,
                   width: errorWidth ?? screenWidth * .5,
                 ),
@@ -73,24 +72,24 @@ class DataStateWidgetNew extends StatelessWidget {
                   height: screenWidth * .3,
                   width: screenWidth * .3,
                 ))
-            :
-            isOverlay??false?
-             Stack(
-                  children: [
-                    child!,
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.black
-                            .withOpacity(0.5), // Semi-transparent background
-                        child: const Center(
-                          child:
-                              CircularProgressIndicator(color: AppColors.primaryColor,), // Loading indicator
+            : isOverlay ?? false
+                ? Stack(
+                    children: [
+                      child!,
+                      Positioned.fill(
+                        child: Container(
+                          color: Colors.black
+                              .withOpacity(0.5), // Semi-transparent background
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.primaryColor,
+                            ), // Loading indicator
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ):child ??
-                const SizedBox(); // Required success widget
+                    ],
+                  )
+                : child ?? const SizedBox(); // Required success widget
     }
   }
 }

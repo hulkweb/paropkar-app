@@ -94,7 +94,9 @@ class NewPasswordScreen extends StatelessWidget {
                       height: screenHeight * .1,
                     ),
                     CustomButton(
-                      isLoading: forgotPasswordController.changePasswordStatus == DataStatus.loading,
+                      isLoading:
+                          forgotPasswordController.changePasswordStatus ==
+                              DataStatus.loading,
                       ontap: () {
                         if (_formKey.currentState!.validate()) {
                           if (forgotPasswordController
@@ -115,7 +117,7 @@ class NewPasswordScreen extends StatelessWidget {
                           }
                         }
                       },
-                      text: 'Change Password',
+                      buttonText: 'Change Password',
                     ),
                   ],
                 ),

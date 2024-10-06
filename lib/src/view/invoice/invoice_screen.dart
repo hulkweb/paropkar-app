@@ -64,8 +64,7 @@ class InvoiceScreen extends StatelessWidget {
         ],
         title: Text(
           'Invoice',
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 20,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),

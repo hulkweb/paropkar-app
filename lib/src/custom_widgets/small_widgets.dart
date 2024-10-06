@@ -369,7 +369,7 @@ class LogoutWidget extends StatelessWidget {
                         Navigator.pop(context);
                       },
                       isLowerCase: true,
-                      text: 'Cancel',
+                      buttonText: 'Cancel',
                       border: Border.all(color: AppColors.grey, width: 1),
                     ),
                   ),
@@ -381,8 +381,9 @@ class LogoutWidget extends StatelessWidget {
                       isLoading: isLoading,
                       width: screenWidth * .35,
                       ontap: ontapLogout,
-                      isLowerCase: true,color: Colors.red,
-                      text: 'Logout',
+                      isLowerCase: true,
+                      color: Colors.red,
+                      buttonText: 'Logout',
                     ),
                   ),
                   SizedBox(

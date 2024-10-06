@@ -77,8 +77,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
         ],
         title: Text(
           'Order Details',
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 20,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),
@@ -240,7 +239,7 @@ class _CustomerDetailScreenState extends State<CustomerDetailScreen> {
             style: Theme.of(context)
                 .textTheme
                 .bodyText2!
-                .copyWith(fontFamily: AppFonts.light, fontSize: 13),
+                .copyWith(fontFamily: AppFonts.light,),
           )
         ],
       ),
@@ -309,17 +308,16 @@ class OrderStatusSection extends StatelessWidget {
                   Text(title,
                       style: Theme.of(context)
                           .textTheme
-                          .bodyLarge!
-                          .copyWith(fontSize: 13)),
+                          .titleLarge!
+                          .copyWith()),
                   Text(subtitle,
                       style: Theme.of(context).textTheme.labelSmall!.copyWith(
                           color: AppColors.primaryColor,
-                          fontSize: 10,
                           overflow: TextOverflow.ellipsis)),
                 ],
               ),
               Text(date,
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: AppColors.primaryColor,
                       overflow: TextOverflow.ellipsis)),
             ],

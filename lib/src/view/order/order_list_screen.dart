@@ -71,8 +71,7 @@ class OrderListScreen extends StatelessWidget {
         ],
         title: Text(
           'My Order',
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 20,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),
@@ -183,16 +182,15 @@ class OrderItem extends StatelessWidget {
                 SizedBox(
                   width: screenWidth * .4,
                   child: Text(orderId,
-                      style: Theme.of(context).textTheme.bodyLarge!),
+                      style: Theme.of(context).textTheme.titleLarge!),
                 ),
                 SizedBox(
                   width: screenWidth * .4,
                   child: Text(
                     title,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: AppColors.primaryColor,
                         overflow: TextOverflow.ellipsis,
-                        fontSize: 13,
                         fontFamily: AppFonts.regular),
                     maxLines: 3,
                   ),
@@ -225,9 +223,8 @@ class OrderItem extends StatelessWidget {
                     ),
                     Text(
                       '$timing',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           overflow: TextOverflow.ellipsis,
-                          fontSize: 10,
                           fontFamily: AppFonts.light),
                     ),
                   ],

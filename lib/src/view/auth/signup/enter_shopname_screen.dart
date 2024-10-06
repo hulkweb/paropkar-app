@@ -13,7 +13,7 @@ import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
 import 'package:paropkar/src/custom_widgets/otp_custom.dart';
 
 class EnterShopNameScreen extends StatelessWidget {
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final signupController = SignUpController();
   @override
@@ -28,11 +28,11 @@ class EnterShopNameScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 // Toggle Buttons
-          
+
                 const SizedBox(
                   height: 50,
                 ),
-          
+
                 Text(
                   'Enter Shop’s name',
                   style: Theme.of(context).textTheme.headlineMedium,
@@ -40,7 +40,7 @@ class EnterShopNameScreen extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-          
+
                 Padding(
                   padding: EdgeInsets.only(
                       left: screenWidth * .1, right: screenWidth * .1),
@@ -58,11 +58,12 @@ class EnterShopNameScreen extends StatelessWidget {
                 ),
                 CustomTextFormWidget(
                   controller: signupController.shopController,
-                  contentpadding: EdgeInsets.only(left: 20, bottom: 18, top: 18),
+                  contentpadding:
+                      EdgeInsets.only(left: 20, bottom: 18, top: 18),
                   fillColor: AppColors.white,
                   hintText: "Shop Name",
                   validator: (String? value) {
-                     return signupController.shopValidation(value);
+                    return signupController.shopValidation(value);
                   },
                 ),
                 SizedBox(
@@ -74,7 +75,7 @@ class EnterShopNameScreen extends StatelessWidget {
                       signupController.ontapShopContinueButton(context);
                     }
                   },
-                  text: 'Continue',
+                  buttonText: 'Continue',
                 ),
               ],
             ),

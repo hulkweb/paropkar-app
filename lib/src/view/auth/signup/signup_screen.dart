@@ -70,7 +70,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
 
                 CustomButton(
-                  text: 'Continue',
+                  buttonText: 'Continue',
                   ontap: () {
                     if (_formKey.currentState!.validate()) {
                       signupController.sendOtp(context);
@@ -86,7 +86,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: Theme.of(context).textTheme.labelMedium!,
                       children: <TextSpan>[
                         // Second part of the text
-                       
+
                         TextSpan(
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
@@ -94,9 +94,13 @@ class _SignUpPageState extends State<SignUpPage> {
                               signupController.ontapTermCondition();
                             },
                           text: 'Term & Condition and Privacy Policy',
-                         style: Theme.of(context).textTheme.labelLarge!.copyWith(decoration: TextDecoration.underline,fontFamily: AppFonts.medium),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge!
+                              .copyWith(
+                                  decoration: TextDecoration.underline,
+                                  fontFamily: AppFonts.medium),
                         ),
-                        
                       ],
                     ),
                   ),

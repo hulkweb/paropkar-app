@@ -1,10 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/address/address_controller.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
@@ -91,153 +88,165 @@ class ProfileScreen extends StatelessWidget {
         ],
         title: Text(
           'My Profile',
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 20,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 12),
-        child: ListView(
-          children: [
-            Consumer<ProfileController>(builder: (context, controller, child) {
-              if (kDebugMode) {
-                print(controller.userData?.data?.image);
-              }
-              return Padding(
-                padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
-                child: Row(
-                  children: [
-                    Container(
-                      height: screenWidth * .16,
-                      width: screenWidth * .16,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.primaryColor),
-                        shape: BoxShape.circle,
+      body: Consumer<ProfileController>(builder: (context, controller, child) {
+        return DataStateWidget(
+          status: controller.getUserStaus,
+          ontapRetry: () {},
+          isDataEmpty: false,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 12, top: 12, right: 12),
+                  child: Row(
+                    children: [
+                      Container(
+                        height: screenWidth * .16,
+                        width: screenWidth * .16,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.primaryColor),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Builder(builder: (context) {
+                          if (kDebugMode) {
+                            print(controller.userData?.data?.image ?? '');
+                          }
+                          return CustomNetworkImage(
+                            imageUrl: controller.userData?.data?.image ?? '',
+                            errorWidget: const SizedBox(
+                              child: Center(
+                                child: Icon(Icons.person,
+                                    size: 50, color: AppColors.primaryColor),
+                              ),
+                            ),
+                          );
+                        }),
                       ),
-                      child: CustomNetworkImage(
-                        imageUrl: controller.userData?.data?.image ?? '',
-                        errorWidget: const SizedBox(
-                          child: Center(
-                            child: Icon(Icons.person,
-                                size: 50, color: AppColors.primaryColor),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            controller.userData?.data?.name ?? '',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(),
                           ),
-                        ),
+                          Text(
+                            controller.userData?.data?.mobile ?? '',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(),
+                          ),
+                        ],
                       ),
+                    ],
+                  ),
+                ),
+                largeHeight,
+                Column(
+                  children: [
+                    ListTileProfileSction(
+                      ontap: () {
+                        AppNavigation.navigationPush(
+                            context, EditProfileScreen());
+                      },
+                      image: AppAssets.editProfile,
+                      title: 'Edit profile',
+                      padding: 8,
                     ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          controller.userData?.data?.name ?? '',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(),
-                        ),
-                        Text(
-                          controller.userData?.data?.mobile ?? '',
-                          style:
-                              Theme.of(context).textTheme.bodySmall!.copyWith(),
-                        ),
-                      ],
-                    ),
+                    ListTileProfileSction(
+                        ontap: () {
+                          AppNavigation.navigationPush(
+                              context, ForgotPasswordScreen());
+                        },
+                        image: AppAssets.changePassword,
+                        title: 'Change password',
+                        padding: 8),
+                    ListTileProfileSction(
+                        ontap: () {
+                          addressController.getAddressApi(context);
+                          AppNavigation.navigationPush(
+                              context, ManageAddressScreen());
+                        },
+                        image: AppAssets.location,
+                        title: 'My address',
+                        padding: 5),
+                    ListTileProfileSction(
+                        ontap: () {
+                          AppNavigation.navigationPush(
+                              context, InvoiceScreen());
+                        },
+                        image: AppAssets.appInfo,
+                        title: 'App information',
+                        padding: 8),
+                    ListTileProfileSction(
+                        ontap: () {},
+                        image: AppAssets.language,
+                        title: 'Language',
+                        padding: 8),
+                    ListTileProfileSction(
+                        ontap: () {
+                          orderController.getOrderList(context);
+                          AppNavigation.navigationPush(
+                              context, OrderListScreen());
+                        },
+                        imgColor: AppColors.white,
+                        image: AppAssets.orders,
+                        title: 'My Orders',
+                        padding: 8),
+                    ListTileProfileSction(
+                        ontap: () {
+                          context.read<FavoriteController>().getFavorites();
+                          AppNavigation.navigationPush(
+                              context, const FavoriteListingScreen());
+                        },
+                        imgColor: AppColors.white,
+                        image: AppAssets.favorite,
+                        title: 'Favorite Items',
+                        padding: 8),
+                    ListTileProfileSction(
+                        ontap: () async {
+                          await showModalBottomSheet<void>(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(0.0),
+                              ),
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Consumer<ProfileController>(
+                                    builder: (context, controller, child) {
+                                  return LogoutWidget(
+                                    ontapLogout: () async {
+                                      // context.read<BottomBarListController>().changeIndex(0);
+                                      await profileController
+                                          .logoutEvent(context);
+                                    },
+                                    isLoading: controller.logoutStatus ==
+                                        DataStatus.loading,
+                                  );
+                                });
+                              });
+                        },
+                        image: AppAssets.logout,
+                        title: 'Logout',
+                        padding: 8),
                   ],
                 ),
-              );
-            }),
-            largeHeight,
-            Column(
-              children: [
-                ListTileProfileSction(
-                  ontap: () {
-                    AppNavigation.navigationPush(context, EditProfileScreen());
-                  },
-                  image: AppAssets.editProfile,
-                  title: 'Edit profile',
-                  padding: 8,
-                ),
-                ListTileProfileSction(
-                    ontap: () {
-                      AppNavigation.navigationPush(
-                          context, ForgotPasswordScreen());
-                    },
-                    image: AppAssets.changePassword,
-                    title: 'Change password',
-                    padding: 8),
-                ListTileProfileSction(
-                    ontap: () {
-                      addressController.getAddressApi(context);
-                      AppNavigation.navigationPush(
-                          context, ManageAddressScreen());
-                    },
-                    image: AppAssets.location,
-                    title: 'My address',
-                    padding: 5),
-                ListTileProfileSction(
-                    ontap: () {
-                      AppNavigation.navigationPush(context, InvoiceScreen());
-                    },
-                    image: AppAssets.appInfo,
-                    title: 'App information',
-                    padding: 8),
-                ListTileProfileSction(
-                    ontap: () {},
-                    image: AppAssets.language,
-                    title: 'Language',
-                    padding: 8),
-                ListTileProfileSction(
-                    ontap: () {
-                      orderController.getOrderList(context);
-                      AppNavigation.navigationPush(context, OrderListScreen());
-                    },
-                    imgColor: AppColors.white,
-                    image: AppAssets.orders,
-                    title: 'My Orders',
-                    padding: 8),
-                ListTileProfileSction(
-                    ontap: () {
-                      context.read<FavoriteController>().getFavorites();
-                      AppNavigation.navigationPush(
-                          context, const FavoriteListingScreen());
-                    },
-                    imgColor: AppColors.white,
-                    image: AppAssets.favorite,
-                    title: 'Favorite Items',
-                    padding: 8),
-                ListTileProfileSction(
-                    ontap: () async {
-                      await showModalBottomSheet<void>(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(0.0),
-                          ),
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Consumer<ProfileController>(
-                                builder: (context, controller, child) {
-                              return LogoutWidget(
-                                ontapLogout: () async {
-                                  // context.read<BottomBarListController>().changeIndex(0);
-                                  await profileController.logoutEvent(context);
-                                },
-                                isLoading: controller.logoutStatus ==
-                                    DataStatus.loading,
-                              );
-                            });
-                          });
-                    },
-                    image: AppAssets.logout,
-                    title: 'Logout',
-                    padding: 8),
               ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
@@ -276,7 +285,7 @@ class ListTileProfileSction extends StatelessWidget {
             smallWidth,
             Text(
               title,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.titleLarge,
             ),
             Expanded(child: smallHeight),
             InkWell(

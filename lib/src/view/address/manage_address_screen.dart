@@ -70,8 +70,7 @@ class ManageAddressScreen extends StatelessWidget {
         ],
         title: Text(
           'Manage Address',
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 20,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),
@@ -121,24 +120,22 @@ class ManageAddressScreen extends StatelessWidget {
                       : false,
                   isDataEmpty: isDataEmpty,
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 12, top: 12, right: 12,bottom: 20),
+                    padding: const EdgeInsets.only(
+                        left: 12, top: 12, right: 12, bottom: 20),
                     child: Column(
                         children: isDataEmpty
                             ? []
                             : List.generate(
-                                addressController.addressListData.data!.length+1,
-                                (index) {
-                            
-                              
+                                addressController.addressListData.data!.length +
+                                    1, (index) {
                                 if (addressController
                                         .addressListData.data!.length ==
                                     index) {
                                   return Padding(
                                     padding: const EdgeInsets.only(top: 40),
                                     child: CustomButton(
-                                      width: screenWidth*.5,
-                                    text: 'Add New Address',
+                                      width: screenWidth * .5,
+                                      buttonText: 'Add New Address',
                                       ontap: () {
                                         addressController.clearAllControllers();
                                         AppNavigation.navigationPush(
@@ -149,7 +146,7 @@ class ManageAddressScreen extends StatelessWidget {
                                     ),
                                   );
                                 }
-                                  final address = addressController
+                                final address = addressController
                                     .addressListData.data![index];
                                 return Padding(
                                   padding: const EdgeInsets.only(top: 14),

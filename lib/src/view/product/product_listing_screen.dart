@@ -1,10 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
 import 'package:paropkar/src/controller/favorite/favorite_controller.dart';
 import 'package:paropkar/src/controller/product/product_detail_controller.dart';
 import 'package:paropkar/src/controller/product/product_listing_controller.dart';
+import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 import 'package:paropkar/src/custom_widgets/custom_network_image.dart';
 import 'package:paropkar/src/custom_widgets/data_status_widget.dart';
 import 'package:paropkar/src/models/cart/cart_model.dart';
@@ -160,19 +163,46 @@ class ProductListingScreen extends StatelessWidget {
                                 //         variationName: instance?.variationName);
                                 //     variationList.add(variation);
                                 //   }
-                                //   showVariationDialog(context, variationList);
+                                //   showVariationDialog(context, variationList, ontapOk: (String variationId, String quantity) {
+
+                                //    });
                                 // },
                                 onAddToCartPressed: () async {
                                   if (!(product.isCart ?? false)) {
-                                    await cartController.addCart(
-                                        variation_id: product.variations![0].id
-                                            .toString(),
-                                        product_id: product.id.toString(),
-                                        quantity: "1",
-                                        context: context);
-                                    await controller.getProducts(
-                                      category_id: category_id??'',
-                                        loading: false);
+                                    List<Variation> variationList =
+                                        []; // controller.productsData?.data?.data?[index].variations;
+                                    for (int i = 0;
+                                        i <
+                                            (controller
+                                                    .productsData
+                                                    ?.data
+                                                    ?.data?[index]
+                                                    .variations
+                                                    ?.length ??
+                                                0);
+                                        i++) {
+                                      final instance = controller.productsData
+                                          ?.data?.data?[index].variations?[i];
+                                      Variation variation = Variation(
+                                          id: instance?.id,
+                                          image: instance?.image,
+                                          color: instance?.color,
+                                          variationName:
+                                              instance?.variationName);
+                                      variationList.add(variation);
+                                    }
+                                    showVariationDialog(context, variationList,
+                                        ontapOk: (String variationId,
+                                            String quantity) async {
+                                      await cartController.addCart(
+                                          variation_id: variationId,
+                                          product_id: product.id.toString(),
+                                          quantity: quantity,
+                                          context: context);
+                                      await controller.getProducts(
+                                          category_id: category_id ?? '',
+                                          loading: false);
+                                    });
                                   } else {
                                     AppNavigation.pushAndRemoveUntil(
                                         context, const BottomBarListScreen());
@@ -180,6 +210,9 @@ class ProductListingScreen extends StatelessWidget {
                                   }
                                 },
                                 onProductPressed: () {
+                                  context
+                                      .read<ProductDetailController>()
+                                      .changeQuantity(1);
                                   context
                                       .read<ProductDetailController>()
                                       .getProductDetail(
@@ -209,73 +242,105 @@ class ProductListingScreen extends StatelessWidget {
 }
 
 Future<Map<String, dynamic>?> showVariationDialog(
-    BuildContext context, List<Variation> variations) {
+    BuildContext context, List<Variation> variations,
+    {required Function(String variationId, String quantity) ontapOk}) {
   return showDialog<Map<String, dynamic>>(
     context: context,
     builder: (context) {
       String? selectedVariationId;
       int selectedQuantity = 1;
       return AlertDialog(
+        actionsPadding: EdgeInsets.zero,
+        insetPadding: EdgeInsets.zero,
+        contentPadding: const EdgeInsets.only(left: 20),
         title: const Text('Select a Variation'),
         content: StatefulBuilder(
           builder: (context, setState) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: variations.map((variation) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {
-                      selectedVariationId = variation.id.toString();
-                      setState;
-                      print('setted');
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        border: Border.all(color:(selectedVariationId ==  variation.id.toString())? AppColors.primaryColor: Colors.transparent)
-                      ),
-                      child: Row(
-                        children: [
-                          CustomNetworkImage(
-                            imageUrl: variation.image ?? '',
-                            height: 40,
-                            width: 40,
-                          ),
-                          smallWidth,
-                          SizedBox(
-                              width: screenWidth * .2,
-                              child: Text(variation.variationName ?? '')),
-                     !(  selectedVariationId == variation.id.toString()) ?
-                     SizedBox():
-                       Builder(builder: (context) {
-                            return Row(
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      selectedQuantity++;
-                                      setState;
-                                    },
-                                    child: Icon(Icons.remove)),
-                                smallWidth,
-                                Text(selectedQuantity.toString()),
-                                smallWidth,
-                                InkWell(
-                                  onTap: () {
-                                    selectedQuantity--;
-                                    setState;
-                                  },
-                                  child: Icon(Icons.remove),
-                                ),
-                              ],
-                            );
-                          })
-                        ],
-                      ),
-                    ),
+            return SizedBox(
+              width: screenWidth * .4,
+              height: screenWidth * .45,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: screenWidth * .4,
                   ),
-                );
-              }).toList(),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: variations.map((variation) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            selectedVariationId = variation.id.toString();
+                            setState;
+                            if (kDebugMode) {
+                              print('setted');
+                              print(selectedVariationId);
+                              print(variation.id.toString());
+                            }
+                            setState(() {});
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                    color: (selectedVariationId ==
+                                            variation.id.toString())
+                                        ? AppColors.primaryColor
+                                        : Colors.transparent)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CustomNetworkImage(
+                                  imageUrl: variation.image ?? '',
+                                  height: 40,
+                                  width: 40,
+                                ),
+                                smallHeight,
+                                SizedBox(
+                                    width: screenWidth * .15,
+                                    child: Text(variation.variationName ?? '')),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                  smallHeight,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomIconImage(
+                          onPress: () {
+                            if (selectedQuantity > 1) selectedQuantity--;
+                            setState(
+                              () {},
+                            );
+                          },
+                          icon: const Icon(Icons.remove)),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: Text(
+                          "$selectedQuantity",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                      CustomIconImage(
+                          onPress: () {
+                            selectedQuantity++;
+                            setState(
+                              () {},
+                            );
+                          },
+                          icon: const Icon(Icons.add)),
+                    ],
+                  )
+                ],
+              ),
             );
           },
         ),
@@ -287,10 +352,8 @@ Future<Map<String, dynamic>?> showVariationDialog(
           TextButton(
             onPressed: () {
               if (selectedVariationId != null && selectedQuantity != null) {
-                Navigator.of(context).pop({
-                  'variationId': selectedVariationId,
-                  'quantity': selectedQuantity,
-                });
+                Navigator.of(context).pop();
+                ontapOk(selectedVariationId!, selectedQuantity.toString());
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

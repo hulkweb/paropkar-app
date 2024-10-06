@@ -6,9 +6,9 @@ import 'package:paropkar/src/utills/app_colors.dart';
 
 enum DataStatus { loading, error, success }
 
-enum ButtonStatus { loading,nothing }
+enum ButtonStatus { loading, nothing }
 
-enum OverlayStatus { loading,nothing }
+enum OverlayStatus { loading, nothing }
 
 bool isDataLoading(DataStatus status) {
   return status == DataStatus.loading;
@@ -75,7 +75,7 @@ class DataStateWidget extends StatelessWidget {
           child: Center(
             child: errorWidget ??
                 CustomButton(
-                  text: "Retry",
+                  buttonText: "Retry",
                   ontap: ontapRetry,
                   width: errorWidth ?? screenWidth * .5,
                 ),

@@ -40,7 +40,9 @@ class CartController extends ChangeNotifier {
         notifyListeners();
       },
       onFailed: (response) {
+        carts = CartModel.fromJson(response);
         changeCartsDataStatus(DataStatus.success);
+         
       },
       onException: () {
         // changeCartsDataStatus(DataStatus.error);

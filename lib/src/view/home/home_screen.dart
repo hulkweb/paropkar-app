@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
     final favoriteController =
         Provider.of<FavoriteController>(context, listen: false);
     if (productListingController.productsData == null) {
-      productListingController.getProducts();
+      productListingController.getProducts(isPopular: '1');
     }
     Provider.of<FavoriteController>(context, listen: false);
     final bottomBarController = Provider.of<BottomBarListController>(context);
@@ -120,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             hintStyle: Theme.of(context)
                                 .textTheme
-                                .bodyLarge!
+                                .titleLarge!
                                 .copyWith(color: AppColors.primaryColor),
                             suffixIcon: const Icon(
                               Icons.search,
@@ -142,9 +142,12 @@ class HomeScreen extends StatelessWidget {
                             filled: true,
                             fillColor: Colors.grey[200],
                           ),
-                          onTap: ()async {
-                             await context.read<ProductListingController>().getProducts(loading: false);
-                            AppNavigation.navigationPush(context, const ProductSearchScreen());
+                          onTap: () async {
+                            await context
+                                .read<ProductListingController>()
+                                .getProducts(loading: false);
+                            AppNavigation.navigationPush(
+                                context, const ProductSearchScreen());
                           },
                         ),
                       ),
@@ -178,7 +181,7 @@ class HomeScreen extends StatelessWidget {
                     //       ),
                     //       Text(
                     //         'On Your First Order From App',
-                    //         style: TextStyle(color: Colors.white, fontSize: 16),
+                    //         style: TextStyle(color: Colors.white, : 16),
                     //       ),
                     //       Spacer(),
                     //       ElevatedButton(
@@ -470,7 +473,7 @@ class PopularItem extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
-          Text(name, style: Theme.of(context).textTheme.bodyLarge),
+          Text(name, style: Theme.of(context).textTheme.titleLarge),
           SizedBox(height: 5),
           Text(price, style: Theme.of(context).textTheme.bodyMedium),
           Align(

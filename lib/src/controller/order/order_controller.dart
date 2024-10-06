@@ -135,6 +135,9 @@ class OrderController with ChangeNotifier {
       },
       onFailed: (error) {
         print('Failed to fetch order list: $error');
+          changeOrdersDataStatus(
+            DataStatus.success); // Parse response into your OrderModel list
+        notifyListeners();
       },
       onException: () {
         print('Exception occurred while fetching order list');

@@ -81,14 +81,11 @@ class ProductCard extends StatelessWidget {
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: Text(
                 productName,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.bodyLarge,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            const Expanded(child: const SizedBox(height: 4.0)),
+            const Expanded(child:  SizedBox(height: 4.0)),
             Padding(
               padding: const EdgeInsets.only(left: 10, right: 10),
               child: Text(

@@ -40,7 +40,7 @@ class _CartScreenState extends State<CartScreen> {
     });
     super.initState();
   }
-  
+
   // final bottomBarListController = BottomBarListController();
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class _CartScreenState extends State<CartScreen> {
                 color: Theme.of(context).cardColor,
                 size: 23,
               ),
-            onPress: () {
+              onPress: () {
                 AppNavigation.navigationPush(context, NotificationScreen());
               },
             ),
@@ -87,8 +87,7 @@ class _CartScreenState extends State<CartScreen> {
         ],
         title: Text(
           'Cart',
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 20,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),
@@ -99,17 +98,17 @@ class _CartScreenState extends State<CartScreen> {
             controller.carts!.data!.isEmpty;
         return DataStateWidget(
           isOverlay: controller.addCartDataStatus == DataStatus.loading,
-          ontapRetry:(){
+          ontapRetry: () {
             controller.getCarts();
           },
           status: controller.cartsDataStatus,
           isDataEmpty: isDataEmpty,
-          emptyDataWidget:  Center(
-                    child: Image.asset(
-                  AppAssets.empty_cart,
-                  height: screenWidth * .3,
-                  width: screenWidth * .3,
-                )),
+          emptyDataWidget: Center(
+              child: Image.asset(
+            AppAssets.empty_cart,
+            height: screenWidth * .3,
+            width: screenWidth * .3,
+          )),
           child: isDataEmpty
               ? null
               : SizedBox(
@@ -126,8 +125,9 @@ class _CartScreenState extends State<CartScreen> {
                                   children: List.generate(
                                       controller.carts!.data!.length, (index) {
                                 final cart = controller.carts!.data![index];
-                                  int quantity = controller
-                                            .carts!.data![index].quantity??0;
+                                int quantity =
+                                    controller.carts!.data![index].quantity ??
+                                        0;
                                 // print(controller.cartItemList[index].quantity);
                                 return cart.product == null
                                     ? const SizedBox()
@@ -136,7 +136,10 @@ class _CartScreenState extends State<CartScreen> {
                                         title: formatData(cart.product!.name),
                                         category: formatData(
                                             cart.product!.description),
-                                        price:( convertToDouble(formatData(cart.product!.price))*quantity).toString(),
+                                        price: (convertToDouble(formatData(
+                                                    cart.product!.price)) *
+                                                quantity)
+                                            .toString(),
                                         quantity: formatData(controller
                                             .carts!.data![index].quantity),
                                         onChange: (String value) {
@@ -145,7 +148,7 @@ class _CartScreenState extends State<CartScreen> {
                                         onIncrease: () async {
                                           if (controller.carts!.data![index]
                                                   .quantity! <
-                                              20){
+                                              20) {
                                             await controller.changeCartQuantity(
                                                 cart_id: formatData(cart.id),
                                                 quntity: (controller
@@ -161,7 +164,7 @@ class _CartScreenState extends State<CartScreen> {
                                         onDecrease: () async {
                                           if (controller.carts!.data![index]
                                                   .quantity! >
-                                              1){
+                                              1) {
                                             await controller.changeCartQuantity(
                                                 cart_id: formatData(cart.id),
                                                 quntity: (controller
@@ -183,8 +186,10 @@ class _CartScreenState extends State<CartScreen> {
                                           }
                                           setState(() {});
                                         },
-                                        onRemove: () async{
-                                             await controller.removeCart(cart_id: formatData(cart.id), context: context);
+                                        onRemove: () async {
+                                          await controller.removeCart(
+                                              cart_id: formatData(cart.id),
+                                              context: context);
                                         },
                                       );
                               })),
@@ -232,7 +237,7 @@ class _CartScreenState extends State<CartScreen> {
                                                   padding:
                                                       const EdgeInsets.all(8.0),
                                                   child: CustomButton(
-                                                    text: 'Apply',
+                                                    buttonText: 'Apply',
                                                     height: 40,
                                                     width: 70,
                                                     borderRadius: 39,
@@ -308,9 +313,9 @@ class _CartScreenState extends State<CartScreen> {
                                                       .textTheme
                                                       .titleLarge!
                                                       .copyWith(
-                                                          color: AppColors
-                                                              .primaryColor,
-                                                          fontSize: 20)),
+                                                        color: AppColors
+                                                            .primaryColor,
+                                                      )),
                                             ],
                                           ),
                                         ],
@@ -327,10 +332,16 @@ class _CartScreenState extends State<CartScreen> {
                         child: SizedBox(
                           height: screenWidth * .3,
                           child: CheckoutButton(
-                            total:'${controller.cartSummaryData?.data?.total.toString()}'=="null"?'':'${controller.cartSummaryData?.data?.total.toString()}',
+                            total: '${controller.cartSummaryData?.data?.total.toString()}' ==
+                                    "null"
+                                ? ''
+                                : '${controller.cartSummaryData?.data?.total.toString()}',
                             // onPressed: () {},
                             onPressed: () {
-                              controller.ontapContinueButton(context,controller.cartSummaryData!.data!.total.toString());
+                              controller.ontapContinueButton(
+                                  context,
+                                  controller.cartSummaryData!.data!.total
+                                      .toString());
                             },
                             text: 'Continue',
                           ),
@@ -444,15 +455,17 @@ class _CartItemState extends State<CartItem> {
                       width: screenWidth * .4,
                       child: Text(
                         widget.title,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            overflow: TextOverflow.ellipsis,),maxLines: 2,
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                        maxLines: 2,
                       ),
                     ),
                     SizedBox(
                       width: screenWidth * .4,
                       child: Text(
                         widget.category,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        style: Theme.of(context).textTheme.titleLarge!.copyWith(
                             color: AppColors.primaryColor,
                             overflow: TextOverflow.ellipsis,
                             fontFamily: AppFonts.regular),
@@ -461,10 +474,9 @@ class _CartItemState extends State<CartItem> {
                     ),
                     Text(
                       '₹ ${widget.price}',
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
                           color: AppColors.primaryColor,
                           overflow: TextOverflow.ellipsis,
-                          fontSize: 17,
                           fontFamily: AppFonts.semiBold),
                     )
                   ],
@@ -490,7 +502,7 @@ class _CartItemState extends State<CartItem> {
                           ),
                           onPress: widget.onDecrease,
                         ),
-                
+
                         ///first code
                         // Padding(
                         //   padding: const EdgeInsets.only(left: 10, right: 10),
@@ -503,7 +515,7 @@ class _CartItemState extends State<CartItem> {
                         //         fontSize: 15),
                         //   ),
                         // ),
-                
+
                         //after code
                         GestureDetector(
                             onTap: () {
@@ -580,18 +592,21 @@ class _CartItemState extends State<CartItem> {
           ),
         ),
         Positioned(
-          bottom: 10,
-          right: 5,
-          child:  InkWell(onTap:widget.onRemove,
-            child: Container(
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.primaryColor)
-              ),
-              child:Text(' Remove ',style: TextStyle(color: AppColors.black,fontSize: 10),)),
-          )// SizedBox(child: Icon(Icons.delete,color: AppColors.black.withOpacity(.5),))),
-        )
+            bottom: 10,
+            right: 5,
+            child: InkWell(
+              onTap: widget.onRemove,
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppColors.primaryColor)),
+                  child: Text(
+                    ' Remove ',
+                    style: TextStyle(color: AppColors.black, fontSize: 10),
+                  )),
+            ) // SizedBox(child: Icon(Icons.delete,color: AppColors.black.withOpacity(.5),))),
+            )
       ],
     );
   }
@@ -652,7 +667,7 @@ class CheckoutButton extends StatelessWidget {
           ),
           CustomButton(
             width: screenWidth * .5,
-            text: text,
+            buttonText: text,
             ontap: onPressed,
           )
         ],
@@ -660,7 +675,6 @@ class CheckoutButton extends StatelessWidget {
     );
   }
 }
-
 
 double convertToDouble(String input) {
   // Try to parse the input string as a double

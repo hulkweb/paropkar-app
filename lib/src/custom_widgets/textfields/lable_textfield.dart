@@ -45,7 +45,7 @@ class CustomFormRow extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium!
-                      .copyWith(fontSize: 14, fontFamily: AppFonts.medium)),
+                      .copyWith( fontFamily: AppFonts.medium)),
               if (isRequired)
                 const Text(
                   ' *',

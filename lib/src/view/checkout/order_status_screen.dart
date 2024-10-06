@@ -68,8 +68,7 @@ class _OrderStatusScreenState extends State<OrderStatusScreen> {
         ],
         title: Text(
           'Checkout',
-          style: Theme.of(context).textTheme.displaySmall!.copyWith(
-              fontSize: 20,
+          style: Theme.of(context).textTheme.titleLarge!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),
@@ -265,15 +264,15 @@ class OrderStatusSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Accept',
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: AppColors.primaryColor,
                       )),
               Text("Pickup",
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: AppColors.primaryColor,
                       )),
               Text("Delivered",
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
                         color: AppColors.primaryColor,
                       ))
             ],

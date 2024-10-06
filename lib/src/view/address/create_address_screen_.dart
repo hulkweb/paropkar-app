@@ -68,8 +68,7 @@ class CreateAddressScreen extends StatelessWidget {
             ],
             title: Text(
               screenType == 'edit' ? 'Edit Address' : "Create Address",
-              style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                  fontSize: 20,
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   fontFamily: AppFonts.semiBold,
                   color: Theme.of(context).canvasColor),
             ),
@@ -103,7 +102,6 @@ class CreateAddressScreen extends StatelessWidget {
                     contentpadding: contentpadding,
                     maxLength: 10,
                     keyboardType: TextInputType.number,
-                     
                     fillColor: AppColors.white,
                     controller: addressController.mobileFieldController,
                     hintText: "Phone Number*",
@@ -127,7 +125,7 @@ class CreateAddressScreen extends StatelessWidget {
                           hintText: "Pincode*",
                           validator: (value) {
                             return addressController.pincodeValidation(value);
-                          }, 
+                          },
                         ),
                       ],
                     ),
@@ -175,7 +173,8 @@ class CreateAddressScreen extends StatelessWidget {
                     keyboardType: TextInputType.name,
                     fillColor: AppColors.white,
                     controller: addressController.localAddressController,
-                    hintText: "House Number, Building Name, Road Name, Area, Colony*",
+                    hintText:
+                        "House Number, Building Name, Road Name, Area, Colony*",
                     validator: (value) {
                       return addressController.nameValidation(value,
                           emptyText: 'Enter Required Information');
@@ -246,7 +245,7 @@ class CreateAddressScreen extends StatelessWidget {
                           controller.ontapSaveAddress(context, address_id);
                         }
                       },
-                      text: 'Save Address',
+                      buttonText: 'Save Address',
                     );
                   }),
                   mediumHeight

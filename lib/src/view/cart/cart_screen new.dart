@@ -72,7 +72,7 @@
 //         ],
 //         title: Text(
 //           'Cart',
-//           style: Theme.of(context).textTheme.displaySmall!.copyWith(
+//           style: Theme.of(context).textTheme.titleLarge!.copyWith(
 //               fontSize: 20,
 //               fontFamily: AppFonts.semiBold,
 //               color: Theme.of(context).canvasColor),

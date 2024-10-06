@@ -57,7 +57,7 @@ class EnterShopsPincodeScreen extends StatelessWidget {
                   height: screenHeight * .1,
                 ),
                 CustomButton(
-                  text: 'Continue',
+                  buttonText: 'Continue',
                   ontap: () {
                     if (_formKey.currentState!.validate()) {
                       signupController.ontapPincodeContinueButton(context);
