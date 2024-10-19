@@ -16,6 +16,7 @@ import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
 import 'package:paropkar/src/view/order/order_detail_screen.dart';
 import 'package:provider/provider.dart';
+
 // Colors for the theme
 const primaryColor =
     Color(0xFF00A55B); // Example primary color (adjust as per design)
@@ -63,7 +64,7 @@ class OrderListScreen extends StatelessWidget {
                 color: Theme.of(context).cardColor,
                 size: 23,
               ),
-                onPress: () {
+              onPress: () {
                 AppNavigation.navigationPush(context, NotificationScreen());
               },
             ),
@@ -82,36 +83,41 @@ class OrderListScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Consumer<OrderController>(
-                builder: (context,controller,child){
-                   bool isDataEmpty =  orderController.orders == null || orderController.orders!.data ==null || orderController.orders!.data!.isEmpty;
-                  return DataStateWidget(
-                    status: controller.ordersDataStatus,
-                    ontapRetry: () {controller.getOrderList(context);  },
-                    isDataEmpty: isDataEmpty,
-                    child: 
-                    isDataEmpty?
-                    const SizedBox():
-                    ListView(
-                        children: List.generate(
-                            orderController.orders!.data!.length,
-                            (index) {
-                             final order = orderController.orders!.data![index];
-                              return OrderItem(
-                                image:order.orderItems?[0].product?.image??'' ,
-                                  orderId:
-                                   '#${order.id??1}',
-                                  title: order.orderItems?[0].product?.name??'',
-                                  starCount:6,
-                                  timing: formatDate(order.createdAt.toString()),
-                                  quantity: 1,
-                                  status: order.status??'',
-                                  onTap: () {
-                                    AppNavigation.navigationPush(context,  OrderDetailScreen(orderDetail: List.generate(order.orderItems!.length, (index) => OrderDetailNeeded(image:order.orderItems?[0].product?.image??'',name: order.orderItems?[0].product?.name??'',category: 'Category',productPrice: order.orderItems?[0].price,quantity: order.orderItems?[0].quantity.toString(), )), orderId: order.id.toString(),));
-                                  },
-                                  );})),
-                  );
-                }
-              ),
+                  builder: (context, controller, child) {
+                bool isDataEmpty = orderController.orders == null ||
+                    orderController.orders!.data == null ||
+                    orderController.orders!.data!.isEmpty;
+                return DataStateWidget(
+                  status: controller.ordersDataStatus,
+                  ontapRetry: () {
+                    controller.getOrderList(context);
+                  },
+                  isDataEmpty: isDataEmpty,
+                  child: isDataEmpty
+                      ? const SizedBox()
+                      : ListView(
+                          children: List.generate(
+                              orderController.orders!.data!.length, (index) {
+                          final order = orderController.orders!.data![index];
+                          return OrderItem(
+                            image: order.orderItems?[0].product?.image ?? '',
+                            orderId: '#${order.id ?? 1}',
+                            title: order.orderItems?[0].product?.name ?? '',
+                            starCount: 6,
+                            timing: formatDate(order.createdAt.toString()),
+                            quantity: 1,
+                            status: order.status ?? '',
+                            onTap: () {
+                              AppNavigation.navigationPush(
+                                  context,
+                                  OrderDetailScreen(
+                                    orderId: order.id.toString(),
+                                  ));
+                            },
+                          );
+                        })),
+                );
+              }),
             ),
           ],
         ),
@@ -139,7 +145,8 @@ class OrderItem extends StatelessWidget {
     required this.starCount,
     required this.quantity,
     required this.status,
-    required this.onTap, required this.image,
+    required this.onTap,
+    required this.image,
   });
   @override
   Widget build(BuildContext context) {
@@ -168,7 +175,9 @@ class OrderItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5)),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: CustomNetworkImage(imageUrl: image,),
+              child: CustomNetworkImage(
+                imageUrl: image,
+              ),
             ),
           ),
           const SizedBox(

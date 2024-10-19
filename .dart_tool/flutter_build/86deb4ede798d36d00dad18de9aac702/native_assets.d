@@ -1,1 +1,0 @@
- D:\\flutter\ project\\paropkar-app\\.dart_tool\\flutter_build\\86deb4ede798d36d00dad18de9aac702\\native_assets.yaml: 

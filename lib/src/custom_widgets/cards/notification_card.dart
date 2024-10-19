@@ -9,15 +9,18 @@ import 'package:paropkar/src/custom_widgets/custom_image_icon.dart';
 
 class NotificationCard extends StatelessWidget {
   final String title;
+  final String image;
   final String description;
   final VoidCallback onTap;
+  final bool isReaded;
 
   const NotificationCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.onTap,
-  }) : super(key: key);
+    required this.image, required this.isReaded,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,9 @@ class NotificationCard extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: Theme.of(context).cardColor,
+            color:isReaded
+              ? Colors.white  // Light gray for read notifications
+              : Colors.blue[50],   // Light blue for unread notifications,
             boxShadow: [
               BoxShadow(
                 color: Theme.of(context).dividerColor.withOpacity(.3),
@@ -43,17 +48,12 @@ class NotificationCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
                 const SizedBox(width: 10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        title,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
                       const SizedBox(height: 8),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,17 +68,29 @@ class NotificationCard extends StatelessWidget {
                             ),
                           ),
                           smallWidth,
-                          SizedBox(
-                            width: screenWidth * .5,
-                            child: Text(
-                              description,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall!
-                                  .copyWith(
-                                      color: AppColors.primaryColor,
-                                      fontFamily: AppFonts.medium),
-                            ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: screenWidth*.6,
+                                child: Text(
+                                  title,
+                                  style: Theme.of(context).textTheme.bodyLarge,overflow: TextOverflow.ellipsis,maxLines: 2,textAlign: TextAlign.start,
+                                ),
+                              ),
+                              SizedBox(
+                                width: screenWidth * .5,
+                                child: Text(
+                                  description,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall!
+                                      .copyWith(
+                                          color: AppColors.primaryColor,
+                                          fontFamily: AppFonts.medium),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -86,7 +98,6 @@ class NotificationCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-               
               ],
             ),
           ),

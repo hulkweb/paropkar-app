@@ -25,26 +25,12 @@ const primaryColor =
 const greyColor = Color(0xFF757575); // Example grey color for text
 const whiteColor = Color(0xFFFFFFFF); // Example white background
 
-class OrderDetailNeeded {
-  final String? image;
-  final String? name;
-  final String? category;
-  final String? productPrice;
-  final String? quantity;
-  OrderDetailNeeded({
-    this.image,
-    this.name,
-    this.category,
-    this.productPrice,
-    this.quantity,
-  });
-}
-
 // Main Cart Screen
 class OrderDetailScreen extends StatefulWidget {
-  const OrderDetailScreen({super.key, this.orderDetail, required this.orderId});
-  final List<OrderDetailNeeded?>? orderDetail;
+  const OrderDetailScreen(
+      {super.key, required this.orderId, this.screenRedirect});
   final String orderId;
+  final String? screenRedirect;
   @override
   State<OrderDetailScreen> createState() => _OrderDetailScreenState();
 }
@@ -76,12 +62,12 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               ),
             ),
             onPress: () {
-              if (widget.orderDetail != null) {
-                Navigator.pop(context);
-              } else {
-                bottomController.changeIndex(0);
+              if (widget.screenRedirect != null && (widget.screenRedirect == 'placeOrder')) {
+                  bottomController.changeIndex(0);
                 AppNavigation.navigationReplacement(
                     context, const BottomBarListScreen());
+              } else {
+                 Navigator.pop(context);
               }
             },
           ),
@@ -104,7 +90,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         ],
         title: Text(
           'Order Details',
-          style: Theme.of(context).textTheme.titleLarge!.copyWith(
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
               fontFamily: AppFonts.semiBold,
               color: Theme.of(context).canvasColor),
         ),
@@ -148,11 +134,11 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                 'Order number',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyMedium!
+                                    .labelMedium!
                                     .copyWith(color: AppColors.primaryColor),
                               ),
                               Text(
-                                widget.orderId ?? '#49',
+                                '#${widget.orderId}',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ],
@@ -183,7 +169,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     'customer',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .titleLarge!
+                                        .bodyMedium!
                                         .copyWith(
                                           color: isLoginWithOtp
                                               ? Colors.white
@@ -214,7 +200,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     'track order',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .titleLarge!
+                                        .bodyMedium!
                                         .copyWith(
                                           color: !isLoginWithOtp
                                               ? Colors.white
@@ -231,70 +217,94 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(left: 13, right: 13),
-                      child: Column(
+                      padding:
+                          const EdgeInsets.only(left: 13, right: 13, bottom: 0),
+                      child: Theme(
+                        data: ThemeData().copyWith(
+                            shadowColor: AppColors.white,
+                            dividerColor: Colors.transparent,
+                            // dividerColor: Colors.white,
+                            cardColor: Colors.white),
+                        child: ExpansionTile(
+                          initiallyExpanded: true,
+                          leading: Text(
+                            'Products',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          title: const Text(''), // Remove divider lines
+                          tilePadding: EdgeInsets.zero,
+                          childrenPadding: EdgeInsets.zero,
+                          backgroundColor: Colors.white, // No background color
+                          collapsedBackgroundColor: Colors.white,
                           children: List.generate(
                               orderDetailController.orderDetailData?.data
                                       ?.orderItems?.length ??
                                   0, (index) {
-                        print('+++++++++++++++++++');
-                        print(orderDetailController
-                            .orderDetailData?.data?.orderItems?.length);
-                        final orderItem = orderDetailController
-                            .orderDetailData?.data?.orderItems![index];
-                        return OrderItem(
-                          productName: orderDetailController
-                              .orderDetailData!.data!.orderNumber!,
-                          productType: orderItem?.product?.name ?? '',
-                          price: orderItem?.product?.price ?? '',
-                          quantity: orderItem?.quantity,
-                          status: '',
-                          onTap: () {
-                            // AppNavigation.navigation(
-                            //   context,
-                            // );
-                          },
-                          image: '',
-                          isNetworkImage: false,
-                        );
-                      })),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 13, right: 13, top: 20),
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Order Note:',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .copyWith(
-                                      fontFamily: AppFonts.semiBold,
-                                      overflow: TextOverflow.ellipsis)),
-                          SizedBox(
-                            width: screenWidth * .04,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: SizedBox(
-                              width: screenWidth * .4,
-                              child: Text(
-                                'ship all ordered item together on friday. i’ve emailed please check.Thanks',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall!
-                                    .copyWith(
-                                        fontFamily: AppFonts.light,
-                                        overflow: TextOverflow.ellipsis),
-                                maxLines: 10,
+                            final orderItem = orderDetailController
+                                .orderDetailData?.data?.orderItems![index];
+                            return Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: OrderItem(
+                                productName: orderDetailController
+                                        .orderDetailData!
+                                        .data!
+                                        .orderItems?[index]
+                                        .product
+                                        ?.name ??
+                                    '',
+                                productType: 'cat',
+                                price: orderItem?.product?.price ?? '',
+                                quantity: orderItem?.quantity,
+                                status: '',
+                                onTap: () {
+                                  // AppNavigation.navigation(
+                                  //   context,
+                                  // );
+                                },
+                                image: orderItem?.product?.image ?? '',
+                                isNetworkImage: true,
                               ),
-                            ),
-                          ),
-                        ],
+                            );
+                          }),
+                        ),
                       ),
                     ),
+                    // Padding(
+                    //   padding:
+                    //       const EdgeInsets.only(left: 13, right: 13, top: 20),
+                    //   child: Row(
+                    //     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Text('Order Note:',
+                    //           style: Theme.of(context)
+                    //               .textTheme
+                    //               .bodyMedium!
+                    //               .copyWith(
+                    //                   fontFamily: AppFonts.semiBold,
+                    //                   overflow: TextOverflow.ellipsis)),
+                    //       SizedBox(
+                    //         width: screenWidth * .04,
+                    //       ),
+                    //       Padding(
+                    //         padding: const EdgeInsets.only(top: 5),
+                    //         child: SizedBox(
+                    //           width: screenWidth * .4,
+                    //           child: Text(
+                    //             'ship all ordered item together on friday. i’ve emailed please check.Thanks',
+                    //             style: Theme.of(context)
+                    //                 .textTheme
+                    //                 .bodyMedium!
+                    //                 .copyWith(
+                    //                     fontFamily: AppFonts.light,
+                    //                     overflow: TextOverflow.ellipsis),
+                    //             maxLines: 10,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     smallHeight,
                     Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
@@ -392,10 +402,7 @@ class OrderItem extends StatelessWidget {
                   width: screenWidth * .4,
                   child: Text(
                     productName ?? '',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge!
-                        .copyWith(),
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -405,7 +412,7 @@ class OrderItem extends StatelessWidget {
                     productType ?? '',
                     style: Theme.of(context)
                         .textTheme
-                        .bodySmall!
+                        .bodyMedium!
                         .copyWith(fontFamily: AppFonts.light),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
@@ -417,7 +424,7 @@ class OrderItem extends StatelessWidget {
                     'Qty $quantity',
                     style: Theme.of(context)
                         .textTheme
-                        .bodySmall!
+                        .bodyMedium!
                         .copyWith(fontFamily: AppFonts.light),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 3,
@@ -476,31 +483,32 @@ class PriceSection extends StatelessWidget {
               Text('Sub Total',
                   style: Theme.of(context)
                       .textTheme
-                      .bodySmall!
+                      .bodyMedium!
                       .copyWith(color: AppColors.primaryColor)),
-              Text('₹ $subTotal', style: Theme.of(context).textTheme.titleLarge),
+              Text('₹ $subTotal',
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Delivery Charges',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: AppColors.primaryColor,
                       )),
               Text('₹ $deliveryCharges',
-                  style: Theme.of(context).textTheme.titleLarge),
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Discount',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         color: Colors.red,
                       )),
               Text('- ₹ $discount',
-                  style: Theme.of(context).textTheme.titleLarge),
+                  style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
           Divider(),
@@ -508,11 +516,10 @@ class PriceSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Final Price',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(color: AppColors.primaryColor,)),
-              Text('₹ $total', style: Theme.of(context).textTheme.titleLarge!),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: AppColors.primaryColor,
+                      )),
+              Text('₹ $total', style: Theme.of(context).textTheme.bodyMedium!),
             ],
           ),
         ],

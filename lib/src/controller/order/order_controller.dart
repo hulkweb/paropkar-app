@@ -57,7 +57,7 @@ class OrderController with ChangeNotifier {
             onTrackOrder: () {
               Navigator.pop(context);
               AppNavigation.navigationPush(context,
-                  OrderDetailScreen(orderId: response['data'].toString()));
+                  OrderDetailScreen(orderId: response['data'].toString(),screenRedirect: 'placeOrder',));
             },
             ontapGoBack: () {
               AppNavigation.pushAndRemoveUntil(context, BottomBarListScreen());
