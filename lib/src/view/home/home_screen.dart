@@ -37,9 +37,7 @@ class HomeScreen extends StatelessWidget {
         Provider.of<ProductListingController>(context, listen: false);
     final favoriteController =
         Provider.of<FavoriteController>(context, listen: false);
-    if (productListingController.productsData == null) {
-      productListingController.getProducts(isPopular: '1');
-    }
+    productListingController.getProducts(isPopular: '1', loading: false);
     Provider.of<FavoriteController>(context, listen: false);
     final bottomBarController = Provider.of<BottomBarListController>(context);
     return StatusBarCustom(
@@ -282,11 +280,15 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // Popular Section
-                    Text(
-                      'Popular',
-                      style: Theme.of(context).textTheme.titleLarge,
+                    InkWell(
+                      onTap: () {
+                        productListingController.getProducts(isPopular: '1');
+                      },
+                      child: Text(
+                        'Popular',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
                     ),
-
                     // Popular Items Grid
                     Consumer<ProductListingController>(
                         builder: (context, controller, state) {
@@ -343,49 +345,48 @@ class HomeScreen extends StatelessWidget {
                                             },
                                             onAddToCartPressed: () async {
                                               if (!(product.isCart ?? false)) {
-                                                List<Variation> variationList =
-                                                    []; // controller.productsData?.data?.data?[index].variations;
-                                                for (int i = 0;
-                                                    i <
-                                                        (controller
-                                                                .productsData
-                                                                ?.data
-                                                                ?.data?[index]
-                                                                .variations
-                                                                ?.length ??
-                                                            0);
-                                                    i++) {
-                                                  final instance = controller
-                                                      .productsData
-                                                      ?.data
-                                                      ?.data?[index]
-                                                      .variations?[i];
-                                                  Variation variation =
-                                                      Variation(
-                                                          id: instance?.id,
-                                                          image:
-                                                              instance?.image,
-                                                          color:
-                                                              instance?.color,
-                                                          variationName: instance
-                                                              ?.variationName);
-                                                  variationList.add(variation);
-                                                }
+                                                // List<Variation> variationList =
+                                                //     []; // controller.productsData?.data?.data?[index].variations;
+                                                // for (int i = 0;
+                                                //     i <
+                                                //         (controller
+                                                //                 .productsData
+                                                //                 ?.data
+                                                //                 ?.data?[index]
+                                                //                 .variations
+                                                //                 ?.length ??
+                                                //             0);
+                                                //     i++) {
+                                                //   final instance = controller
+                                                //       .productsData
+                                                //       ?.data
+                                                //       ?.data?[index]
+                                                //       .variations?[i];
+                                                //   Variation variation =
+                                                //       Variation(
+                                                //           id: instance?.id,
+                                                //           image:
+                                                //               instance?.image,
+                                                //           color:
+                                                //               instance?.color,
+                                                //           variationName: instance
+                                                //               ?.variationName);
+                                                //   variationList.add(variation);
+                                                // }
                                                 showVariationDialog(
-                                                    context, variationList,
-                                                    ontapOk: (String
-                                                            variationId,
-                                                        String quantity) async {
-                                                  await cartController.addCart(
-                                                      variation_id: variationId,
-                                                      product_id:
-                                                          product.id.toString(),
-                                                      quantity: quantity,
-                                                      context: context);
-                                                  await controller.getProducts(
-                                                      isPopular: '1',
-                                                      loading: false);
-                                                });
+                                                  context,
+                                                  id: controller
+                                                          .productsData
+                                                          ?.data
+                                                          ?.data?[index]
+                                                          .id
+                                                          ?.toString() ??
+                                                      '',
+                                                  onsuccess: (context) {
+                                                    controller.getProducts(
+                                                        loading: false);
+                                                  },
+                                                );
                                               } else {
                                                 AppNavigation.pushAndRemoveUntil(
                                                     context,

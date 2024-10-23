@@ -2,7 +2,7 @@
 
 class AppUrl{
 static const String baseUrl = 'https://paropkar.jetdigital.in/api/';
-static const String imageUrl = 'https://paropkar.jetdigital.in/';
+static const String imageUrl = 'https://paropkar.jetdigital.in/uploads/';
 static const String login = '${baseUrl}login';
 static const String register = '${baseUrl}register';
 static const String product = '${baseUrl}get_product';

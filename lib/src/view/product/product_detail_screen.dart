@@ -33,7 +33,7 @@ import 'package:paropkar/src/custom_widgets/cards/product_card_custom.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen(
       {super.key,
       required this.id,
@@ -42,6 +42,18 @@ class ProductDetailScreen extends StatelessWidget {
   final String id;
   final String categoryId;
   final String subcategoryId;
+
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    context.read<ProductDetailController>().changeAddedProductDetail(VariationAddition());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +114,7 @@ class ProductDetailScreen extends StatelessWidget {
         return DataStateWidget(
             status: controller.productDetailDataStatus,
             ontapRetry: () {
-              controller.getProductDetail(context, id: id);
+              controller.getProductDetail(context, id: widget.id);
             },
             isOverlay: cartController.addCartDataStatus == DataStatus.loading ||
                 favoriteController.addFavoriteDataStatus == DataStatus.loading,
@@ -317,26 +329,60 @@ class ProductDetailScreen extends StatelessWidget {
                                                   const EdgeInsets.all(3.0),
                                               child: InkWell(
                                                 onTap: () {
-                                                  controller.changeVariationId(
-                                                      (controller
+                                                  controller.changeAddedProductDetail(
+                                                      VariationAddition(
+                                                          id: controller
+                                                              .productDetailData
+                                                              ?.data
+                                                              ?.product
+                                                              ?.variations?[
+                                                                  index]
+                                                              .id,
+                                                          toQty: controller
+                                                              .productDetailData
+                                                              ?.data
+                                                              ?.product
+                                                              ?.variations?[
+                                                                  index]
+                                                              .toQty,
+                                                          fromQty: controller
+                                                              .productDetailData
+                                                              ?.data
+                                                              ?.product
+                                                              ?.variations?[
+                                                                  index]
+                                                              .fromQty));
+                                                  productDetailController
+                                                      .changeQuantity(int.parse(
+                                                          controller
                                                                   .productDetailData
                                                                   ?.data
                                                                   ?.product
                                                                   ?.variations?[
                                                                       index]
-                                                                  .id ??
-                                                              0)
-                                                          .toString());
+                                                                  .toQty ??
+                                                              '1'));
                                                 },
                                                 child: DataBox(
-                                                    quntity: '1-3',
+                                                    borderColor:
+                                                        AppColors.primaryColor,
+                                                    quntity:
+                                                        '${controller.productDetailData?.data?.product?.variations?[index].toQty ?? ''}${controller.productDetailData?.data?.product?.variations?[index].fromQty == '+' ? '' : '-'}${controller.productDetailData?.data?.product?.variations?[index].fromQty ?? ''}',
                                                     price:
                                                         '₹${controller.productDetailData?.data?.product?.variations?[index].price ?? ''}',
-                                                    margin: '25.01%',
+                                                    margin:
+                                                        '${controller.productDetailData?.data?.product?.variations?[index].margin ?? ''}%',
                                                     // ignore: unnecessary_string_interpolations
-                                                    isSelected: controller
-                                                            .selectedVariationId ==
-                                                        '${controller.productDetailData?.data?.product?.variations?[index].id ?? ''}'),
+                                                    isSelected: (controller
+                                                                .addedVariationProductDetail
+                                                                .id ??
+                                                            0) ==
+                                                        controller
+                                                            .productDetailData
+                                                            ?.data
+                                                            ?.product
+                                                            ?.variations?[index]
+                                                            .id),
                                               ),
                                             ),
                                           ),
@@ -383,9 +429,14 @@ class ProductDetailScreen extends StatelessWidget {
                                             child: IconButton(
                                                 padding: EdgeInsets.zero,
                                                 onPressed: () {
+                                                  int to_qty = int.parse(
+                                                      productDetailController
+                                                              .addedVariationProductDetail
+                                                              .toQty ??
+                                                          '1');
                                                   if (productDetailController
                                                           .quantity >
-                                                      1) {
+                                                      to_qty) {
                                                     productDetailController
                                                         .decrimentQuantity();
                                                   }
@@ -416,10 +467,25 @@ class ProductDetailScreen extends StatelessWidget {
                                                 padding: EdgeInsets.zero,
                                                 onPressed: () {
                                                   if (productDetailController
-                                                          .quantity <
-                                                      100)
+                                                          .addedVariationProductDetail
+                                                          .fromQty ==
+                                                      '+') {
                                                     productDetailController
                                                         .incrimentQuantity();
+                                                  } else {
+                                                    int from_qty = int.parse(
+                                                        productDetailController
+                                                                .addedVariationProductDetail
+                                                                .fromQty ??
+                                                            '1');
+
+                                                    if (productDetailController
+                                                            .quantity <
+                                                        from_qty) {
+                                                      productDetailController
+                                                          .incrimentQuantity();
+                                                    }
+                                                  }
                                                 },
                                                 icon: const Icon(Icons.add)),
                                           )
@@ -463,8 +529,8 @@ class ProductDetailScreen extends StatelessWidget {
                               if (!(productDetailController.productDetailData
                                       ?.data?.product?.isCart ??
                                   false)) {
-                                if (productDetailController
-                                    .selectedVariationId.isEmpty) {
+                                if (productDetailController.addedVariationProductDetail.id ==
+                                    null) {
                                   showToast(
                                       message: 'Select atleast 1 variation id');
                                   return;
@@ -476,11 +542,13 @@ class ProductDetailScreen extends StatelessWidget {
                                       quantity: productDetailController.quantity
                                           .toString(),
                                       variation_id: productDetailController
-                                          .selectedVariationId,
+                                              .addedVariationProductDetail.id
+                                              ?.toString() ??
+                                          '',
                                       context: context);
                                   await productDetailController
                                       .getProductDetail(context,
-                                          id: id, loading: false);
+                                          id: widget.id, loading: false);
                                 }
                               } else {
                                 AppNavigation.pushAndRemoveUntil(
@@ -550,20 +618,21 @@ class ProductDetailScreen extends StatelessWidget {
                                     await favoriteController.addRemoveFavorite(
                                         product_id: "${product?.id ?? 0}",
                                         context: context);
-                                    productDetailController
-                                        .getProductDetail(context, id: id);
+                                    productDetailController.getProductDetail(
+                                        context,
+                                        id: widget.id);
                                   },
                                   onAddToCartPressed: () async {
                                     if (!(product?.isCart ?? false)) {
-                                      await cartController.addCart(
-                                          variation_id:
-                                              "${product?.variations?[0].id}",
-                                          product_id: "${product?.id ?? 0}",
-                                          quantity: "1",
-                                          context: context);
-                                      await productDetailController
-                                          .getProductDetail(context,
-                                              loading: false, id: id);
+                                      showVariationDialog(
+                                        context,
+                                        id:  product?.id?.toString(),
+                                        onsuccess: (context) {
+                                          productDetailController
+                                              .getProductDetail(context,
+                                                  id: widget.id,loading: false);
+                                        },
+                                      );
                                     } else {
                                       AppNavigation.pushAndRemoveUntil(
                                           context, BottomBarListScreen());
@@ -571,7 +640,6 @@ class ProductDetailScreen extends StatelessWidget {
                                     }
                                   },
                                   onProductPressed: () {
-                                   
                                     context
                                         .read<ProductDetailController>()
                                         .getProductDetail(
@@ -597,7 +665,7 @@ class ProductDetailScreen extends StatelessWidget {
                       }),
                     ],
                   )
-                : SizedBox());
+                : const SizedBox());
       }),
     ));
   }
@@ -635,7 +703,9 @@ class DataBox extends StatelessWidget {
                 spreadRadius: 1,
                 offset: Offset(1, 3))
           ],
-          color: isSelected ? AppColors.grey : AppColors.white,
+          color: isSelected
+              ? AppColors.primaryColor.withOpacity(.4)
+              : AppColors.white,
           border: Border.all(
               color: borderColor ?? const Color.fromARGB(255, 139, 111, 111))),
       child: Padding(

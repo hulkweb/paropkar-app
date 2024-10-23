@@ -36,6 +36,7 @@ class Datum {
     int? id;
     int? userId;
     int? productId;
+    dynamic createBy;
     int? variationId;
     int? quantity;
     DateTime? createdAt;
@@ -47,6 +48,7 @@ class Datum {
         this.id,
         this.userId,
         this.productId,
+        this.createBy,
         this.variationId,
         this.quantity,
         this.createdAt,
@@ -59,6 +61,7 @@ class Datum {
         id: json["id"],
         userId: json["user_id"],
         productId: json["product_id"],
+        createBy: json["createBy"],
         variationId: json["variation_id"],
         quantity: json["quantity"],
         createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
@@ -71,6 +74,7 @@ class Datum {
         "id": id,
         "user_id": userId,
         "product_id": productId,
+        "createBy": createBy,
         "variation_id": variationId,
         "quantity": quantity,
         "created_at": createdAt?.toIso8601String(),
@@ -87,9 +91,11 @@ class Product {
     int? subcategoryId;
     String? price;
     int? stock;
+    int? popular;
     String? discountType;
     String? discountValue;
     String? image;
+    String? multiImage;
     String? productType;
     String? description;
     int? status;
@@ -104,9 +110,11 @@ class Product {
         this.subcategoryId,
         this.price,
         this.stock,
+        this.popular,
         this.discountType,
         this.discountValue,
         this.image,
+        this.multiImage,
         this.productType,
         this.description,
         this.status,
@@ -122,9 +130,11 @@ class Product {
         subcategoryId: json["subcategory_id"],
         price: json["price"],
         stock: json["stock"],
+        popular: json["popular"],
         discountType: json["discount_type"],
         discountValue: json["discount_value"],
         image: json["image"],
+        multiImage: json["multi_image"],
         productType: json["product_type"],
         description: json["description"],
         status: json["status"],
@@ -140,9 +150,11 @@ class Product {
         "subcategory_id": subcategoryId,
         "price": price,
         "stock": stock,
+        "popular": popular,
         "discount_type": discountType,
         "discount_value": discountValue,
         "image": image,
+        "multi_image": multiImage,
         "product_type": productType,
         "description": description,
         "status": status,
@@ -156,11 +168,14 @@ class Variation {
     int? id;
     int? productId;
     String? variationName;
-    String? color;
-    String? size;
+    dynamic color;
+    dynamic size;
     String? price;
     int? stock;
-    String? image;
+    String? margin;
+    String? toQty;
+    String? fromQty;
+    dynamic image;
     int? status;
     dynamic deletedAt;
     DateTime? createdAt;
@@ -174,6 +189,9 @@ class Variation {
         this.size,
         this.price,
         this.stock,
+        this.margin,
+        this.toQty,
+        this.fromQty,
         this.image,
         this.status,
         this.deletedAt,
@@ -189,6 +207,9 @@ class Variation {
         size: json["size"],
         price: json["price"],
         stock: json["stock"],
+        margin: json["margin"],
+        toQty: json["to_qty"],
+        fromQty: json["from_qty"],
         image: json["image"],
         status: json["status"],
         deletedAt: json["deleted_at"],
@@ -204,6 +225,9 @@ class Variation {
         "size": size,
         "price": price,
         "stock": stock,
+        "margin": margin,
+        "to_qty": toQty,
+        "from_qty": fromQty,
         "image": image,
         "status": status,
         "deleted_at": deletedAt,

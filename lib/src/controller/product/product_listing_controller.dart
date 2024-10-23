@@ -34,13 +34,16 @@ class ProductListingController extends ChangeNotifier {
     String search = '',
     String max_price = '',
     String min_price = '',
-    String  isPopular = '0',
+    String isPopular = '',
   }) async {
     String userId = await getUserId();
+    if (isPopular == '1') {
+      userId = '';
+    }
     String url =
-        "${AppUrl.product}?category_id=$category_id&subcategory_id=$subcategory_id&search=$search&max_price=$max_price&min_price=$min_price?popular=$isPopular?user_id=$userId";
+        "${AppUrl.product}?category_id=$category_id&subcategory_id=$subcategory_id&search=$search&max_price=$max_price&min_price=$min_price&popular=$isPopular";
     if (loading) changeDataStatus(DataStatus.loading);
-    print(url);
+     print(url);
     getApi(
       url: url,
       onSuccess: (response) {
@@ -48,14 +51,12 @@ class ProductListingController extends ChangeNotifier {
         changeDataStatus(DataStatus.success);
       },
       onFailed: (response) {
-          productsData = ProductListModel.fromJson(response);
+        productsData = ProductListModel.fromJson(response);
         changeDataStatus(DataStatus.success);
       },
     );
   }
 }
-
-
 
 class VariationModel {
   final String imageUrl;

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:paropkar/src/models/cart/cart_model.dart';
 import 'package:paropkar/src/models/product/product_detail_model.dart';
 import 'package:paropkar/src/services/get_api.dart';
 // For jsonDecode
@@ -22,13 +23,13 @@ class ProductDetailController extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _selectedVariationId = '';
-  String get selectedVariationId => _selectedVariationId;
+  // String _selectedVariationId = '';
+  // String get selectedVariationId => _selectedVariationId;
 
-  changeVariationId(String variationId) {
-    _selectedVariationId = variationId;
-    notifyListeners();
-  }
+  // changeVariationId(String variationId) {
+  //   _selectedVariationId = variationId;
+  //   notifyListeners();
+  // }
 
   int _quantity = 0;
   int get quantity => _quantity;
@@ -38,19 +39,18 @@ class ProductDetailController extends ChangeNotifier {
     notifyListeners();
   }
 
-  
   decrimentQuantity() {
     _quantity--;
     notifyListeners();
   }
 
-  
   incrimentQuantity() {
     _quantity++;
     notifyListeners();
   }
 
   ProductDetailModel? productDetailData;
+  ProductDetailModel? productDetailVariationData;
   DataStatus _productDetailDataStatus = DataStatus.loading;
   DataStatus get productDetailDataStatus => _productDetailDataStatus;
   changeDataStatus(DataStatus status) {
@@ -60,11 +60,11 @@ class ProductDetailController extends ChangeNotifier {
   }
 
   getProductDetail(BuildContext context,
-      {required String id, bool loading = true}) {
-    if(loading){
+      {required String id, bool loading = true, bool isVariationGet = false}) {
+    if (loading) {
       changeDataStatus(DataStatus.loading);
     }
-    
+
     print('product detail call');
     for (int i = 0; i < 10; i++) {
       print('\n');
@@ -73,7 +73,11 @@ class ProductDetailController extends ChangeNotifier {
     getApi(
       url: '${AppUrl.get_single_product}?product_id=$id',
       onSuccess: (response) {
-        productDetailData = ProductDetailModel.fromJson(response);
+        if (isVariationGet) {
+          productDetailVariationData = ProductDetailModel.fromJson(response);
+        } else {
+          productDetailData = ProductDetailModel.fromJson(response);
+        }
         changeDataStatus(DataStatus.success);
       },
       onFailed: (response) {
@@ -82,4 +86,28 @@ class ProductDetailController extends ChangeNotifier {
       context: context,
     );
   }
+
+  VariationAddition _addedVariationProductDetail = VariationAddition();
+  VariationAddition get addedVariationProductDetail => _addedVariationProductDetail;
+
+  changeAddedProductDetail(VariationAddition variation) {
+    _addedVariationProductDetail = variation;
+    notifyListeners();
+  }
+
+  
+  VariationAddition _addedVariationVariatioin = VariationAddition();
+  VariationAddition get addedVariationVariatioin => _addedVariationVariatioin;
+
+  changeAddedVariation(VariationAddition variation) {
+    _addedVariationVariatioin = variation;
+    notifyListeners();
+  }
+}
+
+class VariationAddition {
+  VariationAddition({this.id, this.toQty, this.fromQty});
+  int? id;
+  String? toQty;
+  String? fromQty;
 }

@@ -19,7 +19,7 @@ import 'package:paropkar/src/controller/profile/profile_edit_controller.dart';
 import 'package:paropkar/src/controller/splash_controller.dart';
 import 'package:paropkar/src/models/splash_model.dart';
 import 'package:paropkar/src/utills/theme.dart';
-import 'package:paropkar/src/view/splach_screen.dart';
+import 'package:paropkar/src/view/splash_screen.dart';
 import 'package:provider/provider.dart';
 double screenHeight = 0;
 double screenWidth = 0;

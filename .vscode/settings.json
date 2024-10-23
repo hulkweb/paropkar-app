@@ -2,5 +2,6 @@
   "files.associations": {
     "functional": "cpp"
   },
-  "dart.flutterSdkPath": ".fvm/versions/3.19.6"
+  "dart.flutterSdkPath": ".fvm/versions/3.19.6",
+  "cmake.sourceDirectory": "D:/flutter project/paropkar-ecommerce/linux"
 }

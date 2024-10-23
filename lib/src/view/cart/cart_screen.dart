@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:paropkar/main.dart';
 import 'package:paropkar/src/controller/bottom_bar_controller.dart';
 import 'package:paropkar/src/controller/cart/cart_controller.dart';
@@ -15,6 +14,7 @@ import 'package:paropkar/src/custom_widgets/textfields/custom_textfied.dart';
 import 'package:paropkar/src/utills/globle_func.dart';
 import 'package:paropkar/src/utills/navigation_function.dart';
 import 'package:paropkar/src/view/notification/notification_list_screen.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 
 // Colors for the theme
@@ -35,7 +35,9 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     Future.microtask(() {
-      print('getting cart');
+      if (kDebugMode) {
+        print('getting cart');
+      }
       Provider.of<CartController>(context, listen: false).getCarts();
     });
     super.initState();
@@ -146,9 +148,32 @@ class _CartScreenState extends State<CartScreen> {
                                           setState(() {});
                                         },
                                         onIncrease: () async {
+                                          // print((controller.carts!.data![index]
+                                          //         .quantity!+1) <=
+                                          //     int.parse(controller
+                                          //             .carts!
+                                          //             .data![index]
+                                          //             .variation
+                                          //             ?.fromQty ??
+                                          //         '1'));
+                                          // print(controller
+                                          //     .carts!.data![index].quantity!);
+                                          // print(int.parse(controller
+                                          //             .carts!
+                                          //             .data![index]
+                                          //             .variation
+                                          //             ?.fromQty ??
+                                          //         '1'));
+
+                                          // return;
                                           if (controller.carts!.data![index]
                                                   .quantity! <
-                                              20) {
+                                              int.parse(controller
+                                                      .carts!
+                                                      .data![index]
+                                                      .variation
+                                                      ?.fromQty ??
+                                                  '1')) {
                                             await controller.changeCartQuantity(
                                                 cart_id: formatData(cart.id),
                                                 quntity: (controller
@@ -163,8 +188,13 @@ class _CartScreenState extends State<CartScreen> {
                                         },
                                         onDecrease: () async {
                                           if (controller.carts!.data![index]
-                                                  .quantity! >
-                                              1) {
+                                                  .quantity! >=
+                                              (int.parse(controller
+                                                      .carts!
+                                                      .data![index]
+                                                      .variation
+                                                      ?.toQty ??
+                                                  '1'))) {
                                             await controller.changeCartQuantity(
                                                 cart_id: formatData(cart.id),
                                                 quntity: (controller
